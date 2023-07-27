@@ -25,14 +25,19 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%) rotateX(45deg) rotateY(45deg);
-        
+        margin-top:-100px;
+        margin-left:-100px;
+        animation: rotateBox 12s linear infinite;
+        &:hover{
+            animation-play-state: paused;
+        }
         .face {
             width: 100%;
             height: 100%;
             position: absolute;
-            background-color: #69c0ff;
+            background-color: transparent;
             border: 1px solid;
+            
         }
 
         .front {
@@ -61,6 +66,15 @@
         .right {
             transform: rotateY(-90deg) translateX(100px);
             transform-origin: right;
+        }
+
+        @keyframes rotateBox {
+            from{
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            to{
+                transform: rotate(360deg) rotateY(360deg);
+            }
         }
     }
 }</style>
