@@ -18,6 +18,7 @@
 <script>
 import { ref } from "vue"
 import { useRouter } from 'vue-router'
+import axios from '../axios'
 export default {
   name: 'HomeView',
   setup() {
@@ -81,6 +82,7 @@ export default {
     const toPage = (path) => {
       if (path) router.push(path)
     }
+    console.log(axios.get())
     return {
       menus,
       toPage
