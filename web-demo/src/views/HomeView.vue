@@ -1,105 +1,112 @@
 <template>
   <div class="home">
-    <div class="container">
-      <div class="box">
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-      </div>
-    </div>
+    <el-menu :mode="menus.mode.value" unique-opened :default-openeds="menus.opens" :default-active="menus.active">
+      <el-sub-menu v-for="menu in menus.options" :key="menu.index" :index="menu.index">
+        <template #title>
+          <img v-if="menu.icon" :src="menu.icon" :alt="menu.title" class="title-icon">
+          <span class="title-text">{{ menu.title }}</span>
+        </template>
+        <el-menu-item v-for="item in menu.children" :key="item.index" :index="item.index" @click="toPage(item.path)">
+          {{ item.title }}
+        </el-menu-item>
+      </el-sub-menu>
+    </el-menu>
+
   </div>
 </template>
 
 <script>
-
+import { ref } from "vue"
+import { useRouter } from 'vue-router'
 export default {
   name: 'HomeView',
+  setup() {
+
+    const menus = {
+      mode: ref("vertical"),
+      collapse: ref(true),
+      opens: ["1"],
+      active: "1-1",
+      options: [
+        {
+          index: "1",
+          title: "css",
+          icon: require("../../public/images/css.svg"),
+          children: [
+            {
+              index: "1-1",
+              title: "卡片",
+              path: "/card"
+            },
+            {
+              index: "1-2",
+              title: "卡片轮播",
+              path: "/card-carousel"
+            }
+          ]
+        },
+        {
+          index: "2",
+          title: "echarts",
+          icon: require("../../public/images/chart.svg"),
+          children: [
+            {
+              index: "2-1",
+              title: "报表1"
+            },
+            {
+              index: "2-2",
+              title: "报表2"
+            }
+          ]
+        },
+        {
+          index: "3",
+          title: "three.js",
+          icon: require("../../public/images/cubes.svg"),
+          children: [
+            {
+              index: "3-1",
+              title: "海面"
+            },
+            {
+              index: "3-2",
+              title: "飞鸟"
+            }
+          ]
+        }
+      ]
+    }
+    const router = useRouter()
+    const toPage = (path) => {
+      if (path) router.push(path)
+    }
+    return {
+      menus,
+      toPage
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
 .home {
-  --card-width: 12.5rem;
-  --card-height: 16rem;
-  --card-gap:24rem;
-  background: #000;
   width: 100vw;
   height: 100vh;
+  position: relative;
 
-  .container {
-    width: 100%;
+  .el-menu {
+    width: 200px;
     height: 100%;
-    perspective: 2000px;
-    perspective-origin: top;
-    position: relative;
-    .box {
-      width: var(--card-width);
-      height: var(--card-height);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: calc(var(--card-height) / -2);
-      margin-left: calc(var(--card-width) / -2);
-      transform-style: preserve-3d;
-      animation: cardRotate 16s linear infinite;
-      &:hover{
-        animation-play-state: paused;
-        cursor: pointer;
-      }
-      .card {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        background-color: #69c0ff;
-      }
-      .card:nth-child(1){
-        transform: rotateY(36deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(2){
-        transform: rotateY(72deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(3){
-        transform: rotateY(108deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(4){
-        transform: rotateY(144deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(5){
-        transform: rotateY(180deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(6){
-        transform: rotateY(216deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(7){
-        transform: rotateY(252deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(8){
-        transform: rotateY(288deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(9){
-        transform: rotateY(324deg) translateZ(var(--card-gap));
-      }
-      .card:nth-child(10){
-        transform: rotateY(360deg) translateZ(var(--card-gap));
+
+    .el-sub-menu__title {
+      .title-icon {
+        width: 1.5rem;
       }
 
+      .title-text {
+        padding-left: .8rem;
+      }
     }
-    
-    @keyframes cardRotate {
-       from{
-        transform: rotateY(0deg);
-       }
-       to{
-        transform: rotateY(360deg);
-       }
-    }
-
   }
 }
 </style>
