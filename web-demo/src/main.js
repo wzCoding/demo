@@ -11,6 +11,6 @@ app.use(ElementPlus)
 app.use(router)
 
 app.mount('#app')
-
+app.config.globalProperties.aaa = "hello"
 
 
