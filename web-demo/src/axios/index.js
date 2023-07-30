@@ -1,86 +1,66 @@
 import axios from 'axios'
-
-
-const serviceConfig = {
-  baseURL: 'https://localhost:5173/',
-  timeout: 3000,
-  headers: {
-    'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,DELETE',
-    'Access-Control-Allow-Headers': 'x-requested-with,content-type',
-  }
+import { ElMessage } from 'element-plus'
+const baseURL = 'https://localhost:5173/'
+const timeOut = 3000
+const headers = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,DELETE',
+  'Access-Control-Allow-Headers': 'x-requested-with,content-type',
 }
-const service = axios.create(serviceConfig)
-
-console.log(process.env.NODE_ENV)
+const service = axios.create({
+  baseURL: baseURL,
+  timeout: timeOut,
+  headers: headers
+})
 
 
 // 请求拦截器
 service.interceptors.request.use(
   config => {
-    config.data = JSON.stringify(config.data);
+    config.data = JSON.stringify(config.data)
     config.headers = {}
-    console.log(config)
-    return config;
+    return config
   },
   error => {
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
+
+
 //响应拦截器即异常处理
-service.interceptors.response.use(response => {
-  return response
-}, err => {
-  if (err && err.response) {
-    let str = ''
-    switch (err.response.status) {
-      case 400:
-        str = '错误请求'
-        break;
-      case 401:
-        str = '未授权，请重新登录'
-        break;
-      case 403:
-        str = '拒绝访问'
-        break;
-      case 404:
-        str = '请求错误,没有找到该资源'
-        break;
-      case 405:
-        str = '请求方法未允许'
-        break;
-      case 408:
-        str = '请求超时'
-        break;
-      case 500:
-        str = '服务器端出错'
-        break;
-      case 501:
-        str = '网络未实现'
-        break;
-      case 502:
-        str = '网络错误'
-        break;
-      case 503:
-        str = '服务不可用'
-        break;
-      case 504:
-        str = '网络超时'
-        break;
-      case 505:
-        str = '版本不支持该请求'
-        break;
-      default:
-        str = `连接错误${err.response.status}`
-        console.log(`连接错误${err.response.status}`)
+const httpStatusCode = {
+  400: "错误请求",
+  401: "未授权，请重新登录",
+  403: "拒绝访问",
+  404: "请求错误,没有找到该资源",
+  405: "请求方法未允许",
+  408: "请求超时",
+  500: "服务器端出错",
+  501: "网络未实现",
+  502: "网络错误",
+  503: "服务不可用",
+  504: "网络超时",
+  505: "版本不支持该请求",
+}
+service.interceptors.response.use(
+  response => {
+    const result = {
+      data: response.data,
+      statusCode: response.status,
+      statusText: response.statusText
     }
-    console.log(str)
-  } else {
-    // console.log('连接到服务器失败,请检查网络问题')
-  }
-  return Promise.resolve(err.response)
-})
+    return result
+  },
+  error => {
+    let errorText = "连接错误"
+    if (error && error.response) {
+      errorText = httpStatusCode[error.response.status]
+    }
+    ElMessage.error(errorText)
+    return Promise.resolve(error.response)
+  })
+
 
 
 export default service
