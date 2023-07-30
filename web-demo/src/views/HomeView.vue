@@ -18,8 +18,8 @@
 <script setup>
 import { ref } from "vue"
 import { useRouter } from 'vue-router'
-import axios from '../axios'
-axios.post("mock/data",{}).then((res) => {
+import service from '../axios'
+service.post("mock/data",{}).then((res) => {
    console.log(res)
 })
 const menus = {
