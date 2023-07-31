@@ -4,5 +4,6 @@ module.exports = defineConfig({
     port: 5173,
     open: true
   },
+  publicPath:"/demo/",
   transpileDependencies: true
 })

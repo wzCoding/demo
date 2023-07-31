@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-const baseURL = 'https://localhost:5173/'
+
+const baseURL = 'https://localhost:5173/demo/'
 const timeOut = 3000
 const headers = {
   'X-Requested-With': 'XMLHttpRequest',
@@ -45,6 +46,7 @@ const httpStatusCode = {
 }
 service.interceptors.response.use(
   response => {
+    console.log(response)
     const result = {
       data: response.data,
       statusCode: response.status,

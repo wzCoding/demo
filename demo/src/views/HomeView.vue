@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <el-menu :mode="menus.mode.value" unique-opened :default-openeds="menus.opens" :default-active="menus.active">
-      <el-sub-menu v-for="menu in menus.options.value" :key="menu.index" :index="menu.index">
+    <el-menu :mode="menuMode" :collapse="menuCollapse" unique-opened :default-openeds="openMenu"
+      :default-active="activeMenu">
+      <el-sub-menu v-for="menu in menus" :key="menu.index" :index="menu.index">
         <template #title>
           <img v-if="menu.icon" :src="menu.icon" :alt="menu.title" class="title-icon">
           <span class="title-text">{{ menu.title }}</span>
@@ -11,7 +12,6 @@
         </el-menu-item>
       </el-sub-menu>
     </el-menu>
-
   </div>
 </template>
 <script setup>
@@ -19,18 +19,17 @@ import { ref } from "vue"
 import { useRouter } from 'vue-router'
 import service from '../axios'
 
-const menus = {
-  mode: ref("vertical"),
-  collapse: ref(true),
-  opens: ["1"],
-  active: "1-1",
-  options: ref([])
-}
-
-
+const menuMode = ref("vertical")
+const menuCollapse = ref(false)
+const openMenu = ["1"]
+const activeMenu = "1-1"
+const menus = ref([])
 const getMenus = async () => {
-  const res = await service.post("mock/data", {})
-  menus.options.value = res.data.menus
+  const res = await service.post("mock/data", { id: "menu" })
+  menus.value = res.data.map(item => {
+     item.icon = require(`../../public/images/${item.icon}`)
+     return item
+  })
 }
 getMenus()
 const router = useRouter()
@@ -46,7 +45,6 @@ const toPage = (path) => {
   position: relative;
 
   .el-menu {
-    width: 200px;
     height: 100%;
 
     .el-sub-menu__title {
