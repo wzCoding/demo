@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <el-menu :mode="menus.mode.value" unique-opened :default-openeds="menus.opens" :default-active="menus.active">
-      <el-sub-menu v-for="menu in menus.options" :key="menu.index" :index="menu.index">
+      <el-sub-menu v-for="menu in menus.options.value" :key="menu.index" :index="menu.index">
         <template #title>
           <img v-if="menu.icon" :src="menu.icon" :alt="menu.title" class="title-icon">
           <span class="title-text">{{ menu.title }}</span>
@@ -14,9 +14,8 @@
 
   </div>
 </template>
-
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import { useRouter } from 'vue-router'
 import service from '../axios'
 
@@ -25,18 +24,15 @@ const menus = {
   collapse: ref(true),
   opens: ["1"],
   active: "1-1",
-  options: []
+  options: ref([])
 }
+
+
 const getMenus = async () => {
   const res = await service.post("mock/data", {})
-  menus.options = res.data
+  menus.options.value = res.data.menus
 }
-
-onMounted(() => {
-  getMenus()
-  console.log(menus)
-})
-
+getMenus()
 const router = useRouter()
 const toPage = (path) => {
   if (path) router.push(path)

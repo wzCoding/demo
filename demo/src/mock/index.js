@@ -6,7 +6,7 @@ Mock.mock(serviceUrl, {
         {
             index: "1",
             title: "css",
-            icon: "../../public/images/css.svg",
+            icon: require("../../public/images/css.svg"),
             children: [
                 {
                     index: "1-1",
