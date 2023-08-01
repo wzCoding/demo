@@ -13,7 +13,7 @@
   --card-width: 12rem;
   --card-height: 16rem;
   --card-gap: calc(var(--card-width) * 2);
-  background: #000;
+  //background: #000;
   width: 100vw;
   height: 100vh;
 
