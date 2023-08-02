@@ -1,3 +1,4 @@
+<script src="./index"></script>
 <template>
     <div class="menu-container" :class="collapseClass">
         <el-menu :mode="menuMode" :collapse="menuCollapse" unique-opened :default-openeds="openMenu"
@@ -20,39 +21,6 @@
         </div>
     </div>
 </template>
-<script setup>
-import { ref } from "vue"
-import { useRouter } from "vue-router"
-import { ArrowLeft } from "@element-plus/icons-vue"
-import service from "../axios"
-
-const menuMode = ref("vertical")
-const menuCollapse = ref(false)
-const openMenu = ["1"]
-const activeMenu = "1-1"
-const menus = ref([])
-const collapseClass = ref("")
-const ctrlArrow = ref("left-arrow")
-const ctrlMenu = () => {
-    menuCollapse.value = !menuCollapse.value
-    ctrlArrow.value = menuCollapse.value ? "right-arrow" : "left-arrow"
-}
-
-const getMenus = async () => {
-    const res = await service.post("mock/data", { id: "menu" })
-    menus.value = res.data.map(item => {
-        item.icon = require(`../../public/images/${item.icon}`)
-        return item
-    })
-}
-getMenus()
-
-const router = useRouter()
-const toPage = (path) => {
-    if (path) router.push(path)
-}
-
-</script>
 <style lang="scss" scoped>
 .menu-container {
     height: 100%;

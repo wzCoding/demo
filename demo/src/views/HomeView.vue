@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <menuBar :data="[]"></menuBar>
     <div class="menu-container" :class="collapseClass">
       <el-menu :mode="menuMode" :collapse="menuCollapse" unique-opened :default-openeds="openMenu"
         :default-active="activeMenu">
@@ -27,7 +28,7 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { ArrowLeft } from "@element-plus/icons-vue"
 import service from "../axios"
-
+import {menuBar} from "../components/menu-bar"
 const menuMode = ref("vertical")
 const menuCollapse = ref(false)
 const openMenu = ["1"]
@@ -43,7 +44,7 @@ const ctrlMenu = () => {
 const getMenus = async () => {
   const res = await service.post("mock/data", { id: "menu" })
   menus.value = res.data.map(item => {
-    item.icon = require(`../../public/images/${item.icon}`)
+    item.icon = require(`../assets/images/${item.icon}`)
     return item
   })
 }
