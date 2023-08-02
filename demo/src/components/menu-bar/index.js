@@ -1,4 +1,4 @@
-import { ref,toRefs, computed } from "vue"
+import { ref, toRefs, computed } from "vue"
 import { useRouter } from "vue-router"
 import { ArrowLeft } from "@element-plus/icons-vue"
 
@@ -12,58 +12,49 @@ export default {
                 return ["vertical", "horizontal"].includes(value)
             }
         },
-        collapse: {
-            type: Boolean,
-            default: false
-        },
-        open: {
-            type: Array,
-            default: []
-        },
-        active: {
-            type: String,
-            default: ""
-        },
+        collapse: { type: Boolean, default: false },
+        uniqueOpen: { type: Boolean, default: false },
+        defaultActive: { type: String, default: "" },
         data: {
             type: Array,
-            default: [],
+            default() {
+                return []
+            },
             require: true
         }
     },
+    components: {
+        ArrowLeft
+    },
     setup(props) {
-        const menuMode = ref("vertical")
-        const menuCollapse = ref(false)
-        const openMenu = ["1"]
-        const activeMenu = "1-1"
-        const menus = ref([])
-        const collapseClass = ref("")
+        const { mode, collapse, uniqueOpen, defaultActive } = toRefs(props)
+        const menus = computed(() => {
+            return props.data.map(item => {
+                if (!item.icon.includes('/')) {
+                    item.icon = require(`../../assets/images/${item.icon}`)
+                }
+                return item
+            })
+        })
         const ctrlArrow = ref("left-arrow")
+        const collapseClass = ref("")
         const ctrlMenu = () => {
-            menuCollapse.value = !menuCollapse.value
-            ctrlArrow.value = menuCollapse.value ? "right-arrow" : "left-arrow"
+            collapse.value = !collapse.value
+            ctrlArrow.value = collapse.value ? "right-arrow" : "left-arrow"
         }
-
-        // const getMenus = async (api) => {
-        //     const res = await service.post(api, { id: "menu" })
-        //     menus.value = res.data.map(item => {
-        //         item.icon = require(`../../assets/images/${item.icon}`)
-        //         return item
-        //     })
-        // }
-        // getMenus()
 
         const router = useRouter()
         const toPage = (path) => {
             if (path) router.push(path)
         }
         return {
-            menuMode,
-            menuCollapse,
-            openMenu,
-            activeMenu,
+            mode,
+            collapse,
+            uniqueOpen,
+            defaultActive,
             menus,
-            collapseClass,
             ctrlArrow,
+            collapseClass,
             ctrlMenu,
             toPage
         }

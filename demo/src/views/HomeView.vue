@@ -1,59 +1,26 @@
 <template>
   <div class="home">
-    <menuBar :data="[]"></menuBar>
-    <div class="menu-container" :class="collapseClass">
-      <el-menu :mode="menuMode" :collapse="menuCollapse" unique-opened :default-openeds="openMenu"
-        :default-active="activeMenu">
-        <el-sub-menu v-for="menu in menus" :key="menu.index" :index="menu.index">
-          <template #title>
-            <img v-if="menu.icon" :src="menu.icon" :alt="menu.title" class="title-icon">
-            <span class="title-text">{{ menu.title }}</span>
-          </template>
-          <el-menu-item v-for="item in menu.children" :key="item.index" :index="item.index" @click="toPage(item.path)">
-            {{ item.title }}
-          </el-menu-item>
-        </el-sub-menu>
-      </el-menu>
-      <div class="menu-ctrl" @click="ctrlMenu">
-        <el-icon class="ctrl-arrow" :class="ctrlArrow">
-          <ArrowLeft />
-        </el-icon>
-      </div>
-    </div>
+    <menuBar :data="menus" :mode="menuMode" :collapse="menuCollapse" :uniqueOpen="unique" :defaultActive="activeMenu"></menuBar>
     <RouterView></RouterView>
   </div>
 </template>
 <script setup>
 import { ref } from "vue"
-import { useRouter } from "vue-router"
-import { ArrowLeft } from "@element-plus/icons-vue"
 import service from "../axios"
 import menuBar from "../components/menu-bar/index.vue"
-const menuMode = ref("vertical")
-const menuCollapse = ref(false)
-const openMenu = ["1"]
+
+const menuMode = "vertical"
 const activeMenu = "1-1"
+const menuCollapse = false
+
+const unique = true
 const menus = ref([])
-const collapseClass = ref("")
-const ctrlArrow = ref("left-arrow")
-const ctrlMenu = () => {
-  menuCollapse.value = !menuCollapse.value
-  ctrlArrow.value = menuCollapse.value ? "right-arrow" : "left-arrow"
-}
 
 const getMenus = async () => {
   const res = await service.post("mock/data", { id: "menu" })
-  menus.value = res.data.map(item => {
-    item.icon = require(`../assets/images/${item.icon}`)
-    return item
-  })
+  menus.value = res.data
 }
 getMenus()
-
-const router = useRouter()
-const toPage = (path) => {
-  if (path) router.push(path)
-}
 
 </script>
 <style lang="scss" scoped>

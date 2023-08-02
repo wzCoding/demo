@@ -1,8 +1,7 @@
 <script src="./index"></script>
 <template>
     <div class="menu-container" :class="collapseClass">
-        <el-menu :mode="menuMode" :collapse="menuCollapse" unique-opened :default-openeds="openMenu"
-            :default-active="activeMenu">
+        <el-menu :mode="mode" :collapse="collapse" :unique-opened="uniqueOpen" :default-active="defaultActive">
             <el-sub-menu v-for="menu in menus" :key="menu.index" :index="menu.index">
                 <template #title>
                     <img v-if="menu.icon" :src="menu.icon" :alt="menu.title" class="title-icon">
