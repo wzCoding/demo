@@ -28,7 +28,7 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { ArrowLeft } from "@element-plus/icons-vue"
 import service from "../axios"
-import {menuBar} from "../components/menu-bar"
+import menuBar from "../components/menu-bar/index.vue"
 const menuMode = ref("vertical")
 const menuCollapse = ref(false)
 const openMenu = ["1"]
