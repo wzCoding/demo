@@ -13,14 +13,20 @@
           </el-menu-item>
         </el-sub-menu>
       </el-menu>
+      <div class="menu-ctrl" @click="ctrlMenu">
+        <el-icon class="ctrl-arrow" :class="ctrlArrow">
+          <ArrowLeft />
+        </el-icon>
+      </div>
     </div>
     <RouterView></RouterView>
   </div>
 </template>
 <script setup>
 import { ref } from "vue"
-import { useRouter } from 'vue-router'
-import service from '../axios'
+import { useRouter } from "vue-router"
+import { ArrowLeft } from "@element-plus/icons-vue"
+import service from "../axios"
 
 const menuMode = ref("vertical")
 const menuCollapse = ref(false)
@@ -28,7 +34,11 @@ const openMenu = ["1"]
 const activeMenu = "1-1"
 const menus = ref([])
 const collapseClass = ref("")
-
+const ctrlArrow = ref("left-arrow")
+const ctrlMenu = () => {
+  menuCollapse.value = !menuCollapse.value
+  ctrlArrow.value = menuCollapse.value ? "right-arrow" : "left-arrow"
+}
 
 const getMenus = async () => {
   const res = await service.post("mock/data", { id: "menu" })
@@ -54,15 +64,15 @@ const toPage = (path) => {
   justify-content: flex-start;
   align-items: flex-start;
   overflow: hidden;
+
   .menu-container {
-    //max-width: 200px;
     height: 100%;
     border-right: 1px solid var(--el-menu-border-color);
+    position: relative;
 
     .el-menu {
       border-right: none;
-      //max-width: 200px;
-      height: calc(100% - 50px);
+      height: 100%;
 
       .el-sub-menu__title {
         .title-icon {
@@ -80,15 +90,39 @@ const toPage = (path) => {
     }
 
     .menu-ctrl {
-      height: 50px;
+      padding: .75rem 2px;
+      position: absolute;
+      right: -21px;
+      top: 50%;
+      margin-top: -20px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      border: 1px solid var(--el-menu-border-color);
+      border-left: none;
+      cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .el-icon {
+        transition: all .5s ease-in-out;
+      }
+
+      .left-arrow {
+        transform: rotate(0deg);
+      }
+
+      .right-arrow {
+        transform: rotate(180deg);
+      }
     }
+
+
   }
-  & > div:nth-child(2){
-     height: 100%;
-     flex-grow:1;
+
+  &>div:nth-child(2) {
+    height: 100%;
+    flex-grow: 1;
   }
 }
 </style>
