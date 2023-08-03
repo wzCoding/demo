@@ -25,7 +25,7 @@
     height: 100%;
     border-right: 1px solid var(--el-menu-border-color);
     position: relative;
-
+    z-index: 10;
     .el-menu {
         border-right: none;
         height: 100%;

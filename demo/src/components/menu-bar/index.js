@@ -23,10 +23,12 @@ export default {
             require: true
         }
     },
+    emits: ['ctrlMenu'],
     components: {
         ArrowLeft
     },
-    setup(props) {
+    setup(props, { emit }) {
+       
         const { mode, collapse, uniqueOpen, defaultActive } = toRefs(props)
         const menus = computed(() => {
             return props.data.map(item => {
@@ -39,8 +41,8 @@ export default {
         const ctrlArrow = ref("left-arrow")
         const collapseClass = ref("")
         const ctrlMenu = () => {
-            collapse.value = !collapse.value
-            ctrlArrow.value = collapse.value ? "right-arrow" : "left-arrow"
+            emit('ctrlMenu',collapse)
+            ctrlArrow.value = !collapse.value ? "right-arrow" : "left-arrow"
         }
 
         const router = useRouter()

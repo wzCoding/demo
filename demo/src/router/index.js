@@ -13,12 +13,32 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "card" */ '../components/card/index.vue')
+    component: () => import(/* webpackChunkName: "card" */ '../views/css/card.vue')
   },
   {
     path: '/card-carousel',
     name: 'card-carousel',
-    component: () => import(/* webpackChunkName: "card-carousel" */ '../components/card-carousel/index.vue')
+    component: () => import(/* webpackChunkName: "card-carousel" */ '../views/css/carousel.vue')
+  },
+  {
+    path: '/echarts1',
+    name: 'echarts1',
+    component: () => import(/* webpackChunkName: "echarts1" */ '../views/echarts/echarts1.vue')
+  },
+  {
+    path: '/echarts2',
+    name: 'echarts2',
+    component: () => import(/* webpackChunkName: "echarts2" */ '../views/echarts/echarts2.vue')
+  },
+  {
+    path: '/bird',
+    name: 'bird',
+    component: () => import(/* webpackChunkName: "bird" */ '../views/three/bird.vue')
+  },
+  {
+    path: '/sea',
+    name: 'sea',
+    component: () => import(/* webpackChunkName: "sea" */ '../views/three/sea.vue')
   },
 ]
 
