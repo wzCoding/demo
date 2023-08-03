@@ -1,6 +1,6 @@
 <script src="./index"></script>
 <template>
-    <div class="menu-container" :class="collapseClass">
+    <div class="menu" :class="collapseClass">
         <el-menu :mode="mode" :collapse="collapse" :unique-opened="uniqueOpen" :default-active="defaultActive">
             <el-sub-menu v-for="menu in menus" :key="menu.index" :index="menu.index">
                 <template #title>
@@ -21,7 +21,7 @@
     </div>
 </template>
 <style lang="scss" scoped>
-.menu-container {
+.menu {
     height: 100%;
     border-right: 1px solid var(--el-menu-border-color);
     position: relative;

@@ -1,10 +1,11 @@
 <template>
   <menuBar :data="menus" :mode="menuMode" :collapse="menuCollapse" :uniqueOpen="unique" :defaultActive="activeMenu"
-    @ctrlMenu="ctrlMenu"></menuBar>
-  <RouterView></RouterView>
+    @ctrlMenu="ctrlMenu" v-show="showMenu"></menuBar>
+  <RouterView />
 </template>
 <script setup>
-import { ref } from "vue"
+import { ref, watch } from "vue"
+import { useRoute } from "vue-router"
 import service from "./axios"
 import menuBar from "./components/menu-bar/index.vue"
 
@@ -24,6 +25,12 @@ getMenus()
 const ctrlMenu = (isCollapse) => {
   menuCollapse.value = !isCollapse.value
 }
+
+const route = useRoute()
+const showMenu = ref(false)
+watch(route, (newRoute) => {
+  showMenu.value = newRoute.path !== "/"
+})
 </script>
 <style lang="scss">
 * {
