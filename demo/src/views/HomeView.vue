@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-button type="primary" @click="start">开始探索</el-button>
+    <el-button type="primary" @click="start">开始探索 start</el-button>
   </div>
 </template>
 <script setup>
