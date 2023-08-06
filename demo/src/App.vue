@@ -1,6 +1,5 @@
 <template>
-  <menuBar :data="menus" :mode="menuMode" :collapse="menuCollapse" :uniqueOpen="unique" :defaultActive="activeMenu"
-    @ctrlMenu="ctrlMenu" v-show="showMenu"></menuBar>
+  <menuBar></menuBar>
   <RouterView />
 </template>
 <script setup>
