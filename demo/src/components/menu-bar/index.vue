@@ -6,13 +6,13 @@
                 <div class="menu-item">
                     <div class="menu-btn">
                         <span class="menu-icon">
-                            <img src="../../assets/images/css.svg" alt="CSS-DEMO">
+                            <img src="../../assets/images/css-light.svg" alt="">
                         </span>
-                        <span class="menu-text">css demo</span>
+                        <span class="menu-text">css</span>
                     </div>
                 </div>
-                <div class="menu-item">2</div>
-                <div class="menu-item">3</div>
+                <div class="menu-item"></div>
+                <div class="menu-item"></div>
                 <div class="menu-item">4</div>
                 <div class="menu-item">5</div>
             </div>
