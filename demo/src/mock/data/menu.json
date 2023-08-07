@@ -3,53 +3,30 @@
         {
             "index": "1",
             "title": "css",
-            "icon": "css.svg",
-            "children": [
-                {
-                    "index": "1-1",
-                    "title": "卡片",
-                    "path": "/card"
-                },
-                {
-                    "index": "1-2",
-                    "title": "卡片轮播",
-                    "path": "/card-carousel"
-                }
-            ]
+            "icon": "css",
+            "path":"/css"
         },
         {
             "index": "2",
-            "title": "echarts",
-            "icon": "chart.svg",
-            "children": [
-                {
-                    "index": "2-1",
-                    "title": "报表1",
-                    "path": "/echarts1"
-                },
-                {
-                    "index": "2-2",
-                    "title": "报表2",
-                    "path": "/echarts2"
-                }
-            ]
+            "title": "three.js",
+            "icon": "cubes",
+            "path":"/threeJS"
         },
         {
             "index": "3",
-            "title": "three.js",
-            "icon": "cubes.svg",
-            "children": [
-                {
-                    "index": "3-1",
-                    "title": "海面",
-                    "path": "/sea"
-                },
-                {
-                    "index": "3-2",
-                    "title": "飞鸟",
-                    "path": "/bird"
-                }
-            ]
+            "title": "echarts",
+            "icon": "chart",
+            "path":"/echarts"
+        },
+        {
+            "index": "4",
+            "title": "待开发",
+            "icon": "build"
+        },
+        {
+            "index": "5",
+            "title": "about",
+            "icon": "about"
         }
     ]
 }

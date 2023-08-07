@@ -6,17 +6,43 @@
                 <div class="menu-item">
                     <div class="menu-btn">
                         <span class="menu-icon">
-                            <img src="../../assets/images/css-light.svg" alt="">
+                            <img src="../../assets/images/css-light.svg" alt="CSS">
                         </span>
-                        <span class="menu-text">css</span>
+                        <span class="menu-text">css1</span>
                     </div>
                 </div>
-                <div class="menu-item"></div>
-                <div class="menu-item"></div>
-                <div class="menu-item"></div>
-                <div class="menu-item"></div>
-                <div class="menu-item"></div>
-                <div class="menu-item"></div>
+                <div class="menu-item">
+                    <div class="menu-btn">
+                        <span class="menu-icon">
+                            <img src="../../assets/images/cubes-light.svg" alt="THREE.JS">
+                        </span>
+                        <span class="menu-text">three.js2</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-btn">
+                        <span class="menu-icon">
+                            <img src="../../assets/images/chart-light.svg" alt="ECHARTS">
+                        </span>
+                        <span class="menu-text">echarts3</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-btn">
+                        <span class="menu-icon">
+                            <img src="../../assets/images/build-light.svg" alt="BUILD">
+                        </span>
+                        <span class="menu-text">待开发</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-btn">
+                        <span class="menu-icon">
+                            <img src="../../assets/images/about-light.svg" alt="ABOUT">
+                        </span>
+                        <span class="menu-text">about</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -30,87 +56,6 @@
     justify-content: center;
     align-items: center;
 
-    .menu-wrap {
-        transform: translateY(95px);
-    }
-
-    .menu-grid {
-        width: 220px;
-        max-width: 220px;
-        float: none;
-        display: block;
-        padding-left: 0;
-        padding-right: 0;
-        height: 220px;
-        filter: drop-shadow(0px 0px 30px rgba(0, 0, 0, 0.35));
-        transform: rotate(-45deg);
-        position: relative;
-        z-index: 2;
-
-        .menu-item {
-            float: left;
-            clear: none;
-            text-align: inherit;
-            width: 50%;
-            margin-left: 0%;
-            margin-right: 0%;
-            height: 110px;
-            background: linear-gradient(135deg, #F8B127, #CB26B6);
-            overflow: hidden;
-            transition: .3s;
-
-            .menu-btn {
-                height: calc(100% + 62px);
-                width: calc(100% + 62px);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                color: #fff;
-                transform: rotate(45deg) translate(-43px, 0);
-                transition: .3s;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #9f2b83;
-                }
-            }
-
-            &::after {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            &:nth-child(1) {
-                border-radius: 10px 10px 0 0;
-            }
-
-            &:nth-child(2) {
-                position: relative;
-                top: 50%;
-                border-radius: 0 10px 0 0;
-            }
-
-            &:nth-child(3) {
-                border-radius: 0 0 0 10px;
-            }
-
-            &:nth-child(4) {
-                position: relative;
-                top: 50%;
-                left: 50%;
-                border-radius: 0 10px 10px 0;
-            }
-
-            &:nth-child(5) {
-                position: relative;
-                left: 50%;
-                border-radius: 0 0 0 10px;
-            }
-
-        }
-    }
+    
 }
 </style>

@@ -8,38 +8,33 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/card',
-    name: 'card',
+    path: '/css',
+    name: 'css',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "card" */ '../views/css/card.vue')
   },
   {
-    path: '/card-carousel',
-    name: 'card-carousel',
+    path: '/echarts',
+    name: 'echarts',
     component: () => import(/* webpackChunkName: "card-carousel" */ '../views/css/carousel.vue')
   },
   {
-    path: '/echarts1',
-    name: 'echarts1',
+    path: '/threeJS',
+    name: 'threeJS',
     component: () => import(/* webpackChunkName: "echarts1" */ '../views/echarts/echarts1.vue')
   },
   {
-    path: '/echarts2',
-    name: 'echarts2',
+    path: '/about',
+    name: 'about',
     component: () => import(/* webpackChunkName: "echarts2" */ '../views/echarts/echarts2.vue')
   },
   {
-    path: '/bird',
-    name: 'bird',
+    path: '/build',
+    name: 'build',
     component: () => import(/* webpackChunkName: "bird" */ '../views/three/bird.vue')
-  },
-  {
-    path: '/sea',
-    name: 'sea',
-    component: () => import(/* webpackChunkName: "sea" */ '../views/three/sea.vue')
-  },
+  }
 ]
 
 const router = createRouter({
