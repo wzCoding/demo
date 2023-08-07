@@ -3,7 +3,14 @@
     <div class="menu">
         <div class="menu-wrap">
             <div class="menu-grid">
-                <div class="menu-item">1</div>
+                <div class="menu-item">
+                    <div class="menu-btn">
+                        <span class="menu-icon">
+                            <img src="../../assets/images/css.svg" alt="CSS-DEMO">
+                        </span>
+                        <span class="menu-text">css demo</span>
+                    </div>
+                </div>
                 <div class="menu-item">2</div>
                 <div class="menu-item">3</div>
                 <div class="menu-item">4</div>
@@ -22,28 +29,22 @@
     align-items: center;
 
     .menu-wrap {
-        -webkit-transform: translateY(95px);
-        -ms-transform: translateY(95px);
         transform: translateY(95px);
     }
 
     .menu-grid {
-        width: 200px;
+        width: 220px;
         max-width: 220px;
         float: none;
         display: block;
-        // flex-wrap: wrap;
         padding-left: 0;
         padding-right: 0;
         height: 220px;
-        -webkit-filter: drop-shadow(0px 0px 30px rgba(0, 0, 0, 0.35));
         filter: drop-shadow(0px 0px 30px rgba(0, 0, 0, 0.35));
-        -webkit-transform: rotate(-45deg);
-        -ms-transform: rotate(-45deg);
         transform: rotate(-45deg);
         position: relative;
         z-index: 2;
-        
+
         .menu-item {
             float: left;
             clear: none;
@@ -52,13 +53,28 @@
             margin-left: 0%;
             margin-right: 0%;
             height: 110px;
-            background: -webkit-linear-gradient(315deg, #F8B127, #CB26B6);
-            background: -o-linear-gradient(315deg, #F8B127, #CB26B6);
             background: linear-gradient(135deg, #F8B127, #CB26B6);
             overflow: hidden;
-            -webkit-transition: .3s;
-            -o-transition: .3s;
             transition: .3s;
+
+            .menu-btn {
+                height: calc(100% + 62px);
+                width: calc(100% + 62px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                color: #fff;
+                transform: rotate(45deg) translate(-43px, 0);
+                transition: .3s;
+                cursor: pointer;
+                .menu-icon{
+                    img{
+                        color: #fff;
+                    }
+                }
+            }
 
             &::after {
                 content: "";
@@ -75,6 +91,7 @@
                 top: 50%;
                 border-radius: 0 10px 0 0;
             }
+
             &:nth-child(3) {
                 border-radius: 0 0 0 10px;
             }
