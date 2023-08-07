@@ -13,8 +13,10 @@
                 </div>
                 <div class="menu-item"></div>
                 <div class="menu-item"></div>
-                <div class="menu-item">4</div>
-                <div class="menu-item">5</div>
+                <div class="menu-item"></div>
+                <div class="menu-item"></div>
+                <div class="menu-item"></div>
+                <div class="menu-item"></div>
             </div>
         </div>
     </div>
@@ -69,10 +71,9 @@
                 transform: rotate(45deg) translate(-43px, 0);
                 transition: .3s;
                 cursor: pointer;
-                .menu-icon{
-                    img{
-                        color: #fff;
-                    }
+
+                &:hover {
+                    background-color: #9f2b83;
                 }
             }
 
