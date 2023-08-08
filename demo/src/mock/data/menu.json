@@ -3,30 +3,30 @@
         {
             "index": "1",
             "title": "css",
-            "icon": "css",
+            "icon": "css.svg",
             "path":"/css"
         },
         {
             "index": "2",
             "title": "three.js",
-            "icon": "cubes",
+            "icon": "cubes.svg",
             "path":"/threeJS"
         },
         {
             "index": "3",
             "title": "echarts",
-            "icon": "chart",
+            "icon": "chart.svg",
             "path":"/echarts"
         },
         {
             "index": "4",
             "title": "待开发",
-            "icon": "build"
+            "icon": "build.svg"
         },
         {
             "index": "5",
             "title": "about",
-            "icon": "about"
+            "icon": "about.svg"
         }
     ]
 }
