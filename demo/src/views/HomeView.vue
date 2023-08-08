@@ -21,7 +21,7 @@
           }}</span>
         </h2>
         <p class="home-info">{{ info }}</p>
-        <iconButton class="" :icon="btnIcon" direction="horizontal" iconSite="right">{{ btnText }}</iconButton>
+        <iconButton class="start-btn" :icon="btnIcon" direction="horizontal" iconSite="right" @click="toPage('default')">{{ btnText }}</iconButton>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@ const btnText = 'start'
 
 const router = useRouter()
 const toPage = (path) => {
-  if (path) router.push(path)
+  if (path && path!=='default') router.push(path)
 }
 
 
@@ -170,11 +170,10 @@ const toPage = (path) => {
       display: flex;
       flex-direction: column;
       color: #333;
-
+      font-family: "Poppins", sans-serif;
       h1,
       h2 {
-        font-family: "Josefin Sans", sans-serif;
-        padding-bottom: 1.2rem;
+        padding-bottom: 1rem;
 
         span {
           padding-right: .5rem;
@@ -188,20 +187,30 @@ const toPage = (path) => {
       }
 
       p {
-        font-family: "Poppins", sans-serif;
-        padding-bottom: 1.2rem;
+        padding-bottom: 1rem;
       }
 
       .start-btn {
         height: 50px;
-        display: inline-flex;
+        width: 140px;
         padding: 10px 25px;
-        background: linear-gradient(135deg, #F8B127, #CB26B6);
+        background: linear-gradient(135deg,#CB26B6,#F8B127);
         border-radius: 25px;
         cursor: pointer;
         color: #fff;
-        font-size: 1.2rem;
+        &:hover{
+          transform: translateY(-2px);
+          box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
+        }
+        :deep(.btn-icon img) {
+          width: 1.5rem;
+        }
+
+        :deep(.btn-text) {
+          font-size: 1.2rem;
+        }
       }
     }
   }
-}</style>
+}
+</style>
