@@ -2,7 +2,7 @@ import { toRefs, computed } from "vue"
 export default {
     name: "iconButton",
     props: {
-        //图标与文字的方向
+        //图标与文字的排列方向
         direction: {
             type: String,
             default: "vertical",
@@ -13,7 +13,7 @@ export default {
         //展示的图标
         icon: {
             type: String,
-            default: ''
+            default: ""
         },
         //图标相对于文字的位置
         iconSite: {
@@ -26,11 +26,16 @@ export default {
         //展示的文字
         text: {
             type: String,
-            default: ''
+            default: ""
+        },
+        //文字与图标的间隙
+        gap: {
+            type: String,
+            default: "5"
         }
     },
     setup(props) {
-        const { direction, icon, iconSite, text } = toRefs(props)
+        const { direction, icon, iconSite, text, gap } = toRefs(props)
         const btnIcon = computed(() => {
             let resource = ''
             if (icon.value) resource = icon.value.includes('/img/') ? icon.value : require(`../../assets/images/${icon.value}`)
@@ -49,14 +54,19 @@ export default {
             }
             return dirMap[direction.value] + siteMap[iconSite.value]
         })
-        const btnClass = computed(() => {
-            return `btn-${direction.value}`
+        const itemGap = computed(() => {
+            return gap.value.includes('px') ? gap.value : `${gap.value}px`
+        })
+        const styleObj = computed(() => {
+            return {
+                flexDirection: btnDir.value,
+                gap: direction.value == "vertical" ? `${itemGap.value} 0` : `0 ${itemGap.value}`
+            }
         })
         return {
-            btnDir,
             btnIcon,
             text,
-            btnClass
+            styleObj
         }
     }
 }

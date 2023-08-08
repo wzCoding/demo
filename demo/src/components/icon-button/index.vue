@@ -1,6 +1,6 @@
 <script src="./index"></script>
 <template>
-    <div class="btn-container" :class="btnClass" :style="{ flexDirection: btnDir }">
+    <div class="btn-container" :style="styleObj">
         <span v-if="btnIcon" class="btn-icon">
             <slot name="icon">
                 <img :src="btnIcon" alt="btn-icon">
@@ -21,20 +21,12 @@
     transition: .3s;
 
     .btn-icon {
-        width: 2rem;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-
-    .btn-text {
-        font-size: 1rem;
-    }
-    &.btn-vertical{
-        gap:.3rem 0;
-    }
-    &.btn-horizontal{
-        gap:0 .3rem;
+        img{
+            width: 2rem;
+        }
     }
 }
 </style>

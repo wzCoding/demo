@@ -1,5 +1,6 @@
 <template>
   <div class="home" v-loading="homeLoading">
+    <pageHeader></pageHeader>
     <div class="container">
       <div class="menu-wrap">
         <div class="menu-grid">
@@ -21,7 +22,8 @@
           }}</span>
         </h2>
         <p class="home-info">{{ info }}</p>
-        <iconButton class="start-btn" :icon="btnIcon" direction="horizontal" iconSite="right" @click="toPage('default')">{{ btnText }}</iconButton>
+        <iconButton class="start-btn" :icon="btnIcon" direction="horizontal" iconSite="right" @click="toPage('default')">
+          {{ btnText }}</iconButton>
       </div>
     </div>
   </div>
@@ -29,7 +31,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import iconButton from '../components/icon-button/index.vue'
+import pageHeader from '@/components/page-header/index.vue'
+import iconButton from '@/components/icon-button/index.vue'
 import service from '@/axios'
 
 const menus = ref(null)
@@ -53,7 +56,7 @@ const btnText = '开始浏览'
 
 const router = useRouter()
 const toPage = (path) => {
-  if (path && path!=='default') router.push(path)
+  if (path && path !== 'default') router.push(path)
 }
 
 
@@ -172,7 +175,7 @@ const toPage = (path) => {
       display: flex;
       flex-direction: column;
       color: #333;
-      font-family: "Poppins", sans-serif;
+
       h1,
       h2 {
         padding-bottom: 1rem;
@@ -194,16 +197,18 @@ const toPage = (path) => {
 
       .start-btn {
         height: 50px;
-        width:30%;
+        width: 30%;
         padding: 10px 25px;
-        background: linear-gradient(135deg,#CB26B6,#F8B127);
+        background: linear-gradient(135deg, #CB26B6, #F8B127);
         border-radius: 25px;
         cursor: pointer;
         color: #fff;
-        &:hover{
+
+        &:hover {
           transform: translateY(-2px);
           box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
         }
+
         :deep(.btn-icon img) {
           width: 1.5rem;
         }
@@ -214,5 +219,4 @@ const toPage = (path) => {
       }
     }
   }
-}
-</style>
+}</style>
