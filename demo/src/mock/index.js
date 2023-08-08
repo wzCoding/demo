@@ -1,5 +1,5 @@
 const Mock = require('mockjs')
-Mock.setup({ timeout: '200-600' })
+Mock.setup({ timeout: '1500' })
 const url = "https://localhost:5173/demo/mock/data"
 
 Mock.mock(url, (options) => {

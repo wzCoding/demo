@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-loading="homeLoading">
     <div class="container">
       <div class="menu-wrap">
         <div class="menu-grid">
@@ -34,9 +34,11 @@ import service from '@/axios'
 
 const menus = ref(null)
 const menusParams = { id: 'menu' }
+const homeLoading = ref(true)
 const getMenuData = async () => {
   const result = await service.post('mock/data', menusParams)
   menus.value = result.data
+  homeLoading.value = false
 }
 getMenuData()
 
@@ -47,7 +49,7 @@ const colorText = ['Demo', 'I`m']
 const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .'
 
 const btnIcon = "right-arrow.svg"
-const btnText = 'start'
+const btnText = '开始浏览'
 
 const router = useRouter()
 const toPage = (path) => {
@@ -192,7 +194,7 @@ const toPage = (path) => {
 
       .start-btn {
         height: 50px;
-        width: 140px;
+        width:30%;
         padding: 10px 25px;
         background: linear-gradient(135deg,#CB26B6,#F8B127);
         border-radius: 25px;
