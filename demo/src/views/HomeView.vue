@@ -1,6 +1,6 @@
 <template>
   <div class="home" v-loading="homeLoading">
-    <pageHeader></pageHeader>
+    <pageHeader themeControl></pageHeader>
     <div class="container">
       <div class="menu-wrap">
         <div class="menu-grid">
@@ -196,11 +196,10 @@ const toPage = (path) => {
       }
 
       .start-btn {
-        height: 50px;
-        width: 30%;
+        width: 160px;
         padding: 10px 25px;
         background: linear-gradient(135deg, #CB26B6, #F8B127);
-        border-radius: 25px;
+        border-radius: 5px;
         cursor: pointer;
         color: #fff;
 

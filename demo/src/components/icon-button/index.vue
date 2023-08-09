@@ -12,7 +12,7 @@
     </div>
 </template>
 <style lang="scss" scoped>
-.btn-container {
+.btn-container { 
     display: flex;
     justify-content: center;
     align-items: center;
