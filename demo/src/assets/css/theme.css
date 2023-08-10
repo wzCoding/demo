@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --theme-font: "Poppins", sans-serif;
+    --theme-gradient-color-1: #F8B127;
+    --theme-gradient-color-2: #CB26B6;
+    --theme-text-color: #333;
+    --theme-page-background: #f1f1f1;
+    --theme-header-background: #ffffff;
+    --theme-button-background: #9f2b83;
+    --theme-box-shadow-color:rgba(0, 0, 0, 0.05);
+}
+
+:root[theme=dark] {
+    --theme-font: "Poppins", sans-serif;
+    --theme-gradient-color-1: #243949;
+    --theme-gradient-color-2: #517fa4;
+    --theme-text-color: #adbac7;
+    --theme-page-background: #22272e;
+    --theme-header-background: #22272e;
+    --theme-button-background: #69c0ff;
+    --theme-box-shadow-color:rgba(0, 0, 0, 0.3);
+}

@@ -63,6 +63,8 @@ const toPage = (path) => {
 
 </script>
 <style lang="scss" scoped>
+@import "@/assets/css/index.scss";
+
 .home {
   width: 100%;
   height: 100%;
@@ -70,7 +72,7 @@ const toPage = (path) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f1f1f1;
+  background-color: var(--theme-page-background);
 
   .container {
     width: 100%;
@@ -106,10 +108,9 @@ const toPage = (path) => {
           margin-left: 0%;
           margin-right: 0%;
           height: 110px;
-          background: linear-gradient(135deg, #F8B127, #CB26B6);
           overflow: hidden;
           transition: .3s;
-
+          @extend .background-gradient;
           .menu-btn {
             height: calc(100% + 62px);
             width: calc(100% + 62px);
@@ -124,7 +125,7 @@ const toPage = (path) => {
             cursor: pointer;
 
             &:hover {
-              background-color: #9f2b83;
+              background-color: var(--theme-button-background);
             }
 
             img {
@@ -174,7 +175,7 @@ const toPage = (path) => {
       height: 220px;
       display: flex;
       flex-direction: column;
-      color: #333;
+      color: var(--theme-text-color);
 
       h1,
       h2 {
@@ -184,9 +185,7 @@ const toPage = (path) => {
           padding-right: .5rem;
 
           &.color-text {
-            color: transparent;
-            background: linear-gradient(135deg, #F8B127, #CB26B6);
-            background-clip: text;
+            @extend .text-gradient;
           }
         }
       }
@@ -198,10 +197,10 @@ const toPage = (path) => {
       .start-btn {
         width: 160px;
         padding: 10px 25px;
-        background: linear-gradient(135deg, #CB26B6, #F8B127);
         border-radius: 5px;
         cursor: pointer;
         color: #fff;
+        @extend .background-gradient;
 
         &:hover {
           transform: translateY(-2px);
@@ -218,4 +217,5 @@ const toPage = (path) => {
       }
     }
   }
-}</style>
+}
+</style>

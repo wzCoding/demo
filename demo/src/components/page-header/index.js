@@ -38,24 +38,33 @@ export default {
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
-        const theme = ref("light")
+        const themeClass = ref("")
         const themeIcons = [
             {
                 theme: "light",
                 icon: require('@/assets/images/theme/light.svg'),
+                toChangeTheme: "dark"
             },
             {
-                theme: "light",
+                theme: "dark",
                 icon: require('@/assets/images/theme/dark.svg'),
+                toChangeTheme: ""
             }
         ]
-
+        const themeChange = (theme) => {
+              console.log(theme)
+              themeClass.value = theme
+              console.log(themeClass.value)
+              document.querySelector("html").setAttribute("theme",theme)
+        }
         return {
             title,
             titleIcon,
             headerLinks,
             themeControl,
-            themeIcons
+            themeClass,
+            themeIcons,
+            themeChange
         }
     }
 }

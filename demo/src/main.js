@@ -4,7 +4,7 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import './mock'
-import './assets/css/index.css'
+import './assets/css/theme.css'
 
 const app = createApp(App)
 

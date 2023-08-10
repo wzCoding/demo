@@ -1,0 +1,16 @@
+.background-gradient{
+    background: linear-gradient(135deg, var(--theme-gradient-color-1), var(--theme-gradient-color-2));
+}
+
+.text-gradient {
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    @extend .background-gradient;
+}
+
+.box-gradient {
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
+    @extend .background-gradient;
+}

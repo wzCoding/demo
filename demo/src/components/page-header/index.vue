@@ -4,24 +4,26 @@
         <div class="container">
             <div class="header-left">
                 <slot name="left">
-                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" gap="10">{{ title }}
-                    </iconButton>
+                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" :text="title" gap="10" />
                 </slot>
             </div>
             <div class="header-right">
                 <slot name="right">
                     <div class="header-links">
                         <template v-if="headerLinks.length">
-                            <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
-                                rel="noopener noreferrer">
-                                <iconButton  direction="horizontal" :icon="item.icon">{{
+                            <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link"
+                                target="_blank" rel="noopener noreferrer">
+                                <iconButton direction="horizontal" :icon="item.icon">{{
                                     item.name }}</iconButton>
                             </a>
                         </template>
                     </div>
                     <div class="theme-control">
                         <template v-if="themeControl">
-                            <iconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" :class="item.theme"></iconButton>
+                            <div class="theme-btn-container" :class="themeClass">
+                                <iconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
+                                    :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
+                            </div>
                         </template>
                     </div>
                 </slot>
@@ -30,14 +32,16 @@
     </div>
 </template>
 <style lang="scss" scoped>
+@import '../../assets/css/index.scss';
+
 .header {
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     padding: 1rem 0;
-    background-color: #fff;
-    box-shadow: 0px 5px 25px -5px rgba(0, 0, 0, 0.05);
+    background-color: var(--theme-header-background);
+    box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
     z-index: 11;
 
     .container {
@@ -51,10 +55,12 @@
                 font-size: 1.5rem;
                 font-weight: 600;
 
+                :deep(.btn-icon img) {
+                    border-radius: 50%;
+                }
+
                 :deep(.btn-text) {
-                    color: transparent;
-                    background: linear-gradient(135deg, #F8B127, #CB26B6);
-                    background-clip: text;
+                    @extend .text-gradient;
                 }
             }
         }
@@ -64,34 +70,49 @@
             justify-content: flex-end;
             align-items: center;
             margin: 0 2rem;
+            gap: 0 1.2rem;
 
             .header-links {
                 display: flex;
                 gap: 0 1.5rem;
-                .link-item{
-                    text-decoration: none;
-                    color: #333;
-                    background: #fff;
-                    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+                .link-item {
+                    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
                     font-weight: 600;
-                    transition:background .3s linear;
-                    &:hover{
-                        color: transparent;
-                        background: linear-gradient(135deg, #F8B127, #CB26B6);
-                        -webkit-background-clip: text;
+                    transition: background .3s linear;
+                    text-decoration: none;
+                    color: var(--theme-text-color);
+
+                    &:hover {
+                        @extend .text-gradient;
                     }
                 }
+
                 :deep(.btn-icon img) {
-                    background: linear-gradient(135deg, #F8B127, #CB26B6);
-                    -webkit-background-clip: border-box;
+                    @extend .box-gradient;
                     border-radius: 8px;
                     width: 1.5rem;
                 }
             }
-            .theme-control{
-                display: flex;
+
+            .theme-control {
+                position: relative;
+                width: 1.5rem;
+                height: 1.5rem;
+                overflow: hidden;
+
+                .theme-btn-container {
+                    transition: all .3s ease;
+
+                    &.dark {
+                        transform: translateY(-1.5rem);
+                    }
+                }
+
+                :deep(.btn-icon img) {
+                    width: 100%;
+                }
             }
         }
     }
-}
-</style>
+}</style>
