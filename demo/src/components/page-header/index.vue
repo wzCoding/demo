@@ -13,8 +13,7 @@
                         <template v-if="headerLinks.length">
                             <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link"
                                 target="_blank" rel="noopener noreferrer">
-                                <iconButton direction="horizontal" :icon="item.icon">{{
-                                    item.name }}</iconButton>
+                                <iconButton direction="horizontal" :icon="item.icon" :text="item.name"/>
                             </a>
                         </template>
                     </div>
@@ -43,7 +42,7 @@
     background-color: var(--theme-header-background);
     box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
     z-index: 11;
-
+    transition: all .3s ease;
     .container {
         display: flex;
         justify-content: space-between;

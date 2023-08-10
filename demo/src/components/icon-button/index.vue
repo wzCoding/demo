@@ -18,7 +18,6 @@
     text-align: center;
     cursor: pointer;
     transition: .3s;
-    color: var(--theme-text-color);
     .btn-icon {
         display: flex;
         justify-content: center;
@@ -26,9 +25,6 @@
         img{
             width: 2rem;
         }
-    }
-    .btn-text{
-        color: var(--theme-text-color);
     }
 }
 </style>

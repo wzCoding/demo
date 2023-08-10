@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-loading="homeLoading">
     <pageHeader themeControl></pageHeader>
-    <div class="container">
+    <div class="home-container">
       <div class="menu-wrap">
         <div class="menu-grid">
           <template v-if="menus">
@@ -73,8 +73,8 @@ const toPage = (path) => {
   justify-content: center;
   align-items: center;
   background-color: var(--theme-page-background);
-
-  .container {
+  transition: all .3s ease;
+  .home-container {
     width: 100%;
     margin: 0 4rem;
     padding: 0 2rem;
@@ -94,11 +94,11 @@ const toPage = (path) => {
         padding-left: 0;
         padding-right: 0;
         height: 220px;
-        filter: drop-shadow(0px 0px 30px rgba(0, 0, 0, 0.35));
+        filter: drop-shadow(0px 0px 30px var(--theme-box-shadow-color));
         transform: rotate(-45deg);
         position: relative;
         z-index: 2;
-        margin-left: calc(110px + 20px);
+        margin-left: 20%;
 
         .menu-item {
           float: left;
