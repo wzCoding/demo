@@ -32,28 +32,40 @@
 }
 
 @media screen and (max-width: 1999px) and (min-width: 1699px) {
-    .home .home-container .menu-wrap .menu-grid {
-        margin-left: 17.5rem !important;
+    .home {
+        .home-main {
+            .menu-wrap {
+                .menu-grid {
+                    transform: rotate(-45deg) translate(1rem, 4rem) !important;
+                }
+            }
+        }
     }
 }
 
 @media screen and (max-width: 1399px) and (min-width: 1199px) {
-    .home .home-container .menu-wrap .menu-grid {
-        margin-left: 1.875rem !important;
+    .home {
+        .home-main {
+            .menu-wrap {
+                .menu-grid {
+                    transform: rotate(-45deg) translate(-4rem, 1rem) !important;
+                }
+            }
+        }
     }
 }
 
 @media screen and (max-width: 1199px) and (min-width: 992px) {
     .home {
-        .home-container {
+        .home-main {
             flex-direction: column;
-            .menu-wrap{
-                transform: translateY(1rem);
+
+            .menu-wrap {
                 .menu-grid {
-                    margin-left: 1.5625rem;
+                    transform: rotate(-45deg) translate(0, 0) !important;
                 }
             }
-            
+
 
             .home-content {
                 justify-content: center;
@@ -66,15 +78,56 @@
 
 @media screen and (max-width: 992px) and (min-width: 768px) {
     .home {
-        .home-container {
+
+        .home-main {
             flex-direction: column;
-            .menu-wrap{
-                transform: translateY(1rem);
+            transform: translateY(2rem);
+            .menu-wrap {
                 .menu-grid {
-                    margin-left: 1.5625rem;
+                    width: 200px !important;
+                    height: 200px !important;
+                    transform: rotate(-45deg) translate(0, 0) !important;
                 }
+
             }
+
+
+            .home-content {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                transform: translateY(4rem);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 320px) {
+    .home {
+        .header {
+            .container {
+                margin: 0 !important;
             
+            }
+        }
+
+        .home-main {
+            flex-direction: column;
+            margin: 0 !important;
+            padding: 0 !important;
+
+            .menu-wrap {
+                width: 100% !important;
+
+                .menu-grid {
+                    width: 160px !important;
+                    height: 160px !important;
+                    transform: rotate(-45deg) translate(0, 0) !important;
+
+                }
+
+            }
+
 
             .home-content {
                 justify-content: center;

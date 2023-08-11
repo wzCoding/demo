@@ -1,6 +1,6 @@
 <script src="./index"></script>
 <template>
-    <div class="header">
+    <header class="header">
         <div class="container">
             <div class="header-left">
                 <slot name="left">
@@ -28,7 +28,7 @@
                 </slot>
             </div>
         </div>
-    </div>
+    </header>
 </template>
 <style lang="scss" scoped>
 @import '../../assets/css/index.scss';

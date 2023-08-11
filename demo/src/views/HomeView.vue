@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-loading="homeLoading">
     <pageHeader themeControl></pageHeader>
-    <div class="home-container">
+    <main class="home-main">
       <div class="menu-wrap">
         <div class="menu-grid">
           <template v-if="menus">
@@ -25,7 +25,7 @@
         <iconButton class="start-btn" :icon="btnIcon" direction="horizontal" iconSite="right" @click="toPage('default')">
           {{ btnText }}</iconButton>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 <script setup>
@@ -74,7 +74,8 @@ const toPage = (path) => {
   align-items: center;
   background-color: var(--theme-page-background);
   transition: all .3s ease;
-  .home-container {
+
+  .home-main {
     width: 100%;
     margin: 0 4rem;
     padding: 0 2rem;
@@ -85,32 +86,34 @@ const toPage = (path) => {
 
     .menu-wrap {
       width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       .menu-grid {
-        width: auto;
+        width: 220px;
+        height: 220px;
         max-width: 220px;
-        float: none;
         display: block;
         padding-left: 0;
         padding-right: 0;
-        height: 220px;
         filter: drop-shadow(0px 0px 30px var(--theme-box-shadow-color));
-        transform: rotate(-45deg);
+        transform: rotate(-45deg) translate(-2rem, 2rem);
         position: relative;
         z-index: 2;
-        margin-left: 20%;
 
         .menu-item {
           float: left;
           clear: none;
           text-align: inherit;
           width: 50%;
+          height: 50%;
           margin-left: 0%;
           margin-right: 0%;
-          height: 110px;
           overflow: hidden;
           transition: .3s;
           @extend .background-gradient;
+
           .menu-btn {
             height: calc(100% + 62px);
             width: calc(100% + 62px);
@@ -140,22 +143,23 @@ const toPage = (path) => {
           }
 
           &:nth-child(1) {
+            position: relative;
+            top: -50%;
             border-radius: 10px 10px 0 0;
           }
 
           &:nth-child(2) {
-            position: relative;
-            top: 50%;
             border-radius: 0 10px 0 0;
           }
 
           &:nth-child(3) {
+            position: relative;
+            top: -50%;
             border-radius: 0 0 0 10px;
           }
 
           &:nth-child(4) {
             position: relative;
-            top: 50%;
             left: 50%;
             border-radius: 0 10px 10px 0;
           }
@@ -163,6 +167,7 @@ const toPage = (path) => {
           &:nth-child(5) {
             position: relative;
             left: 50%;
+            top: -50%;
             border-radius: 0 0 0 10px;
           }
 
@@ -172,7 +177,6 @@ const toPage = (path) => {
 
     .home-content {
       width: 50%;
-      height: 220px;
       display: flex;
       flex-direction: column;
       color: var(--theme-text-color);
@@ -217,5 +221,4 @@ const toPage = (path) => {
       }
     }
   }
-}
-</style>
+}</style>
