@@ -4,7 +4,7 @@
         <div class="container">
             <div class="header-left">
                 <slot name="left">
-                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" :text="title" gap="10" />
+                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" gap="10">{{ title }}</iconButton>
                 </slot>
             </div>
             <div class="header-right">

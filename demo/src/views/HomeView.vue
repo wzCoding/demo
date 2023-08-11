@@ -6,7 +6,8 @@
         <div class="menu-grid">
           <template v-if="menus">
             <div v-for="menu in menus" :key="menu.title" class="menu-item">
-              <iconButton class="menu-btn" :icon="menu.icon" @click="toPage(menu.path)">{{ menu.title }}</iconButton>
+              <iconButton class="menu-btn" :icon="menu.icon" @click="toPage(menu.path)">{{ menu.title
+              }}</iconButton>
             </div>
           </template>
         </div>
@@ -22,8 +23,14 @@
           }}</span>
         </h2>
         <p class="home-info">{{ info }}</p>
-        <iconButton class="start-btn" :icon="btnIcon" direction="horizontal" iconSite="right" @click="toPage('default')">
-          {{ btnText }}</iconButton>
+        <div class="home-button-groups">
+          <iconButton class="start-btn" :icon="startBtn.icon" direction="horizontal" iconSite="left"
+            @click="toPage('card')">
+            {{ startBtn.name }}</iconButton>
+          <iconButton class="about-btn" :icon="aboutBtn.icon" direction="horizontal" iconSite="left" gap="10"
+            @click="toPage('about')">
+            {{ aboutBtn.title }}</iconButton>
+        </div>
       </div>
     </main>
   </div>
@@ -38,12 +45,6 @@ import service from '@/axios'
 const menus = ref(null)
 const menusParams = { id: 'menu' }
 const homeLoading = ref(true)
-const getMenuData = async () => {
-  const result = await service.post('mock/data', menusParams)
-  menus.value = result.data
-  homeLoading.value = false
-}
-getMenuData()
 
 const text = 'Hello !'
 const mainTitle = ['欢迎来到我的', 'Demo']
@@ -51,8 +52,19 @@ const subTitle = ['I`m', 'wzCoding']
 const colorText = ['Demo', 'I`m']
 const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .'
 
-const btnIcon = "right-arrow.svg"
-const btnText = '开始浏览'
+const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
+const aboutBtn = ref({})
+
+const getMenuData = async () => {
+  const result = await service.post('mock/data', menusParams)
+  menus.value = JSON.parse(JSON.stringify(result.data))
+  menus.value.forEach(item => {
+    if (item.title == "about") aboutBtn.value = item
+  })
+
+  homeLoading.value = false
+}
+getMenuData()
 
 const router = useRouter()
 const toPage = (path) => {
@@ -198,27 +210,71 @@ const toPage = (path) => {
         padding-bottom: 1rem;
       }
 
-      .start-btn {
-        width: 160px;
-        padding: 10px 25px;
-        border-radius: 5px;
-        cursor: pointer;
-        color: #fff;
-        @extend .background-gradient;
+      .home-button-groups {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
 
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
+        .start-btn,
+        .about-btn {
+          width: 160px;
+          padding: 10px 25px;
+          border-radius: 5px;
+          cursor: pointer;
+          @extend .background-gradient;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
+          }
+
+          :deep(.btn-icon img) {
+            width: 1.5rem;
+          }
+
+          :deep(.btn-text) {
+            font-size: 1.2rem;
+          }
         }
 
-        :deep(.btn-icon img) {
-          width: 1.5rem;
+        .start-btn {
+          color: #fff;
         }
 
-        :deep(.btn-text) {
-          font-size: 1.2rem;
+        .about-btn {
+          display: none;
+          position: relative;
+          color: var(--theme-gradient-color-2);
+          z-index: 2;
+
+          &:hover {
+            color: #fff;
+
+            &::after {
+              opacity: 0;
+            }
+            :deep(.btn-icon img){
+               background: transparent;
+            }
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            background: #fff;
+            border-radius: 5px;
+            opacity: 1;
+            z-index: -1;
+          }
+
+          :deep(.btn-icon img) {
+            border-radius: 5px;
+            @extend .background-gradient;
+          }
         }
       }
+
     }
   }
 }</style>
