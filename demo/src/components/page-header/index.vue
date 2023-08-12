@@ -31,7 +31,7 @@
                 <div class="menu-button" @click="showHeaderMenu">
                     <iconButton class="menu-btn" :class="{ active: menuActive }" />
                 </div>
-                <div class="menu-container" :class="{ active: menuActive }">
+                <div class="menu-container" :class="{ active: menuActive }" v-tips="hello">
                     <template v-if="headerLinks.length">
                         <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
                             rel="noopener noreferrer">
