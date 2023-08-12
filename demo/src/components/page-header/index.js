@@ -61,6 +61,7 @@ export default {
         const showHeaderMenu =()=> {
               menuActive.value = !menuActive.value
         }
+        const hello = "hello"
         return {
             title,
             titleIcon,
@@ -70,7 +71,8 @@ export default {
             themeIcons,
             menuActive,
             themeChange,
-            showHeaderMenu
+            showHeaderMenu,
+            hello,
         }
     }
 }

@@ -27,15 +27,34 @@
                     </div>
                 </slot>
             </div>
-            <div class="menu-icon">
-                <div class="menu-icon-container" @click="showHeaderMenu">
+            <div class="header-menu">
+                <div class="menu-button" @click="showHeaderMenu">
                     <iconButton class="menu-btn" :class="{ active: menuActive }" />
+                </div>
+                <div class="menu-container" :class="{ active: menuActive }">
+                    <template v-if="headerLinks.length">
+                        <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
+                            rel="noopener noreferrer">
+                            <iconButton direction="horizontal" :icon="item.icon"/>
+                        </a>
+                    </template>
                 </div>
             </div>
         </div>
-        <div class="menu-container" :class="{ active: menuActive }">
-             
-        </div>
+        <!-- <div class="menu-container" :class="{ active: menuActive }">
+            <template v-if="headerLinks.length">
+                <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
+                    rel="noopener noreferrer">
+                    <iconButton direction="horizontal" :icon="item.icon" :text="item.name" />
+                </a>
+            </template>
+            <template v-if="themeControl">
+                <div class="theme-btn-container" :class="themeClass">
+                    <iconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
+                        :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
+                </div>
+            </template>
+        </div> -->
     </header>
 </template>
 <style lang="scss" scoped>
@@ -58,6 +77,7 @@
         align-items: center;
         margin: 0 2rem;
         z-index: 5;
+
         .header-left {
             .header-title {
                 font-size: 1.5rem;
@@ -77,7 +97,6 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            margin: 0 2rem;
             gap: 0 1.2rem;
 
             .header-links {
@@ -94,12 +113,12 @@
                     &:hover {
                         @extend .text-gradient;
                     }
-                }
 
-                :deep(.btn-icon img) {
-                    @extend .box-gradient;
-                    border-radius: 8px;
-                    width: 1.5rem;
+                    :deep(.btn-icon img) {
+                        border-radius: 8px;
+                        width: 1.5rem;
+                        @extend .box-gradient;
+                    }
                 }
             }
 
@@ -123,10 +142,11 @@
             }
         }
 
-        .menu-icon {
+        .header-menu {
             position: relative;
+            display: none;
 
-            .menu-icon-container {
+            .menu-button {
                 position: relative;
                 padding: 15px;
                 z-index: 3;
@@ -134,7 +154,7 @@
 
                 .menu-btn {
                     position: relative;
-                    width: 40px;
+                    width: 30px;
                     height: 4px;
                     border-radius: 2px;
                     @extend .background-gradient;
@@ -144,7 +164,7 @@
                         content: "";
                         display: block;
                         position: absolute;
-                        width: 40px;
+                        width: 30px;
                         height: 4px;
                         border-radius: 2px;
                         transition: all .3s ease;
@@ -152,46 +172,50 @@
                     }
 
                     &::before {
-                        top: -10px;
+                        top: -8px;
                     }
 
                     &::after {
-                        top: 10px;
+                        top: 8px;
                     }
 
                     &.active {
                         background: transparent;
 
                         &::before {
-                            top: -10px;
-                            transform: rotate(45deg) translate(25%, 100%);
+                            top: -8px;
+                            transform: rotate(45deg) translate(23%, 100%);
                         }
 
                         &::after {
-                            top: 10px;
-                            transform: rotate(-45deg) translate(25%, -100%);
+                            top: 8px;
+                            transform: rotate(-45deg) translate(23%, -100%);
                         }
                     }
+                }
+            }
+
+            .menu-container {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 60px;
+                height: 200px;
+                background-color: var(--theme-header-background);
+                box-shadow: 0 2px 8px var(--theme-box-shadow-color);
+                border-radius: 8px;
+                transform: translateY(-200%);
+                transition: all .3s ease;
+                z-index: -1;
+
+                &.active {
+                    transform: translateY(0);
                 }
             }
         }
     }
 
-    .menu-container {
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        height: 200px;
-        background-color: var(--theme-header-background);
-        box-shadow: 0 2px 8px var(--theme-box-shadow-color);
-        transform: translateY(-200%);
-        transition: all .3s ease;
-        z-index: -1;
-        &.active{
-            z-index:3;
-            transform: translateY(0);
-        }
-    }
+
+
 }
 </style>
