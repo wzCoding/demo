@@ -23,6 +23,10 @@ export default {
                 return ["top", "right", "left", "bottom"].includes(value)
             }
         },
+        text:{
+            type:String,
+            default:""
+        },
         //文字与图标的间隙
         gap: {
             type: String,
@@ -30,7 +34,7 @@ export default {
         }
     },
     setup(props) {
-        const { direction, icon, iconSite, gap } = toRefs(props)
+        const { direction, icon, iconSite,text, gap } = toRefs(props)
         const btnIcon = computed(() => {
             let resource = ''
             if (icon.value) resource = icon.value.includes('/img/') ? icon.value : require(`../../assets/images/${icon.value}`)
@@ -60,6 +64,7 @@ export default {
         })
         return {
             btnIcon,
+            text,
             styleObj
         }
     }

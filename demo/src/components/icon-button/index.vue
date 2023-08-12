@@ -6,6 +6,7 @@
                 <img :src="btnIcon" alt="btn-icon">
             </slot>
         </span>
+        <span v-if="text" class="btn-text">{{ text }}</span>
         <slot></slot>
     </div>
 </template>

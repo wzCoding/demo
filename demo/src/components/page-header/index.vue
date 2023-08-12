@@ -4,7 +4,7 @@
         <div class="container">
             <div class="header-left">
                 <slot name="left">
-                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" gap="10">{{ title }}</iconButton>
+                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" :text="title" gap="10" />
                 </slot>
             </div>
             <div class="header-right">
@@ -13,7 +13,7 @@
                         <template v-if="headerLinks.length">
                             <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link"
                                 target="_blank" rel="noopener noreferrer">
-                                <iconButton direction="horizontal" :icon="item.icon" :text="item.name"/>
+                                <iconButton direction="horizontal" :icon="item.icon" :text="item.name" />
                             </a>
                         </template>
                     </div>

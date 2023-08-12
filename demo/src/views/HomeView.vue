@@ -23,13 +23,10 @@
           }}</span>
         </h2>
         <p class="home-info">{{ info }}</p>
-        <div class="home-button-groups">
+        <div class="home-button">
           <iconButton class="start-btn" :icon="startBtn.icon" direction="horizontal" iconSite="left"
             @click="toPage('card')">
             {{ startBtn.name }}</iconButton>
-          <iconButton class="about-btn" :icon="aboutBtn.icon" direction="horizontal" iconSite="left" gap="10"
-            @click="toPage('about')">
-            {{ aboutBtn.title }}</iconButton>
         </div>
       </div>
     </main>
@@ -53,14 +50,10 @@ const colorText = ['Demo', 'I`m']
 const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .'
 
 const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
-const aboutBtn = ref({})
 
 const getMenuData = async () => {
   const result = await service.post('mock/data', menusParams)
   menus.value = JSON.parse(JSON.stringify(result.data))
-  menus.value.forEach(item => {
-    if (item.title == "about") aboutBtn.value = item
-  })
 
   homeLoading.value = false
 }
@@ -210,71 +203,28 @@ const toPage = (path) => {
         padding-bottom: 1rem;
       }
 
-      .home-button-groups {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+      .start-btn {
+        width: 160px;
+        padding: 10px 25px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        @extend .background-gradient;
 
-        .start-btn,
-        .about-btn {
-          width: 160px;
-          padding: 10px 25px;
-          border-radius: 5px;
-          cursor: pointer;
-          @extend .background-gradient;
-
-          &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
-          }
-
-          :deep(.btn-icon img) {
-            width: 1.5rem;
-          }
-
-          :deep(.btn-text) {
-            font-size: 1.2rem;
-          }
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
         }
 
-        .start-btn {
-          color: #fff;
+        :deep(.btn-icon img) {
+          width: 1.5rem;
         }
 
-        .about-btn {
-          display: none;
-          position: relative;
-          color: var(--theme-gradient-color-2);
-          z-index: 2;
-
-          &:hover {
-            color: #fff;
-
-            &::after {
-              opacity: 0;
-            }
-            :deep(.btn-icon img){
-               background: transparent;
-            }
-          }
-
-          &::after {
-            content: "";
-            position: absolute;
-            inset: 3px;
-            background: #fff;
-            border-radius: 5px;
-            opacity: 1;
-            z-index: -1;
-          }
-
-          :deep(.btn-icon img) {
-            border-radius: 5px;
-            @extend .background-gradient;
-          }
+        :deep(.btn-text) {
+          font-size: 1.2rem;
         }
       }
-
     }
   }
-}</style>
+}
+</style>
