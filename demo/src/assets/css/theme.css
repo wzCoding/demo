@@ -84,7 +84,12 @@
     .home .header .container {
         margin: 0 !important;
     }
-
+    .home .header .container .header-right{
+        display: none !important;
+    }
+    .home .header .container .header-menu{
+        display: block !important;
+    }
     .home .home-main {
         flex-direction: column-reverse;
         margin: 0 !important;

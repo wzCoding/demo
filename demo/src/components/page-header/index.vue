@@ -27,6 +27,14 @@
                     </div>
                 </slot>
             </div>
+            <div class="menu-icon">
+                <div class="menu-icon-container" @click="showHeaderMenu">
+                    <iconButton class="menu-btn" :class="{ active: menuActive }" />
+                </div>
+            </div>
+        </div>
+        <div class="menu-container" :class="{ active: menuActive }">
+             
         </div>
     </header>
 </template>
@@ -43,12 +51,13 @@
     box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
     z-index: 11;
     transition: all .3s ease;
+
     .container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin: 0 2rem;
-
+        z-index: 5;
         .header-left {
             .header-title {
                 font-size: 1.5rem;
@@ -113,5 +122,76 @@
                 }
             }
         }
+
+        .menu-icon {
+            position: relative;
+
+            .menu-icon-container {
+                position: relative;
+                padding: 15px;
+                z-index: 3;
+                cursor: pointer;
+
+                .menu-btn {
+                    position: relative;
+                    width: 40px;
+                    height: 4px;
+                    border-radius: 2px;
+                    @extend .background-gradient;
+
+                    &::before,
+                    &::after {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        width: 40px;
+                        height: 4px;
+                        border-radius: 2px;
+                        transition: all .3s ease;
+                        @extend .background-gradient;
+                    }
+
+                    &::before {
+                        top: -10px;
+                    }
+
+                    &::after {
+                        top: 10px;
+                    }
+
+                    &.active {
+                        background: transparent;
+
+                        &::before {
+                            top: -10px;
+                            transform: rotate(45deg) translate(25%, 100%);
+                        }
+
+                        &::after {
+                            top: 10px;
+                            transform: rotate(-45deg) translate(25%, -100%);
+                        }
+                    }
+                }
+            }
+        }
     }
-}</style>
+
+    .menu-container {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: 200px;
+        background-color: var(--theme-header-background);
+        box-shadow: 0 2px 8px var(--theme-box-shadow-color);
+        transform: translateY(-200%);
+        transition: all .3s ease;
+        z-index: -1;
+        &.active{
+            z-index:3;
+            transform: translateY(0);
+        }
+    }
+}
+</style>

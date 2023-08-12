@@ -39,6 +39,7 @@ export default {
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
         const themeClass = ref("")
+        const menuActive = ref(false)
         const themeIcons = [
             {
                 theme: "light",
@@ -57,6 +58,9 @@ export default {
               console.log(themeClass.value)
               document.querySelector("html").setAttribute("theme",theme)
         }
+        const showHeaderMenu =()=> {
+              menuActive.value = !menuActive.value
+        }
         return {
             title,
             titleIcon,
@@ -64,7 +68,9 @@ export default {
             themeControl,
             themeClass,
             themeIcons,
-            themeChange
+            menuActive,
+            themeChange,
+            showHeaderMenu
         }
     }
 }
