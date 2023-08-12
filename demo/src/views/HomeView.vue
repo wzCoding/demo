@@ -6,8 +6,7 @@
         <div class="menu-grid">
           <template v-if="menus">
             <div v-for="menu in menus" :key="menu.title" class="menu-item">
-              <iconButton class="menu-btn" :icon="menu.icon" @click="toPage(menu.path)">{{ menu.title
-              }}</iconButton>
+              <iconButton class="menu-btn" :icon="menu.icon" :text="menu.title" @click="toPage(menu.path)" />
             </div>
           </template>
         </div>
@@ -23,11 +22,9 @@
           }}</span>
         </h2>
         <p class="home-info">{{ info }}</p>
-        <div class="home-button">
-          <iconButton class="start-btn" :icon="startBtn.icon" direction="horizontal" iconSite="left"
-            @click="toPage('card')">
-            {{ startBtn.name }}</iconButton>
-        </div>
+        <iconButton class="start-btn" :icon="startBtn.icon" direction="horizontal" iconSite="left"
+          @click="toPage('default')">
+          {{ startBtn.name }}</iconButton>
       </div>
     </main>
   </div>
@@ -79,7 +76,7 @@ const toPage = (path) => {
   align-items: center;
   background-color: var(--theme-page-background);
   transition: all .3s ease;
-
+  overflow: hidden;
   .home-main {
     width: 100%;
     margin: 0 4rem;
@@ -174,6 +171,14 @@ const toPage = (path) => {
             left: 50%;
             top: -50%;
             border-radius: 0 0 0 10px;
+          }
+
+          &:nth-child(6) {
+            position: relative;
+            left: -50%;
+            top: -150%;
+            border-radius: 10px;
+            display: none;
           }
 
         }

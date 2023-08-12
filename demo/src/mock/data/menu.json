@@ -27,6 +27,11 @@
             "index": "5",
             "title": "about",
             "icon": "about.svg"
+        },
+        {
+            "index": "6",
+            "title": "start",
+            "icon": "right-arrow.svg"
         }
     ]
 }
