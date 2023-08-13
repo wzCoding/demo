@@ -13,9 +13,7 @@ app.use(router)
 
 app.mount('#app')
 
-app.directive('tips',(el,binding) => {
-   console.log(el,binding)
-})
+
 
 
 

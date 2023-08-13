@@ -55,13 +55,12 @@ export default {
         const themeChange = (theme) => {
               console.log(theme)
               themeClass.value = theme
-              console.log(themeClass.value)
               document.querySelector("html").setAttribute("theme",theme)
         }
         const showHeaderMenu =()=> {
               menuActive.value = !menuActive.value
         }
-        const hello = "hello"
+        
         return {
             title,
             titleIcon,
@@ -72,7 +71,6 @@ export default {
             menuActive,
             themeChange,
             showHeaderMenu,
-            hello,
         }
     }
 }

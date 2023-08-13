@@ -1,9 +1,8 @@
 import { ref, toRefs, computed } from "vue"
 import { useRouter } from "vue-router"
-import { ArrowLeft } from "@element-plus/icons-vue"
 
 export default {
-    name: "menuBar",
+    name: "sideBar",
     // props: {
     //     mode: {
     //         type: String,
