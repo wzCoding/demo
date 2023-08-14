@@ -1,7 +1,7 @@
 <script src="./index"></script>
 <template>
     <header class="header">
-        <div class="container">
+        <div class="header-main">
             <div class="header-left">
                 <slot name="left">
                     <IconButton class="header-title" :icon="titleIcon" direction="horizontal" :text="title" gap="10" />
@@ -19,7 +19,7 @@
                     </div>
                     <div class="theme-control">
                         <template v-if="themeControl">
-                            <div class="theme-btn-container" :class="themeClass">
+                            <div class="theme-control-btn" :class="themeClass">
                                 <IconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
                                     :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
                             </div>
@@ -39,6 +39,7 @@
                         </a>
                     </template>
                 </div> -->
+                <SideBar></SideBar>
             </div>
         </div>
     </header>
@@ -57,7 +58,7 @@
     z-index: 11;
     transition: all .3s ease;
 
-    .container {
+    .header-main {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -114,7 +115,7 @@
                 height: 1.5rem;
                 overflow: hidden;
 
-                .theme-btn-container {
+                .theme-control-btn {
                     transition: all .3s ease;
 
                     &.dark {

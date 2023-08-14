@@ -82,13 +82,13 @@
 
 @media screen and (max-width: 767px) and (min-width: 280px) {
 
-    .home .header .container {
+    .home .header .header-main {
         margin: 0 1rem !important;
     }
-    .home .header .container .header-right{
+    .home .header .header-main .header-right{
         display: none !important;
     }
-    .home .header .container .header-menu{
+    .home .header .header-main .header-menu{
         display: block !important;
     }
     .home .home-main {

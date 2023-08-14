@@ -1,27 +1,20 @@
 import { ref, toRefs, computed } from "vue"
 import { useRouter } from "vue-router"
-import iconButton from "@components/icon-button/index.vue"
+import IconButton from "../icon-button/index.vue"
 export default {
     name: "SideBar",
-    // props: {
-    //     mode: {
-    //         type: String,
-    //         default: "vertical",
-    //         validator: (value) => {
-    //             return ["vertical", "horizontal"].includes(value)
-    //         }
-    //     },
-    //     collapse: { type: Boolean, default: false },
-    //     uniqueOpen: { type: Boolean, default: false },
-    //     defaultActive: { type: String, default: "" },
-    //     data: {
-    //         type: Array,
-    //         default() {
-    //             return []
-    //         },
-    //         require: true
-    //     }
-    // },
+    props: {
+        collapse: { type: Boolean, default: false },
+        uniqueOpen: { type: Boolean, default: false },
+        defaultActive: { type: String, default: "" },
+        data: {
+            type: Array,
+            default() {
+                return []
+            },
+            require: true
+        }
+    },
     // emits: ['ctrlMenu'],
     // components: {
     //     ArrowLeft
