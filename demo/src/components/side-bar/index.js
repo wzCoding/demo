@@ -1,8 +1,8 @@
 import { ref, toRefs, computed } from "vue"
 import { useRouter } from "vue-router"
-
+import iconButton from "@components/icon-button/index.vue"
 export default {
-    name: "sideBar",
+    name: "SideBar",
     // props: {
     //     mode: {
     //         type: String,
@@ -27,7 +27,7 @@ export default {
     //     ArrowLeft
     // },
     // setup(props, { emit }) {
-       
+
     //     const { mode, collapse, uniqueOpen, defaultActive } = toRefs(props)
     //     const menus = computed(() => {
     //         return props.data.map(item => {

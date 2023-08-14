@@ -4,7 +4,7 @@
         <div class="container">
             <div class="header-left">
                 <slot name="left">
-                    <iconButton class="header-title" :icon="titleIcon" direction="horizontal" :text="title" gap="10" />
+                    <IconButton class="header-title" :icon="titleIcon" direction="horizontal" :text="title" gap="10" />
                 </slot>
             </div>
             <div class="header-right">
@@ -13,14 +13,14 @@
                         <template v-if="headerLinks.length">
                             <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link"
                                 target="_blank" rel="noopener noreferrer">
-                                <iconButton direction="horizontal" :icon="item.icon" :text="item.name" />
+                                <IconButton direction="horizontal" :icon="item.icon" :text="item.name" />
                             </a>
                         </template>
                     </div>
                     <div class="theme-control">
                         <template v-if="themeControl">
                             <div class="theme-btn-container" :class="themeClass">
-                                <iconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
+                                <IconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
                                     :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
                             </div>
                         </template>
@@ -28,37 +28,23 @@
                 </slot>
             </div>
             <div class="header-menu">
-                <div class="menu-button" @click="showHeaderMenu">
-                    <iconButton class="menu-btn" :class="{ active: menuActive }" />
+                <!-- <div class="menu-button" @click="showHeaderMenu">
+                    <IconButton class="menu-btn" :class="{ active: menuActive }" />
                 </div>
                 <div class="menu-container" :class="{ active: menuActive }">
                     <template v-if="headerLinks.length">
                         <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
                             rel="noopener noreferrer">
-                            <iconButton direction="horizontal" :icon="item.icon"/>
+                            <IconButton direction="horizontal" :icon="item.icon"/>
                         </a>
                     </template>
-                </div>
+                </div> -->
             </div>
         </div>
-        <!-- <div class="menu-container" :class="{ active: menuActive }">
-            <template v-if="headerLinks.length">
-                <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
-                    rel="noopener noreferrer">
-                    <iconButton direction="horizontal" :icon="item.icon" :text="item.name" />
-                </a>
-            </template>
-            <template v-if="themeControl">
-                <div class="theme-btn-container" :class="themeClass">
-                    <iconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
-                        :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
-                </div>
-            </template>
-        </div> -->
     </header>
 </template>
 <style lang="scss" scoped>
-@import '../../assets/css/index.scss';
+@import '@/assets/css/index.scss';
 
 .header {
     width: 100%;

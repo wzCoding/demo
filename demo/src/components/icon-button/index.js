@@ -1,6 +1,6 @@
 import { toRefs, computed } from "vue"
 export default {
-    name: "iconButton",
+    name: "IconButton",
     props: {
         //图标与文字的排列方向
         direction: {

@@ -1,7 +1,7 @@
 import { ref, toRefs, computed } from "vue"
-import iconButton from '@/components/icon-button/index.vue'
+import IconButton from '@/components/icon-button/index.vue'
 export default {
-    name: "pageHeader",
+    name: "PageHeader",
     props: {
         title: {
             type: String,
@@ -34,7 +34,7 @@ export default {
         }
     },
     components: {
-        iconButton
+        IconButton
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)

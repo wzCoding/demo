@@ -1,0 +1,166 @@
+@import '@/assets/css/index.scss';
+
+.home {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--theme-page-background);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    .home-main {
+        width: 100%;
+        margin: 0 4rem;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .menu-wrap {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .menu-grid {
+                width: 220px;
+                height: 220px;
+                max-width: 220px;
+                display: block;
+                padding-left: 0;
+                padding-right: 0;
+                filter: drop-shadow(0px 0px 30px var(--theme-box-shadow-color));
+                transform: rotate(-45deg) translate(-2rem, 2rem);
+                position: relative;
+                z-index: 2;
+
+                .menu-item {
+                    float: left;
+                    clear: none;
+                    text-align: inherit;
+                    width: 50%;
+                    height: 50%;
+                    margin-left: 0%;
+                    margin-right: 0%;
+                    overflow: hidden;
+                    transition: 0.3s;
+                    @extend .background-gradient;
+
+                    .menu-btn {
+                        height: calc(100% + 62px);
+                        width: calc(100% + 62px);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        color: #fff;
+                        transform: rotate(45deg) translate(-43px, 0);
+                        transition: 0.3s;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: var(--theme-button-background);
+                        }
+
+                        img {
+                            width: 2rem;
+                        }
+                    }
+
+                    &::after {
+                        content: "";
+                        display: table;
+                        clear: both;
+                    }
+
+                    &:nth-child(1) {
+                        position: relative;
+                        top: -50%;
+                        border-radius: 10px 10px 0 0;
+                    }
+
+                    &:nth-child(2) {
+                        border-radius: 0 10px 0 0;
+                    }
+
+                    &:nth-child(3) {
+                        position: relative;
+                        top: -50%;
+                        border-radius: 0 0 0 10px;
+                    }
+
+                    &:nth-child(4) {
+                        position: relative;
+                        left: 50%;
+                        border-radius: 0 10px 10px 0;
+                    }
+
+                    &:nth-child(5) {
+                        position: relative;
+                        left: 50%;
+                        top: -50%;
+                        border-radius: 0 0 0 10px;
+                    }
+
+                    &:nth-child(6) {
+                        position: relative;
+                        left: -50%;
+                        top: -150%;
+                        border-radius: 10px;
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .home-content {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            color: var(--theme-text-color);
+
+            h1,
+            h2 {
+                padding-bottom: 1rem;
+
+                span {
+                    padding-right: 0.5rem;
+
+                    &.color-text {
+                        @extend .text-gradient;
+                    }
+                }
+            }
+
+            p {
+                padding-bottom: 1rem;
+            }
+
+            .start-btn {
+                width: 160px;
+                padding: 10px 25px;
+                border-radius: 5px;
+                color: #fff;
+                cursor: pointer;
+                @extend .background-gradient;
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
+                }
+
+                :deep(.btn-icon img) {
+                    width: 1.5rem;
+                }
+
+                :deep(.btn-text) {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+}
