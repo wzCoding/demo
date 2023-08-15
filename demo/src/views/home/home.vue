@@ -35,13 +35,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import PageHeader from '@/components/page-header/index.vue'
+import PageHeader from '@/layout/page-header/index.vue'
 import IconButton from '@/components/icon-button/index.vue'
 import service from '@/axios'
 
 const menus = ref(null)
 const menusParams = { id: 'menu' }
-const homeLoading = ref(true)
+
 
 const text = 'Hello !'
 const mainTitle = ['欢迎来到我的', 'Demo']
@@ -51,10 +51,11 @@ const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS �
 
 const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
 
+const homeLoading = ref(true)
 const getMenuData = async () => {
+    
     const result = await service.post('mock/data', menusParams)
     menus.value = JSON.parse(JSON.stringify(result.data))
-
     homeLoading.value = false
 }
 getMenuData()

@@ -11,16 +11,16 @@
                 <slot name="right">
                     <div class="header-links">
                         <template v-if="headerLinks.length">
-                            <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link"
+                            <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.link"
                                 target="_blank" rel="noopener noreferrer">
-                                <IconButton direction="horizontal" :icon="item.icon" :text="item.name" />
+                                <IconButton direction="horizontal" :icon="item.icon" :text="item.title" />
                             </a>
                         </template>
                     </div>
                     <div class="theme-control">
                         <template v-if="themeControl">
-                            <div class="theme-control-btn" :class="themeClass">
-                                <IconButton v-for="item in themeIcons" :key="item.theme" :icon="item.icon" class="theme-btn"
+                            <div class="theme-btn-container" :class="themeClass">
+                                <IconButton v-for="item in themeIcon" :key="item.theme" :icon="item.icon" class="theme-btn"
                                     :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
                             </div>
                         </template>
@@ -39,7 +39,7 @@
                         </a>
                     </template>
                 </div> -->
-                <SideBar></SideBar>
+                <SideBar :data="headerLinks" :isCollapse="true" :uniqueOpen="true"></SideBar>
             </div>
         </div>
     </header>
@@ -115,7 +115,7 @@
                 height: 1.5rem;
                 overflow: hidden;
 
-                .theme-control-btn {
+                .theme-btn-container {
                     transition: all .3s ease;
 
                     &.dark {

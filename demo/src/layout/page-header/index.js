@@ -1,5 +1,5 @@
 import { ref, toRefs, computed } from "vue"
-import IconButton from '../icon-button/index.vue'
+import IconButton from '@/components/icon-button/index.vue'
 import SideBar from "../side-bar/index.vue"
 export default {
     name: "PageHeader",
@@ -21,12 +21,12 @@ export default {
             default() {
                 return [
                     {
-                        name: "Blog",
+                        title: "Blog",
                         icon: "blog.svg",
                         link: "https://wzcoding.github.io/blog/"
                     },
                     {
-                        name: "Github",
+                        title: "Github",
                         icon: "github.svg",
                         link: "https://github.com/wzCoding?tab=repositories"
                     }
@@ -40,9 +40,9 @@ export default {
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
-        const themeClass = ref("")
         const menuActive = ref(false)
-        const themeIcons = [
+        const themeClass = ref("")
+        const themeIcon = [
             {
                 theme: "light",
                 icon: require('@/assets/images/theme/light.svg'),
@@ -59,20 +59,19 @@ export default {
               themeClass.value = theme
               document.querySelector("html").setAttribute("theme",theme)
         }
-        const showHeaderMenu =()=> {
-              menuActive.value = !menuActive.value
+        const showHeaderMenu = () => {
+            menuActive.value = !menuActive.value
         }
-        
         return {
             title,
             titleIcon,
             headerLinks,
             themeControl,
             themeClass,
-            themeIcons,
+            themeIcon,
             menuActive,
             themeChange,
-            showHeaderMenu,
+            showHeaderMenu, 
         }
     }
 }
