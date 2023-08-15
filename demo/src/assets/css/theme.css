@@ -1,14 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-*,
-::before,
-::after {
-    box-sizing: border-box;
-}
-
 :root {
     --theme-font: "Poppins", sans-serif;
     --theme-gradient-color-1: #F8B127;
@@ -31,6 +20,20 @@
     --theme-box-shadow-color: rgba(0, 0, 0, 0.3);
 }
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+body{
+    overflow: hidden;
+}
 
 @media screen and (max-width: 1999px) and (min-width: 1699px) {
     .home .home-main .menu-wrap .menu-grid {
@@ -81,16 +84,26 @@
 }
 
 @media screen and (max-width: 767px) and (min-width: 280px) {
+    .home .header {
+        padding: .8rem 0 !important;
+    }
 
     .home .header .header-main {
-        margin: 0 1rem !important;
+        padding: 0 1rem !important;
     }
-    .home .header .header-main .header-right{
+
+    .home .header .header-main .header-right {
+        gap: 0 !important;
+    }
+
+    .home .header .header-main .header-right .header-links {
         display: none !important;
     }
-    .home .header .header-main .header-menu{
+
+    .home .header .header-main .header-menu {
         display: block !important;
     }
+
     .home .home-main {
         flex-direction: column-reverse;
         margin: 0 !important;
@@ -136,6 +149,7 @@
     .home .home-main .menu-wrap .menu-grid .menu-item:nth-child(4) {
         transform: translate(-200%, 0);
     }
+
     .home .home-main .menu-wrap .menu-grid .menu-item:nth-child(6) {
         display: block !important;
         width: 120px !important;
@@ -143,6 +157,7 @@
         left: 0 !important;
         top: -200% !important;
     }
+
     .home .home-main .menu-wrap .menu-grid .menu-item:nth-child(6) .btn-text {
         display: block;
     }
@@ -154,22 +169,26 @@
         width: 100% !important;
         padding: 0 2rem;
     }
-    .home .home-content h1{
-        padding-bottom: .5rem !important;  
+
+    .home .home-content h1 {
+        padding-bottom: .5rem !important;
     }
-    .home .home-content h1 span:nth-child(1){
-        font-size:1.5rem;
+
+    .home .home-content h1 span:nth-child(1) {
+        font-size: 1.5rem;
     }
-    .home .home-content h2{
-        font-size:1.5rem;
-        padding-bottom: .5rem !important; 
+
+    .home .home-content h2 {
+        font-size: 1.5rem;
+        padding-bottom: .5rem !important;
     }
+
     .home .home-content p.home-info {
         width: 85%;
         padding-top: 1rem;
         padding-bottom: 2rem !important;
     }
-  
+
     .home .home-content .start-btn {
         display: none;
     }

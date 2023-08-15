@@ -22,11 +22,10 @@
 @import "@/assets/css/index.scss";
 .side-bar {
     background-color:var(--theme-header-background);
-    position:absolute;
-    right:0;
-    top:75px;
+    box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
+    position:fixed;
     border-radius: 8px;
-    transform:translateY(-200%);
+    transform:translateX(150%);
     transition:all .3s ease;
     .el-menu{
         border-radius: 8px;
