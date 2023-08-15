@@ -1,6 +1,6 @@
 import { toRefs, computed } from "vue"
 import { useRouter } from "vue-router"
-import { ElMenu } from "element-plus"
+import { ElMenu, ElIcon } from "element-plus"
 export default {
     name: "SideBar",
     props: {
@@ -18,10 +18,11 @@ export default {
     },
     emits: ['ctrlMenu'],
     components: {
-        ElMenu
+        ElMenu,
+        ElIcon
     },
     setup(props, { emit }) {
-        const { showMenu, isCollapse, uniqueOpen, defaultActive,data } = toRefs(props)
+        const { showMenu, isCollapse, uniqueOpen, defaultActive, data } = toRefs(props)
         const menus = computed(() => {
             const result = data.value.map(item => {
                 console.log(item)
@@ -46,7 +47,8 @@ export default {
 
         const router = useRouter()
         const toPage = (path) => {
-            if (path) router.push(path)
+            if (!path) return
+            path.match(/^http/g) ? window.open(path) : router.push(path)
         }
 
         return {

@@ -23,12 +23,12 @@ export default {
                     {
                         title: "Blog",
                         icon: "blog.svg",
-                        link: "https://wzcoding.github.io/blog/"
+                        path: "https://wzcoding.github.io/blog/"
                     },
                     {
                         title: "Github",
                         icon: "github.svg",
-                        link: "https://github.com/wzCoding?tab=repositories"
+                        path: "https://github.com/wzCoding?tab=repositories"
                     }
                 ]
             }

@@ -11,7 +11,7 @@
                 <slot name="right">
                     <div class="header-links">
                         <template v-if="headerLinks.length">
-                            <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.link"
+                            <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.path"
                                 target="_blank" rel="noopener noreferrer">
                                 <IconButton direction="horizontal" :icon="item.icon" :text="item.title" />
                             </a>
@@ -28,18 +28,10 @@
                 </slot>
             </div>
             <div class="header-menu">
-                <!-- <div class="menu-button" @click="showHeaderMenu">
+                <div class="menu-button" @click="showHeaderMenu">
                     <IconButton class="menu-btn" :class="{ active: menuActive }" />
                 </div>
-                <div class="menu-container" :class="{ active: menuActive }">
-                    <template v-if="headerLinks.length">
-                        <a v-for="item in headerLinks" :key="item.name" class="link-item" :href="item.link" target="_blank"
-                            rel="noopener noreferrer">
-                            <IconButton direction="horizontal" :icon="item.icon"/>
-                        </a>
-                    </template>
-                </div> -->
-                <SideBar :data="headerLinks" :isCollapse="true" :uniqueOpen="true"></SideBar>
+                <SideBar :class="{ active: menuActive }" :data="headerLinks" :isCollapse="true" :uniqueOpen="true"></SideBar>
             </div>
         </div>
     </header>
@@ -182,19 +174,7 @@
                 }
             }
 
-            .menu-container {
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 60px;
-                height: 200px;
-                background-color: var(--theme-header-background);
-                box-shadow: 0 2px 8px var(--theme-box-shadow-color);
-                border-radius: 8px;
-                transform: translateY(-200%);
-                transition: all .3s ease;
-                z-index: -1;
-
+            .side-bar {
                 &.active {
                     transform: translateY(0);
                 }
