@@ -59,11 +59,13 @@ export default {
             document.querySelector("html").setAttribute("theme", theme)
         }
 
-        const menuActive = ref(false)
-        const menuClick = () => {
-            menuActive.value = !menuActive.value
+       
+        const showMenu = (param) => {
+           console.log(param)
         }
-
+        const handleClose = (param) => {
+            console.log(param)
+        }
         return {
             title,
             titleIcon,
@@ -72,9 +74,8 @@ export default {
             themeClass,
             themeIcon,
             themeChange,
-
-            menuActive,
-            menuClick
+            showMenu,
+            handleClose
         }
     }
 }

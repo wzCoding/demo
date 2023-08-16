@@ -26,10 +26,7 @@
                         </template>
                     </div>
                     <div class="header-menu">
-                        <!-- <div class="menu-button" @click="menuClick">
-                            <IconButton :class="{ active: menuActive }" />
-                        </div> -->
-                        <Hamburger type="default"></Hamburger>
+                        <Hamburger type="primary" @hamburgerClick="showMenu"></Hamburger>
                     </div>
                 </slot>
             </div>
@@ -123,59 +120,6 @@
             .header-menu {
                 position: relative;
                 // display: none;
-
-                .menu-button {
-                    --button-width: 1rem;
-                    position: relative;
-                    padding: 10px;
-                    z-index: 3;
-                    cursor: pointer;
-
-                    .btn-container {
-                        position: relative;
-                        width: var(--button-width);
-                        height: 3px;
-                        border-radius: 2px;
-                        @extend .background-gradient;
-
-                        &::before,
-                        &::after {
-                            content: "";
-                            display: block;
-                            position: absolute;
-                            // width: 100%;
-                            height: 100%;
-                            border-radius: 2px;
-                            transition: all .3s ease;
-                            @extend .background-gradient;
-                        }
-
-                        &::before {
-                            width: calc(var(--button-width) + 5px);
-                            top: -8px;
-                        }
-
-                        &::after {
-                            width: calc(var(--button-width) + 2px);
-                            top: 8px;
-                            right: -2px;
-                        }
-
-                        &.active {
-                            background: transparent;
-
-                            &::before {
-                                top: -5px;
-                                transform: rotate(45deg) translate(15%, 100%);
-                            }
-
-                            &::after {
-                                top: 5px;
-                                transform: rotate(-45deg) translate(15%, -100%);
-                            }
-                        }
-                    }
-                }
             }
         }
 
