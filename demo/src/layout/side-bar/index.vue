@@ -1,40 +1,62 @@
 <script src="./index"></script>
 <template>
-    <div class="side-bar" v-show="showMenu">
-        <el-menu :collapse="isCollapse" :default-active="defaultActive" :unique-opened="uniqueOpen">
-            <template v-if="isSimpleMenu">
-                <el-menu-item v-for="menu in menus" :key="menu.title" @click="toPage(menu.path)">
-                    <el-icon>
-                        <slot name="icon">
-                            <img :src="menu.icon" alt="icon">
-                        </slot>
-                    </el-icon>
-                    <template #title><slot>{{ menu.title }}</slot></template>
-                </el-menu-item>
-            </template>
-            <template v-else>
-
-            </template>
-        </el-menu>
+    <div class="side-bar">
+        <div class="side-bar-button" @click="handleClick">
+            <IconButton :class="{ active: sideBarActive }" />
+        </div>
+        <el-drawer v-model="isShow" title="I am the title" :with-header="false" @close="handleClose">
+            <span>Hi there!</span>
+        </el-drawer>
     </div>
 </template>
 <style lang="scss" scoped>
 @import "@/assets/css/index.scss";
+
 .side-bar {
-    background-color:var(--theme-header-background);
-    box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
-    position:fixed;
-    border-radius: 8px;
-    transform:translateX(150%);
-    transition:all .3s ease;
-    .el-menu{
-        border-radius: 8px;
-        .el-menu-item{
-            .el-icon{
-                img{
-                    width:1.5rem;
-                    border-radius:8px;
-                    @extend .box-gradient;
+    .side-bar-button {
+        position: relative;
+        padding: 10px;
+        z-index: 3;
+        cursor: pointer;
+
+        .btn-container {
+            position: relative;
+            width: 1.5rem;
+            height: 3px;
+            border-radius: 2px;
+            @extend .background-gradient;
+
+            &::before,
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 2px;
+                transition: all .3s ease;
+                @extend .background-gradient;
+            }
+
+            &::before {
+                top: -8px;
+            }
+
+            &::after {
+                top: 8px;
+            }
+
+            &.active {
+                background: transparent;
+
+                &::before {
+                    top: -5px;
+                    transform: rotate(45deg) translate(15%, 100%);
+                }
+
+                &::after {
+                    top: 5px;
+                    transform: rotate(-45deg) translate(15%, -100%);
                 }
             }
         }

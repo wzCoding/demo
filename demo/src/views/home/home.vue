@@ -1,8 +1,7 @@
 <style lang="scss" src="./home.scss" scoped></style>
 <template>
-    <div class="home" v-loading="homeLoading">
-        <PageHeader themeControl></PageHeader>
-        <main class="home-main">
+    <main class="home" v-loading="homeLoading">
+        <div class="home-main">
             <div class="menu-wrap">
                 <div class="menu-grid">
                     <template v-if="menus">
@@ -29,13 +28,12 @@
                     @click="toPage('default')">
                     {{ startBtn.name }}</IconButton>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
 </template>
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import PageHeader from '@/layout/page-header/index.vue'
 import IconButton from '@/components/icon-button/index.vue'
 import service from '@/axios'
 

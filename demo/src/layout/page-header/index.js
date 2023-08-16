@@ -1,6 +1,6 @@
 import { ref, toRefs, computed } from "vue"
 import IconButton from '@/components/icon-button/index.vue'
-import SideBar from "../side-bar/index.vue"
+
 export default {
     name: "PageHeader",
     props: {
@@ -35,12 +35,10 @@ export default {
         }
     },
     components: {
-        IconButton,
-        SideBar
+        IconButton
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
-        const menuActive = ref(false)
         const themeClass = ref("")
         const themeIcon = [
             {
@@ -55,13 +53,12 @@ export default {
             }
         ]
         const themeChange = (theme) => {
-              console.log(theme)
-              themeClass.value = theme
-              document.querySelector("html").setAttribute("theme",theme)
+            console.log(theme)
+            themeClass.value = theme
+            document.querySelector("html").setAttribute("theme", theme)
         }
-        const showHeaderMenu = () => {
-            menuActive.value = !menuActive.value
-        }
+       
+
         return {
             title,
             titleIcon,
@@ -69,9 +66,7 @@ export default {
             themeControl,
             themeClass,
             themeIcon,
-            menuActive,
-            themeChange,
-            showHeaderMenu, 
+            themeChange
         }
     }
 }

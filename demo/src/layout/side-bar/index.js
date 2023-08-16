@@ -1,13 +1,10 @@
-import { toRefs, computed } from "vue"
+import { ref, toRefs, computed } from "vue"
 import { useRouter } from "vue-router"
-import { ElMenu, ElIcon } from "element-plus"
+import IconButton from '@/components/icon-button/index.vue'
 export default {
     name: "SideBar",
     props: {
-        showMenu: { type: Boolean, default: true },
-        isCollapse: { type: Boolean, default: false },
-        uniqueOpen: { type: Boolean, default: false },
-        defaultActive: { type: String, default: "" },
+        isShow: { type: Boolean, default: false },
         data: {
             type: Array,
             default() {
@@ -16,50 +13,34 @@ export default {
             require: true
         }
     },
-    emits: ['ctrlMenu'],
-    components: {
-        ElMenu,
-        ElIcon
-    },
+    emits: ['update:isShow'],
+    components: { IconButton },
     setup(props, { emit }) {
-        const { showMenu, isCollapse, uniqueOpen, defaultActive, data } = toRefs(props)
-        const menus = computed(() => {
-            const result = data.value.map(item => {
-                console.log(item)
-                item.icon = item.icon.includes("img/") ? item.icon : require(`@/assets/images/${item.icon}`)
-                return item
-            })
-            return result
-        })
-        const isSimpleMenu = computed(() => {
-            let flag = true
-            for (let item of data.value) {
-                if (item.children) {
-                    flag = false
-                    break
-                }
-            }
-            return flag
-        })
-        const ctrlMenu = () => {
-            emit('ctrlMenu', isCollapse)
+        const { isShow, data } = toRefs(props)
+        const showDrawer = ref(false)
+        const sideBarActive = ref(false)
+        const handleClick = () => {
+            emit('update:isShow', isShow)
+            // showDrawer.value = !showDrawer.value
+            sideBarActive.value = !sideBarActive.value
         }
-
+       
         const router = useRouter()
         const toPage = (path) => {
             if (!path) return
             path.match(/^http/g) ? window.open(path) : router.push(path)
         }
-
+        const handleClose = () => {
+            sideBarActive.value = !sideBarActive.value
+        }
         return {
-            showMenu,
-            isSimpleMenu,
-            isCollapse,
-            uniqueOpen,
-            defaultActive,
-            menus,
-            ctrlMenu,
-            toPage
+            isShow,
+            showDrawer,
+            sideBarActive,
+            data,
+            handleClick,
+            handleClose,
+            toPage,
         }
     }
 }

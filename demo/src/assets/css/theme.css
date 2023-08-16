@@ -1,5 +1,4 @@
 :root {
-    --theme-font: "Poppins", sans-serif;
     --theme-gradient-color-1: #F8B127;
     --theme-gradient-color-2: #CB26B6;
     --theme-text-color: #333;
@@ -10,7 +9,6 @@
 }
 
 :root[theme=dark] {
-    --theme-font: "Poppins", sans-serif;
     --theme-gradient-color-1: #11c4d4;
     --theme-gradient-color-2: #0c81e4;
     --theme-text-color: #adbac7;
@@ -20,19 +18,9 @@
     --theme-box-shadow-color: rgba(0, 0, 0, 0.3);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
-*,
-::before,
-::after {
-    box-sizing: border-box;
-}
-
-body{
-    overflow: hidden;
+@font-face {
+    font-family: FangYuan;
+    src: url(../font/7isTenjrxLF1.woff2);
 }
 
 @media screen and (max-width: 1999px) and (min-width: 1699px) {
@@ -84,23 +72,23 @@ body{
 }
 
 @media screen and (max-width: 767px) and (min-width: 280px) {
-    .home .header {
+    .header {
         padding: .8rem 0 !important;
     }
 
-    .home .header .header-main {
+    .header .header-main {
         padding: 0 1rem !important;
     }
 
-    .home .header .header-main .header-right {
+    .header .header-main .header-right {
         gap: 0 !important;
     }
 
-    .home .header .header-main .header-right .header-links {
+    .header .header-main .header-right .header-links {
         display: none !important;
     }
 
-    .home .header .header-main .header-menu {
+    .header .header-main .header-menu {
         display: block !important;
     }
 

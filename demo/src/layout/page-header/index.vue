@@ -26,11 +26,7 @@
                         </template>
                     </div>
                     <div class="header-menu">
-                        <div class="menu-button" @click="showHeaderMenu">
-                            <IconButton class="menu-btn" :class="{ active: menuActive }" />
-                        </div>
-                        <SideBar :class="{ active: menuActive }" :data="headerLinks" :isCollapse="true" :uniqueOpen="true">
-                        </SideBar>
+                      
                     </div>
                 </slot>
             </div>
@@ -56,7 +52,8 @@
         justify-content: space-between;
         align-items: center;
         z-index: 5;
-        padding:0 2rem;
+        padding: 0 2rem;
+
         .header-left {
             .header-title {
                 font-size: 1.5rem;
@@ -123,64 +120,6 @@
             .header-menu {
                 position: relative;
                 display: none;
-
-                .menu-button {
-                    position: relative;
-                    padding: 10px;
-                    z-index: 3;
-                    cursor: pointer;
-
-                    .menu-btn {
-                        position: relative;
-                        width: 1.5rem;
-                        height: 3px;
-                        border-radius: 2px;
-                        @extend .background-gradient;
-
-                        &::before,
-                        &::after {
-                            content: "";
-                            display: block;
-                            position: absolute;
-                            width:100%;
-                            height: 100%;
-                            border-radius: 2px;
-                            transition: all .3s ease;
-                            @extend .background-gradient;
-                        }
-
-                        &::before {
-                            top: -8px;
-                        }
-
-                        &::after {
-                            top: 8px;
-                        }
-
-                        &.active {
-                            background: transparent;
-
-                            &::before {
-                                top: -5px;
-                                transform: rotate(45deg) translate(15%, 100%);
-                            }
-
-                            &::after {
-                                top: 5px;
-                                transform: rotate(-45deg) translate(15%, -100%);
-                            }
-                        }
-                    }
-                }
-
-                .side-bar {
-                    top: 70px;
-                    right: 10px;
-
-                    &.active {
-                        transform: translateY(0);
-                    }
-                }
             }
         }
 
