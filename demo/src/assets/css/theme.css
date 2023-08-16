@@ -80,11 +80,8 @@
         padding: 0 1rem !important;
     }
 
-    .header .header-main .header-right {
-        gap: 0 !important;
-    }
-
-    .header .header-main .header-right .header-links {
+    .header .header-main .header-right .header-links,
+    .header .header-main .header-right .theme-control {
         display: none !important;
     }
 

@@ -1,6 +1,6 @@
 import { ref, toRefs, computed } from "vue"
 import IconButton from '@/components/icon-button/index.vue'
-
+import Hamburger from "@/components/hamburger/index.vue"
 export default {
     name: "PageHeader",
     props: {
@@ -35,7 +35,8 @@ export default {
         }
     },
     components: {
-        IconButton
+        IconButton,
+        Hamburger
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
@@ -57,7 +58,11 @@ export default {
             themeClass.value = theme
             document.querySelector("html").setAttribute("theme", theme)
         }
-       
+
+        const menuActive = ref(false)
+        const menuClick = () => {
+            menuActive.value = !menuActive.value
+        }
 
         return {
             title,
@@ -66,7 +71,10 @@ export default {
             themeControl,
             themeClass,
             themeIcon,
-            themeChange
+            themeChange,
+
+            menuActive,
+            menuClick
         }
     }
 }
