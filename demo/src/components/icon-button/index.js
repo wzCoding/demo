@@ -2,7 +2,7 @@ import { toRefs, computed } from "vue"
 export default {
     name: "IconButton",
     props: {
-        //图标与文字的排列方向
+        //按钮的方向
         direction: {
             type: String,
             default: "vertical",
@@ -10,7 +10,7 @@ export default {
                 return ["vertical", "horizontal"].includes(value)
             }
         },
-        //展示的图标
+        //使用的图标
         icon: {
             type: String,
             default: ""
@@ -23,9 +23,9 @@ export default {
                 return ["top", "right", "left", "bottom"].includes(value)
             }
         },
-        text:{
-            type:String,
-            default:""
+        text: {
+            type: String,
+            default: ""
         },
         //文字与图标的间隙
         gap: {
@@ -34,7 +34,7 @@ export default {
         }
     },
     setup(props) {
-        const { direction, icon, iconSite,text, gap } = toRefs(props)
+        const { direction, icon, iconSite, text, gap } = toRefs(props)
         const btnIcon = computed(() => {
             let resource = ''
             if (icon.value) resource = icon.value.includes('/img/') ? icon.value : require(`../../assets/images/${icon.value}`)

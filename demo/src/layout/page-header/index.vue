@@ -9,26 +9,43 @@
             </div>
             <div class="header-right">
                 <slot name="right">
-                    <div class="header-links">
-                        <template v-if="headerLinks.length">
+                    <template v-if="headerLinks.length">
+                        <div class="header-links">
                             <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.path"
                                 target="_blank" rel="noopener noreferrer">
                                 <IconButton direction="horizontal" :icon="item.icon" :text="item.title" />
                             </a>
-                        </template>
-                    </div>
-                    <div class="theme-control">
-                        <template v-if="themeControl">
-                            <div class="theme-btn-container" :class="themeClass">
-                                <IconButton v-for="item in themeIcon" :key="item.theme" :icon="item.icon" class="theme-btn"
+                        </div>
+                    </template>
+                    <template v-if="themeControl">
+                        <div class="theme-control">
+                            <div class="theme-btn" :class="themeClass">
+                                <IconButton v-for="item in themeIcon" :key="item.theme" :icon="item.icon"
                                     :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
                             </div>
-                        </template>
-                    </div>
+                        </div>
+                    </template>
                     <div class="header-menu">
                         <Hamburger type="primary" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
                         <el-drawer v-model="hamburgerActive" :with-header="false" direction="ttb">
-
+                            <div class="menu-container">
+                                <template v-if="headerLinks.length">
+                                    <div class="header-menu-links">
+                                        <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.path"
+                                            target="_blank" rel="noopener noreferrer">
+                                            <IconButton direction="horizontal" :icon="item.icon" :text="item.title" />
+                                        </a>
+                                    </div>
+                                </template>
+                                <template v-if="themeControl">
+                                    <div class="header-menu-theme">
+                                        <div class="theme-btn" :class="themeClass">
+                                            <IconButton v-for="item in themeIcon" :key="item.theme" :icon="item.icon"
+                                                :class="item.theme" :text="item.theme" direction="horizontal" iconSite="left" gap="0" @click="themeChange(item.toChangeTheme)" />
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
                         </el-drawer>
                     </div>
                 </slot>
@@ -81,24 +98,6 @@
             .header-links {
                 display: flex;
                 gap: 0 1.5rem;
-
-                .link-item {
-                    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                    font-weight: 600;
-                    transition: background .3s linear;
-                    text-decoration: none;
-                    color: var(--theme-text-color);
-
-                    &:hover {
-                        @extend .text-gradient;
-                    }
-
-                    :deep(.btn-icon img) {
-                        border-radius: 8px;
-                        width: 1.5rem;
-                        @extend .box-gradient;
-                    }
-                }
             }
 
             .theme-control {
@@ -107,14 +106,6 @@
                 height: 1.5rem;
                 overflow: hidden;
 
-                .theme-btn-container {
-                    transition: all .3s ease;
-
-                    &.dark {
-                        transform: translateY(-1.5rem);
-                    }
-                }
-
                 :deep(.btn-icon img) {
                     width: 100%;
                 }
@@ -122,14 +113,70 @@
 
             .header-menu {
                 position: relative;
+                display: none;
 
-                // display: none;
                 :deep(.el-overlay) {
                     top: 60px !important;
+
+                    .el-drawer__body {
+                        background: var(--theme-header-background) !important;
+                    }
+                }
+
+                .menu-container{
+                    .header-menu-links{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: flex-start;
+                        gap:5px 0;
+                        .btn-container{
+                            border-bottom:1px dashed var(--theme-text-color);
+                        }
+                    }
                 }
             }
         }
 
+        .link-item {
+            // font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--theme-text-color);
+
+
+            &:hover {
+                :deep(.btn-text) {
+                    @extend .text-gradient;
+                }
+            }
+
+            :deep(.btn-icon img) {
+                border-radius: 8px;
+                width: 1.5rem;
+                @extend .box-gradient;
+            }
+
+            :deep(.btn-text) {
+                transition: background .3s linear;
+            }
+        }
+
+        .header-menu-theme {
+            position: relative;
+            height: 1.5rem;
+            overflow: hidden;
+            color:var(--theme-text-color);
+            .theme-btn {
+                transition: all .3s ease;
+                :deep(.btn-icon img){
+                    width: 1.5rem;
+                }
+                &.dark {
+                    transform: translateY(-1.5rem);
+                }
+            }
+        }
 
     }
 
