@@ -26,7 +26,10 @@
                         </template>
                     </div>
                     <div class="header-menu">
-                        <Hamburger type="primary" @hamburgerClick="showMenu"></Hamburger>
+                        <Hamburger type="primary" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
+                        <el-drawer v-model="hamburgerActive" :with-header="false" direction="ttb">
+
+                        </el-drawer>
                     </div>
                 </slot>
             </div>
@@ -119,7 +122,11 @@
 
             .header-menu {
                 position: relative;
+
                 // display: none;
+                :deep(.el-overlay) {
+                    top: 60px !important;
+                }
             }
         }
 

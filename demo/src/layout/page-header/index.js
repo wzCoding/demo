@@ -59,12 +59,9 @@ export default {
             document.querySelector("html").setAttribute("theme", theme)
         }
 
-       
-        const showMenu = (param) => {
-           console.log(param)
-        }
-        const handleClose = (param) => {
-            console.log(param)
+        const hamburgerActive = ref(false)
+        const showMenu = () => {
+              hamburgerActive.value = !hamburgerActive.value
         }
         return {
             title,
@@ -73,9 +70,9 @@ export default {
             themeControl,
             themeClass,
             themeIcon,
+            hamburgerActive,
             themeChange,
-            showMenu,
-            handleClose
+            showMenu
         }
     }
 }

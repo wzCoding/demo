@@ -8,22 +8,29 @@ export default {
             validator: (value) => {
                 return ["default", "primary"].includes(value)
             }
-        }
+        },
+        active: { type: Boolean, default: null }
     },
     emits: ["hamburgerClick"],
     setup(props, { emit }) {
-        const { type } = toRefs(props)
-        const hamburgerActive = ref(false)
-        const handleClick = () => {
-            hamburgerActive.value = !hamburgerActive.value
-            emit("hamburgerClick", hamburgerActive.value)
-        }
+        const { type, active } = toRefs(props)
+        const selfActive = ref(false)
+        const hamburgerActive = computed(() => {
+            const result = active.value !== null ? active.value : selfActive.value
+            return result
+        })
         const hamburgerClass = computed(() => {
             return {
                 [type.value]: type.value,
                 active: hamburgerActive.value
             }
         })
+        const handleClick = () => {
+            if (active.value == null) {
+                selfActive.value = !selfActive.value
+            }
+            emit("hamburgerClick", hamburgerActive.value)
+        }
         return {
             hamburgerClass,
             handleClick
