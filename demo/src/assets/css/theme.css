@@ -14,7 +14,7 @@
     --theme-text-color: #adbac7;
     --theme-page-background: #22272e;
     --theme-header-background: #22272e;
-    --theme-button-background: #0051FF;
+    --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -80,13 +80,17 @@
         padding: 0 1rem !important;
     }
 
-    .header .header-main .header-right .header-links,
-    .header .header-main .header-right .theme-control {
-        display: none !important;
+    .header .header-main .header-left .header-menu.drawer-menu {
+        display: block !important;
     }
 
-    .header .header-main .header-menu {
-        display: block !important;
+    .header .header-main .header-right,
+    .header .header-main .header-right .header-links {
+        gap: 0 1rem !important;
+    }
+
+    .header .header-main .header-right .header-links .icon-btn .text {
+        display: none !important;
     }
 
     .home .home-main {
@@ -105,12 +109,12 @@
         margin-top: 60px;
     }
 
-    .home .home-main .menu-wrap .menu-grid .menu-item .btn-container {
+    .home .home-main .menu-wrap .menu-grid .menu-item .icon-btn {
         justify-content: center;
         align-items: center;
     }
 
-    .home .home-main .menu-wrap .menu-grid .menu-item .btn-container .btn-text {
+    .home .home-main .menu-wrap .menu-grid .menu-item .icon-btn .text {
         display: none;
     }
 
@@ -143,7 +147,7 @@
         top: -200% !important;
     }
 
-    .home .home-main .menu-wrap .menu-grid .menu-item:nth-child(6) .btn-text {
+    .home .home-main .menu-wrap .menu-grid .menu-item:nth-child(6) .icon-btn .text {
         display: block;
     }
 

@@ -1,6 +1,8 @@
 import { ref, toRefs, computed } from "vue"
-import IconButton from '@/components/icon-button/index.vue'
-import Hamburger from "@/components/hamburger/index.vue"
+import { useRoute,useRouter } from "vue-router"
+import IconButton from "@/components/IconButton/index.vue"
+import Hamburger from "@/components/Hamburger/index.vue"
+import ToolTip from "@/components/ToolTip/index.vue"
 export default {
     name: "PageHeader",
     props: {
@@ -36,7 +38,8 @@ export default {
     },
     components: {
         IconButton,
-        Hamburger
+        Hamburger,
+        ToolTip
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
@@ -61,7 +64,13 @@ export default {
 
         const hamburgerActive = ref(false)
         const showMenu = () => {
-              hamburgerActive.value = !hamburgerActive.value
+            hamburgerActive.value = !hamburgerActive.value
+        }
+        const router = useRouter()
+        const route = useRoute()
+        console.log(route.path)
+        const backHome = () => {
+              router.push("/")
         }
         return {
             title,
@@ -72,7 +81,8 @@ export default {
             themeIcon,
             hamburgerActive,
             themeChange,
-            showMenu
+            showMenu,
+            backHome
         }
     }
 }

@@ -2,26 +2,18 @@ import { toRefs, computed } from "vue"
 export default {
     name: "IconButton",
     props: {
-        //按钮的方向
+        //图标的方向
         direction: {
             type: String,
-            default: "vertical",
+            default: "left",
             validator: (value) => {
-                return ["vertical", "horizontal"].includes(value)
+                return ["top", "right", "left", "bottom"].includes(value)
             }
         },
         //使用的图标
         icon: {
             type: String,
             default: ""
-        },
-        //图标相对于文字的位置
-        iconSite: {
-            type: String,
-            default: "top",
-            validator: (value) => {
-                return ["top", "right", "left", "bottom"].includes(value)
-            }
         },
         text: {
             type: String,
@@ -34,32 +26,28 @@ export default {
         }
     },
     setup(props) {
-        const { direction, icon, iconSite, text, gap } = toRefs(props)
+        const { direction, icon, text, gap } = toRefs(props)
         const btnIcon = computed(() => {
             let resource = ''
             if (icon.value) resource = icon.value.includes('/img/') ? icon.value : require(`../../assets/images/${icon.value}`)
             return resource
         })
-        const btnDir = computed(() => {
+        const iconDirection = computed(() => {
             const dirMap = {
-                "vertical": "column",
-                "horizontal": "row"
+                "top": "column",
+                "left": "row",
+                "right": "row-reverse",
+                "bottom": "column-reverse"
             }
-            const siteMap = {
-                "bottom": "-reverse",
-                "right": "-reverse",
-                "left": "",
-                "top": ""
-            }
-            return dirMap[direction.value] + siteMap[iconSite.value]
+            return dirMap[direction.value]
         })
         const itemGap = computed(() => {
             return gap.value.includes('px') ? gap.value : `${gap.value}px`
         })
         const styleObj = computed(() => {
             return {
-                flexDirection: btnDir.value,
-                gap: direction.value == "vertical" ? `${itemGap.value} 0` : `0 ${itemGap.value}`
+                flexDirection: iconDirection.value,
+                gap: ["top", "bottom"].includes(direction.value) ? `${itemGap.value} 0` : `0 ${itemGap.value}`
             }
         })
         return {

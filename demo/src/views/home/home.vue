@@ -6,7 +6,8 @@
                 <div class="menu-grid">
                     <template v-if="menus">
                         <div v-for="menu in menus" :key="menu.title" class="menu-item">
-                            <IconButton class="menu-btn" :icon="menu.icon" :text="menu.title" @click="toPage(menu.path)" />
+                            <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
+                                @click="toPage(menu.path)" />
                         </div>
                     </template>
                 </div>
@@ -24,8 +25,7 @@
                     }}</span>
                 </h2>
                 <p class="home-info">{{ info }}</p>
-                <IconButton class="start-btn" :icon="startBtn.icon" direction="horizontal" iconSite="left"
-                    @click="toPage('default')">
+                <IconButton class="start-btn" :icon="startBtn.icon" @click="toPage()">
                     {{ startBtn.name }}</IconButton>
             </div>
         </div>
@@ -34,7 +34,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import IconButton from '@/components/icon-button/index.vue'
+import IconButton from '@/components/IconButton/index.vue'
 import service from '@/axios'
 
 const menus = ref(null)
@@ -51,7 +51,7 @@ const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
 
 const homeLoading = ref(true)
 const getMenuData = async () => {
-    
+
     const result = await service.post('mock/data', menusParams)
     menus.value = JSON.parse(JSON.stringify(result.data))
     homeLoading.value = false
@@ -60,7 +60,7 @@ getMenuData()
 
 const router = useRouter()
 const toPage = (path) => {
-    if (path && path !== 'default') router.push(path)
+    if (path) router.push(path)
 }
 
 </script>

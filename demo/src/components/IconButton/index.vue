@@ -1,17 +1,17 @@
 <script src="./index"></script>
 <template>
-    <div class="btn-container" :style="styleObj">
-        <span v-if="btnIcon" class="btn-icon">
+    <div class="icon-btn" :style="styleObj">
+        <span v-if="btnIcon" class="icon">
             <slot name="icon">
-                <img :src="btnIcon" alt="btn-icon">
+                <img :src="btnIcon" alt="icon">
             </slot>
         </span>
-        <span v-if="text" class="btn-text">{{ text }}</span>
+        <span v-if="text" class="text">{{ text }}</span>
         <slot></slot>
     </div>
 </template>
 <style lang="scss" scoped>
-.btn-container {
+.icon-btn{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,7 @@
     cursor: pointer;
     transition: .3s;
 
-    .btn-icon {
+    .icon {
         display: flex;
         justify-content: center;
         align-items: center;
