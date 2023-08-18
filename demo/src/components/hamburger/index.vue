@@ -17,8 +17,8 @@
         padding: 10px;
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
         cursor: pointer;
+
         span {
             position: relative;
             display: block;
@@ -35,6 +35,21 @@
             &:nth-child(3) {
                 top: 4px;
             }
+        }
+
+        &.center {
+            align-items: center;
+            span{
+                width: var(--hamburger-width) !important;
+            }
+        }
+
+        &.left {
+            align-items: flex-start;
+        }
+
+        &.right {
+            align-items: flex-end;
         }
 
         &.active {
@@ -66,6 +81,7 @@
                 top: 4px;
                 width: calc(var(--hamburger-width) - 5px)
             }
+
             &:hover {
                 span {
                     width: var(--hamburger-width);
@@ -73,5 +89,4 @@
             }
         }
     }
-}
-</style>
+}</style>

@@ -79,7 +79,12 @@
     .header .header-main {
         padding: 0 1rem !important;
     }
-
+    .header .header-main .header-left{
+        flex-direction: row-reverse;
+    }
+    .header .header-main .header-left .header-title.drawer-menu .text {
+        display: none !important;
+    }
     .header .header-main .header-left .header-menu.drawer-menu {
         display: block !important;
     }

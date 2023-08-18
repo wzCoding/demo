@@ -1,5 +1,5 @@
-import { ref, toRefs, computed } from "vue"
-import { useRoute,useRouter } from "vue-router"
+import { ref, toRefs, watch } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import IconButton from "@/components/IconButton/index.vue"
 import Hamburger from "@/components/Hamburger/index.vue"
 import ToolTip from "@/components/ToolTip/index.vue"
@@ -43,6 +43,7 @@ export default {
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
+
         const themeClass = ref("")
         const themeIcon = [
             {
@@ -66,12 +67,19 @@ export default {
         const showMenu = () => {
             hamburgerActive.value = !hamburgerActive.value
         }
+
+
         const router = useRouter()
-        const route = useRoute()
-        console.log(route.path)
         const backHome = () => {
-              router.push("/")
+            router.push("/")
         }
+
+        const route = useRoute()
+        const headerMenuClass = ref("")
+        watch(route, (newRoute) => {
+            headerMenuClass.value = newRoute.path !== "/" && newRoute.name !== "home" ? "drawer-menu" : ""
+        })
+
         return {
             title,
             titleIcon,
@@ -80,6 +88,7 @@ export default {
             themeClass,
             themeIcon,
             hamburgerActive,
+            headerMenuClass,
             themeChange,
             showMenu,
             backHome

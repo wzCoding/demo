@@ -4,10 +4,10 @@
         <div class="header-main">
             <div class="header-left">
                 <slot name="left">
-                    <IconButton class="header-title" :icon="titleIcon" :text="title" @click="backHome"/>
-                    <div class="header-menu">
-                        <Hamburger type="primary" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
-                        <el-drawer v-model="hamburgerActive" :with-header="false" direction="ttb">
+                    <IconButton class="header-title" :class="headerMenuClass" :icon="titleIcon" :text="title" @click="backHome"/>
+                    <div class="header-menu" :class="headerMenuClass">
+                        <Hamburger :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
+                        <el-drawer v-model="hamburgerActive" :with-header="false" direction="ltr">
                             <div class="menu-container">
 
                             </div>
@@ -50,7 +50,7 @@
     padding: 1rem 0;
     background-color: var(--theme-header-background);
     box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
-    z-index: 11;
+    z-index: 9999;
     transition: all .3s ease;
 
     .header-main {
@@ -78,6 +78,9 @@
 
             .header-menu {
                 display: none;
+                :deep(.el-overlay){
+                    top:60px;
+                }
             }
         }
 
