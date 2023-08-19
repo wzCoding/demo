@@ -6,7 +6,7 @@
                 <slot name="left">
                     <IconButton class="header-title" :class="headerMenuClass" :icon="titleIcon" :text="title" @click="backHome"/>
                     <div class="header-menu" :class="headerMenuClass">
-                        <Hamburger :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
+                        <Hamburger type="arrow" align="right" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
                         <el-drawer v-model="hamburgerActive" :with-header="false" direction="ltr">
                             <div class="menu-container">
 
@@ -79,7 +79,7 @@
             .header-menu {
                 display: none;
                 :deep(.el-overlay){
-                    top:60px;
+                    top:57px;
                 }
             }
         }

@@ -18,7 +18,6 @@
         display: flex;
         flex-direction: column;
         cursor: pointer;
-
         span {
             position: relative;
             display: block;
@@ -29,45 +28,31 @@
             @extend .background-gradient;
 
             &:nth-child(1) {
-                top: -4px;
+                top: -3px;
             }
 
             &:nth-child(3) {
-                top: 4px;
+                top: 3px;
             }
         }
 
-        &.center {
-            align-items: center;
-            span{
-                width: var(--hamburger-width) !important;
+        &.default {
+            &.active {
+                span:nth-child(1) {
+                    transform: rotate(45deg) translate(3px, 3px);
+                }
+
+                span:nth-child(2) {
+                    background: transparent;
+                }
+
+                span:nth-child(3) {
+                    transform: rotate(-45deg) translate(5px, -6px);
+                }
             }
         }
 
-        &.left {
-            align-items: flex-start;
-        }
-
-        &.right {
-            align-items: flex-end;
-        }
-
-        &.active {
-            span:nth-child(1) {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-
-            span:nth-child(2) {
-                background: transparent;
-            }
-
-            span:nth-child(3) {
-                width: var(--hamburger-width) !important;
-                transform: rotate(-45deg) translate(5px, -5px);
-            }
-        }
-
-        &.primary {
+        &.odd {
             span:nth-child(1) {
                 top: -4px;
                 width: var(--hamburger-width);
@@ -82,11 +67,70 @@
                 width: calc(var(--hamburger-width) - 5px)
             }
 
+            &.left {
+                align-items: flex-start;
+            }
+
+            &.right {
+                align-items: flex-end;
+            }
+
+            &.active {
+                span:nth-child(1) {
+                    transform: rotate(45deg) translate(5px, 5px);
+                }
+
+                span:nth-child(2) {
+                    background: transparent;
+                }
+
+                span:nth-child(3) {
+                    width: var(--hamburger-width) !important;
+                    transform: rotate(-45deg) translate(4px, -5px);
+                }
+            }
+
             &:hover {
                 span {
                     width: var(--hamburger-width);
                 }
             }
         }
+
+        &.arrow {
+            &.active {
+                &.left {
+                    align-items: flex-start;
+
+                    span:nth-child(1) {
+                        width: calc(var(--hamburger-width) * 0.6);
+                        transform: rotate(-45deg) translate(-2px, 0);
+                    }
+
+                    span:nth-child(3) {
+                        width: calc(var(--hamburger-width) * 0.6);
+                        transform: rotate(45deg) translate(-2px, -1px);
+                    }
+                }
+
+                &.right {
+                    align-items: flex-end;
+
+                    span:nth-child(1) {
+                        width: calc(var(--hamburger-width) * 0.6);
+                        transform: rotate(45deg) translate(3px, -1px);
+                    }
+
+                    span:nth-child(3) {
+                        width: calc(var(--hamburger-width) * 0.6);
+                        transform: rotate(-45deg) translate(3px, 0.5px);
+                    }
+                }
+            }
+        }
+
+
+
+
     }
 }</style>

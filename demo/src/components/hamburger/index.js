@@ -6,14 +6,18 @@ export default {
             type: String,
             default: "default",
             validator: (value) => {
-                return ["default", "primary"].includes(value)
+                return [
+                    "default",
+                    "odd",
+                    "arrow"
+                ].includes(value)
             }
         },
         align: {
             type: String,
-            default: "center",
+            default: "left",
             validator: (value) => {
-                return ["center", "left", "right"].includes(value)
+                return ["left", "right"].includes(value)
             }
         },
         active: { type: Boolean, default: null }
@@ -31,7 +35,7 @@ export default {
                 [type.value]: type.value,
                 active: hamburgerActive.value
             }
-            if (type.value == "primary") classObj[align.value] = align.value
+            if (type.value !== "default") classObj[align.value] = align.value
             return classObj
         })
         const handleClick = () => {
