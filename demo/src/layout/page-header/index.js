@@ -2,7 +2,6 @@ import { ref, toRefs, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import IconButton from "@/components/IconButton/index.vue"
 import Hamburger from "@/components/Hamburger/index.vue"
-import ToolTip from "@/components/ToolTip/index.vue"
 export default {
     name: "PageHeader",
     props: {
@@ -38,8 +37,7 @@ export default {
     },
     components: {
         IconButton,
-        Hamburger,
-        ToolTip
+        Hamburger
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)

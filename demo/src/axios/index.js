@@ -46,7 +46,7 @@ const httpStatusCode = {
 }
 service.interceptors.response.use(
   response => {
-    console.log(response)
+    //console.log(response)
     const result = {
       data: response.data,
       statusCode: response.status,

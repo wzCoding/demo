@@ -17,7 +17,11 @@
     --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.3);
 }
-
+.toolTip{
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, var(--theme-gradient-color-1), var(--theme-gradient-color-2));
+}
 @font-face {
     font-family: FangYuan;
     src: url(../font/7isTenjrxLF1.woff2);

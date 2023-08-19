@@ -6,7 +6,7 @@
                 <slot name="left">
                     <IconButton class="header-title" :class="headerMenuClass" :icon="titleIcon" :text="title" @click="backHome"/>
                     <div class="header-menu" :class="headerMenuClass">
-                        <Hamburger type="arrow" align="right" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
+                        <Hamburger type="arrow" align="left" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
                         <el-drawer v-model="hamburgerActive" :with-header="false" direction="ltr">
                             <div class="menu-container">
 
@@ -20,9 +20,8 @@
                     <template v-if="headerLinks.length">
                         <div class="header-links">
                             <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.path"
-                                target="_blank" rel="noopener noreferrer">
+                                target="_blank" rel="noopener noreferrer" v-tip:mobile="item.title">
                                 <IconButton :icon="item.icon" :text="item.title" />
-                                <!-- <ToolTip :text="item.title"/> -->
                             </a>
                         </div>
                     </template>
@@ -50,7 +49,7 @@
     padding: 1rem 0;
     background-color: var(--theme-header-background);
     box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
-    z-index: 9999;
+    z-index: 999;
     transition: all .3s ease;
 
     .header-main {
