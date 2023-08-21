@@ -4,9 +4,11 @@
         <div class="header-main">
             <div class="header-left">
                 <slot name="left">
-                    <IconButton class="header-title" :class="headerMenuClass" :icon="titleIcon" :text="title" @click="backHome"/>
+                    <IconButton class="header-title" :class="headerMenuClass" :icon="titleIcon" :text="title"
+                        @click="backHome" />
                     <div class="header-menu" :class="headerMenuClass">
-                        <Hamburger type="arrow" align="left" :active="hamburgerActive" @hamburgerClick="showMenu"></Hamburger>
+                        <Hamburger type="arrow" align="left" :active="hamburgerActive" @hamburgerClick="showMenu">
+                        </Hamburger>
                         <el-drawer v-model="hamburgerActive" :with-header="false" direction="ltr">
                             <div class="menu-container">
 
@@ -19,8 +21,8 @@
                 <slot name="right">
                     <template v-if="headerLinks.length">
                         <div class="header-links">
-                            <a v-for="item in headerLinks" :key="item.title" class="link-item" :href="item.path"
-                                target="_blank" rel="noopener noreferrer" v-tip:mobile="item.title">
+                            <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
+                                target="_blank" rel="noopener noreferrer">
                                 <IconButton :icon="item.icon" :text="item.title" />
                             </a>
                         </div>
@@ -28,7 +30,7 @@
                     <template v-if="themeControl">
                         <div class="theme-control">
                             <div class="theme-btn" :class="themeClass">
-                                <IconButton v-for="item in themeIcon" :key="item.theme" :icon="item.icon"
+                                <IconButton v-for=" item  in  themeIcon " :key="item.theme" :icon="item.icon"
                                     :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
                             </div>
                         </div>
@@ -77,8 +79,9 @@
 
             .header-menu {
                 display: none;
-                :deep(.el-overlay){
-                    top:57px;
+
+                :deep(.el-overlay) {
+                    top: 57px;
                 }
             }
         }
