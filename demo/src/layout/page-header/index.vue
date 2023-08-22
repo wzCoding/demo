@@ -23,7 +23,9 @@
                         <div class="header-links">
                             <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
                                 target="_blank" rel="noopener noreferrer">
-                                <IconButton :icon="item.icon" :text="item.title" />
+                                <el-tooltip :content="item.title" placement="bottom" :visible="true">
+                                    <IconButton :icon="item.icon" :text="item.title" />
+                                </el-tooltip>
                             </a>
                         </div>
                     </template>
