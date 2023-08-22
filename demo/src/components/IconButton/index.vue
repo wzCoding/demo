@@ -28,15 +28,8 @@
             width: 2rem;
         }
     }
-
-    &.primary {
-        &::after {
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            bottom: 1px;
-            right: 1px;
-            background: #fff;
-        }
+    .text{
+        display:block;
     }
-}</style>
+}
+</style>

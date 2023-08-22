@@ -1,5 +1,6 @@
-import { ref, toRefs, watch } from "vue"
+import { ref, toRefs, watch, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { observeElement } from "@/utils"
 import IconButton from "@/components/IconButton/index.vue"
 import Hamburger from "@/components/Hamburger/index.vue"
 export default {
@@ -77,7 +78,13 @@ export default {
         watch(route, (newRoute) => {
             headerMenuClass.value = newRoute.path !== "/" && newRoute.name !== "home" ? "drawer-menu" : ""
         })
-
+        onMounted(() => {
+            const el = document.querySelector(".link-item")
+            const resizeObserver = new ResizeObserver(e => {
+                console.log(e)
+            })
+            resizeObserver.observe(el)
+        })
         return {
             title,
             titleIcon,
