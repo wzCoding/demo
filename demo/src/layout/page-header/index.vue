@@ -22,8 +22,9 @@
                     <template v-if="headerLinks.length">
                         <div class="header-links">
                             <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
-                                target="_blank" rel="noopener noreferrer">
-                                <el-tooltip :content="item.title" placement="bottom" :visible="true">
+                                target="_blank" rel="noopener noreferrer" @mouseenter="function (e) { showToolTip(e, item.tip) }"
+                                @mouseleave="hideToolTip(item.tip)">
+                                <el-tooltip :content="item.title" placement="bottom" :visible="item.tip.value">
                                     <IconButton :icon="item.icon" :text="item.title" />
                                 </el-tooltip>
                             </a>

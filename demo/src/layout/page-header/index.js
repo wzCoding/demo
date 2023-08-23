@@ -1,4 +1,4 @@
-import { ref, toRefs, watch, onMounted } from "vue"
+import { ref, toRefs, watch, onMounted, onUnmounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import IconButton from "@/components/IconButton/index.vue"
 import Hamburger from "@/components/Hamburger/index.vue"
@@ -24,12 +24,12 @@ export default {
                     {
                         title: "Blog",
                         icon: "blog.svg",
-                        path: "https://wzcoding.github.io/blog/"
+                        path: "https://wzcoding.github.io/blog/",
                     },
                     {
                         title: "Github",
                         icon: "github.svg",
-                        path: "https://github.com/wzCoding?tab=repositories"
+                        path: "https://github.com/wzCoding?tab=repositories",
                     }
                 ]
             }
@@ -41,7 +41,10 @@ export default {
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
-
+        headerLinks.value.forEach(item => {
+             item.tip = ref(false)
+        })
+        
         const themeClass = ref("")
         const themeIcon = [
             {
@@ -77,11 +80,15 @@ export default {
         watch(route, (newRoute) => {
             headerMenuClass.value = newRoute.path !== "/" && newRoute.name !== "home" ? "drawer-menu" : ""
         })
-        
-        onMounted(() => {
-            const el = document.querySelector(".link-item .text")
-            
-        })
+
+        const showToolTip = (e,tip) => {
+            const el = e.target.querySelector(".text")
+            const displayStyle = getComputedStyle(el).display
+            tip.value = displayStyle == "none"
+        }
+        const hideToolTip = (tip) => {
+            tip.value = false
+        }
         return {
             title,
             titleIcon,
@@ -93,6 +100,8 @@ export default {
             headerMenuClass,
             themeChange,
             showMenu,
+            showToolTip,
+            hideToolTip,
             backHome
         }
     }

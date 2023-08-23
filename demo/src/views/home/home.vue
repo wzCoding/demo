@@ -5,9 +5,12 @@
             <div class="menu-wrap">
                 <div class="menu-grid">
                     <template v-if="menus">
-                        <div v-for="menu in menus" :key="menu.title" class="menu-item">
-                            <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
-                                @click="toPage(menu.path)" />
+                        <div v-for="menu in menus" :key="menu.title" class="menu-item"
+                            @mouseenter="function (e) { showToolTip(e, menu.tip) }" @mouseleave="hideToolTip(menu.tip)">
+                            <el-tooltip :content="menu.title" placement="top" :visible="menu.tip">
+                                <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
+                                    @click="toPage(menu.path)" />
+                            </el-tooltip>
                         </div>
                     </template>
                 </div>
@@ -54,6 +57,10 @@ const getMenuData = async () => {
 
     const result = await service.post('mock/data', menusParams)
     menus.value = JSON.parse(JSON.stringify(result.data))
+    menus.value.forEach(item => {
+        item.tip = ref(false)
+        console.log(item)
+    })
     homeLoading.value = false
 }
 getMenuData()
@@ -63,4 +70,12 @@ const toPage = (path) => {
     if (path) router.push(path)
 }
 
+const showToolTip = (e, tip) => {
+    const el = e.target.querySelector(".text")
+    const displayStyle = getComputedStyle(el).display
+    tip.value = displayStyle == "none"
+}
+const hideToolTip = (tip) => {
+    tip.value = false
+} 
 </script>
