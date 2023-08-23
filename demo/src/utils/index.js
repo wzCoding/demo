@@ -1,3 +1,6 @@
+import {ref} from "vue"
+
+
 /**
  * 
  * @param {function} func - 需要降低触发频率的函数
@@ -67,29 +70,9 @@ function getElementPosition(el) {
     }
 }
 
-/**
- * 
- * @param {*} el - 需要监听的元素
- */
-function observeElement(el) {
-    if (!el) return
-    console.log(el)
-    const result = null
-    const config = { attributes: true }
-    // const callback = function (mutationsList, observer) {
-    //     console.log(mutationsList)
-    //     for (let mutation of mutationsList) {
-    //        console.log(mutation)
-    //     }
-    // }
-    const observer = new MutationObserver(function(mutationsList, observer){
-        console.log(mutationsList)
-    })
-    observer.observe(el, config);
-}
+
 export {
     throttle,
     debounce,
     getElementPosition,
-    observeElement
 }
