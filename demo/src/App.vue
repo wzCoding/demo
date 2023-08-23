@@ -1,9 +1,11 @@
 <template>
   <PageHeader themeControl></PageHeader>
   <RouterView />
+  <PageFooter></PageFooter>
 </template>
 <script setup>
 import PageHeader from '@/layout/page-header/index.vue'
+import PageFooter from '@/layout/page-footer/index.vue';
 </script>
 <style lang="scss">
 * {
