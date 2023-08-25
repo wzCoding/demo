@@ -1,5 +1,7 @@
-import { ref, toRefs, watch, onMounted, onUnmounted } from "vue"
+import { ref, toRefs, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { storeToRefs } from "pinia"
+import { useMenuStore } from "@/store/useMenuStore"
 import IconButton from "@/components/IconButton/index.vue"
 import Hamburger from "@/components/Hamburger/index.vue"
 export default {
@@ -41,10 +43,6 @@ export default {
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
-        headerLinks.value.forEach(item => {
-             item.tip = ref(false)
-        })
-        
         const themeClass = ref("")
         const themeIcon = [
             {
@@ -64,15 +62,19 @@ export default {
             document.querySelector("html").setAttribute("theme", theme)
         }
 
+        const menuStore = useMenuStore()
+        const { state } = storeToRefs(menuStore)
         const hamburgerActive = ref(false)
         const showMenu = () => {
             hamburgerActive.value = !hamburgerActive.value
+           
         }
 
 
         const router = useRouter()
         const backHome = () => {
-            router.push("/")
+            //router.push("/")
+            state.value = !state.value
         }
 
         const route = useRoute()
@@ -80,15 +82,8 @@ export default {
         watch(route, (newRoute) => {
             headerMenuClass.value = newRoute.path !== "/" && newRoute.name !== "home" ? "drawer-menu" : ""
         })
-
-        const showToolTip = (e,tip) => {
-            const el = e.target.querySelector(".text")
-            const displayStyle = getComputedStyle(el).display
-            tip.value = displayStyle == "none"
-        }
-        const hideToolTip = (tip) => {
-            tip.value = false
-        }
+       
+        
         return {
             title,
             titleIcon,
@@ -100,8 +95,6 @@ export default {
             headerMenuClass,
             themeChange,
             showMenu,
-            showToolTip,
-            hideToolTip,
             backHome
         }
     }

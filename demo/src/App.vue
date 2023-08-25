@@ -1,11 +1,14 @@
 <template>
   <PageHeader themeControl></PageHeader>
-  <RouterView />
+  <pageContainer >
+      <RouterView />
+  </pageContainer>
   <PageFooter></PageFooter>
 </template>
 <script setup>
 import PageHeader from '@/layout/page-header/index.vue'
-import PageFooter from '@/layout/page-footer/index.vue';
+import pageContainer from '@/layout/page-container/index.vue';
+import PageFooter from '@/layout/page-footer/index.vue'
 </script>
 <style lang="scss">
 * {

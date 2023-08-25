@@ -9,11 +9,6 @@
                     <div class="header-menu" :class="headerMenuClass">
                         <Hamburger type="arrow" align="left" :active="hamburgerActive" @hamburgerClick="showMenu">
                         </Hamburger>
-                        <el-drawer v-model="hamburgerActive" :with-header="false" direction="ltr">
-                            <div class="menu-container">
-
-                            </div>
-                        </el-drawer>
                     </div>
                 </slot>
             </div>
@@ -22,11 +17,8 @@
                     <template v-if="headerLinks.length">
                         <div class="header-links">
                             <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
-                                target="_blank" rel="noopener noreferrer" @mouseenter="function (e) { showToolTip(e, item.tip) }"
-                                @mouseleave="hideToolTip(item.tip)">
-                                <el-tooltip :content="item.title" placement="bottom" :visible="item.tip.value">
-                                    <IconButton :icon="item.icon" :text="item.title" />
-                                </el-tooltip>
+                                target="_blank" rel="noopener noreferrer">
+                                <IconButton :icon="item.icon" :text="item.title" />
                             </a>
                         </div>
                     </template>

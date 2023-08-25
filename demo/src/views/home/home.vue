@@ -1,6 +1,6 @@
 <style lang="scss" src="./home.scss" scoped></style>
 <template>
-    <main class="home" v-loading="homeLoading">
+    <div class="home" v-loading="homeLoading">
         <div class="home-main">
             <div class="menu-wrap">
                 <div class="menu-grid">
@@ -29,10 +29,10 @@
                     {{ startBtn.name }}</IconButton>
             </div>
         </div>
-    </main>
+    </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import IconButton from '@/components/IconButton/index.vue'
 import service from '@/axios'
