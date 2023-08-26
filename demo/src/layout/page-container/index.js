@@ -1,21 +1,27 @@
-import { toRefs } from "vue"
+import { toRefs, computed } from "vue"
 import { storeToRefs } from "pinia"
-import { useMenuStore } from "@/store/useMenuStore"
+import { useSideStore } from "@/store/useSideStore"
 export default {
     name: "pageContainer",
     props: {
-        hasAside: {
+        side: {
             type: Boolean,
             default: false
         }
     },
     setup(props) {
-        const { hasAside } = toRefs(props)
-        const menuStore = useMenuStore()
-        const { state } = storeToRefs(menuStore)
+        const sideStore = useSideStore()
+        const { side } = toRefs(props)
+        const { hasSide, sideActive, sideMenus } = storeToRefs(sideStore)
+        if (!side.value) hasSide.value = side.value
+        const hideSide = (e) => {
+            sideActive.value = !e.target.className.includes("side-container")
+        }
         return {
-            hasAside,
-            state
+            side,
+            hasSide,
+            sideActive,
+            hideSide
         }
     }
 }

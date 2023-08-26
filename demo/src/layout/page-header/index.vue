@@ -4,10 +4,10 @@
         <div class="header-main">
             <div class="header-left">
                 <slot name="left">
-                    <IconButton class="header-title" :class="headerMenuClass" :icon="titleIcon" :text="title"
+                    <IconButton class="header-title" :class="{ showSide: hasSide }" :icon="titleIcon" :text="title"
                         @click="backHome" />
-                    <div class="header-menu" :class="headerMenuClass">
-                        <Hamburger type="arrow" align="left" :active="hamburgerActive" @hamburgerClick="showMenu">
+                    <div class="side-icon" v-if="hasSide" :class="{ showSide: hasSide }">
+                        <Hamburger type="arrow" align="left" :active="sideActive" @hamburgerClick="showSide">
                         </Hamburger>
                     </div>
                 </slot>
@@ -72,12 +72,8 @@
                 }
             }
 
-            .header-menu {
+            .side-icon {
                 display: none;
-
-                :deep(.el-overlay) {
-                    top: 57px;
-                }
             }
         }
 

@@ -6,6 +6,7 @@
     --theme-header-background: #ffffff;
     --theme-button-background: #9f2b83;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.05);
+    --header-height:57px;
 }
 
 :root[theme=dark] {
@@ -16,6 +17,7 @@
     --theme-header-background: #22272e;
     --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.3);
+    --header-height:57px;
 }
 .toolTip{
     padding: 3px 8px;
@@ -81,15 +83,15 @@
     }
 
     .header .header-main {
-        padding: 0 1rem !important;
+        padding: 0 1rem 0 0.5rem !important;
     }
     .header .header-main .header-left{
         flex-direction: row-reverse;
     }
-    .header .header-main .header-left .header-title.drawer-menu .text {
+    .header .header-main .header-left .header-title.showSide .text {
         display: none !important;
     }
-    .header .header-main .header-left .header-menu.drawer-menu {
+    .header .header-main .header-left .showSide {
         display: block !important;
     }
 

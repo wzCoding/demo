@@ -1,7 +1,7 @@
 import { ref, toRefs, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
-import { useMenuStore } from "@/store/useMenuStore"
+import { useSideStore } from "@/store/useSideStore"
 import IconButton from "@/components/IconButton/index.vue"
 import Hamburger from "@/components/Hamburger/index.vue"
 export default {
@@ -62,28 +62,17 @@ export default {
             document.querySelector("html").setAttribute("theme", theme)
         }
 
-        const menuStore = useMenuStore()
-        const { state } = storeToRefs(menuStore)
-        const hamburgerActive = ref(false)
-        const showMenu = () => {
-            hamburgerActive.value = !hamburgerActive.value
-           
+        const sideStore = useSideStore()
+        const { hasSide, sideActive } = storeToRefs(sideStore)
+        const showSide = () => {
+            sideActive.value = !sideActive.value
         }
-
 
         const router = useRouter()
         const backHome = () => {
-            //router.push("/")
-            state.value = !state.value
+            router.push("/")
         }
 
-        const route = useRoute()
-        const headerMenuClass = ref("")
-        watch(route, (newRoute) => {
-            headerMenuClass.value = newRoute.path !== "/" && newRoute.name !== "home" ? "drawer-menu" : ""
-        })
-       
-        
         return {
             title,
             titleIcon,
@@ -91,11 +80,11 @@ export default {
             themeControl,
             themeClass,
             themeIcon,
-            hamburgerActive,
-            headerMenuClass,
             themeChange,
-            showMenu,
-            backHome
+            showSide,
+            backHome,
+            hasSide,
+            sideActive
         }
     }
 }

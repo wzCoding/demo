@@ -1,4 +1,4 @@
-@import '@/assets/css/index.scss';
+@import "@/assets/css/index.scss";
 
 .home {
     width: 100%;
@@ -10,6 +10,7 @@
     background-color: var(--theme-page-background);
     transition: all 0.3s ease;
     overflow: hidden;
+   
     .home-main {
         width: 100%;
         margin: 0 4rem;
@@ -18,7 +19,6 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-
         .menu-wrap {
             width: 50%;
             display: flex;

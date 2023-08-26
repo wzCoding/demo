@@ -1,6 +1,6 @@
 <template>
   <PageHeader themeControl></PageHeader>
-  <pageContainer >
+  <pageContainer side>
       <RouterView />
   </pageContainer>
   <PageFooter></PageFooter>
