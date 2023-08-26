@@ -1,9 +1,14 @@
 <script src="./index"></script>
 <template>
-    <main class="main" :class="{hasPadding:hasSide}">
-        <div class="side side-container" v-if="side" :class="{ active: sideActive }" @click="hideSide">
-            <div class="side-box">{{ sideActive }}</div>
-        </div>
+    <main class="main" :class="{ hasPadding: hasSide }">
+        <template v-if="side">
+            <div class="side overlay" :class="{ active: sideActive }" @click="hideSide">
+                <div class="side-box">{{ sideActive }}</div>
+            </div>
+            <div class="side normal">
+                <div class="side-box">{{ sideActive }}</div>
+            </div>
+        </template>
         <div class="content">
             <slot></slot>
         </div>
@@ -15,10 +20,15 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    &.hasPadding{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &.hasPadding {
         padding-top: var(--header-height);
     }
-    .side {
+
+    .overlay {
         position: fixed;
         inset: 0;
         background-color: rgba(0, 0, 0, .5);
@@ -26,21 +36,24 @@
         z-index: 998;
         transition: .3s;
 
+        .side {
+            padding-top: var(--header-height);
+        }
+
         &.active {
             transform: translateX(0);
-        }
-        
-        .side-box {
-            width: 30%;
-            height: 100%;
-            padding-top: var(--header-height);
-            background-color: #fff;
         }
     }
 
     .content {
-        width: 100%;
+        flex: 1;
         height: 100%;
+    }
+
+    .side-box {
+        width: 30%;
+        height: 100%;
+        background-color: #69c0ff;
     }
 }
 </style>

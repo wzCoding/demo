@@ -192,5 +192,7 @@
     .home .home-content .start-btn {
         display: none;
     }
-
+    .main .side.normal{
+        display:none !important;
+    }
 }

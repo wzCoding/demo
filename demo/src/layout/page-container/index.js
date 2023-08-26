@@ -15,7 +15,7 @@ export default {
         const { hasSide, sideActive, sideMenus } = storeToRefs(sideStore)
         if (!side.value) hasSide.value = side.value
         const hideSide = (e) => {
-            sideActive.value = !e.target.className.includes("side-container")
+            sideActive.value = !e.target.className.includes("overlay")
         }
         return {
             side,
