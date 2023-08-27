@@ -5,9 +5,7 @@
             <div class="side overlay" :class="{ active: sideActive }" @click="hideSide">
                 <div class="side-box">{{ sideActive }}</div>
             </div>
-            <div class="side normal">
-                <div class="side-box">{{ sideActive }}</div>
-            </div>
+            
         </template>
         <div class="content">
             <slot></slot>
