@@ -1,30 +1,38 @@
 <template>
   <PageHeader themeControl></PageHeader>
-  <pageContainer side>
-      <RouterView />
-  </pageContainer>
+  <!-- <PageContainer></PageContainer>
+  <Home></Home> -->
+  <component :is="isHome ? Home : PageContainer" />
   <PageFooter></PageFooter>
 </template>
 <script setup>
 import PageHeader from '@/layout/page-header/index.vue'
-import pageContainer from '@/layout/page-container/index.vue';
+import PageContainer from '@/layout/page-container/index.vue'
 import PageFooter from '@/layout/page-footer/index.vue'
+import Home from '@/views/home/home.vue';
+import { computed } from 'vue'
+import { useRoute } from 'vue-router';
+const route = useRoute()
+const isHome = computed(() => {
+  return route.path == "/"
+})
 </script>
 <style lang="scss">
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 *,
 ::before,
 ::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-body{
-    overflow: hidden;
+body {
+  overflow: hidden;
 }
+
 #app {
   width: 100vw;
   height: 100vh;

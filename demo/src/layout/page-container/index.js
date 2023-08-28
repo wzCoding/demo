@@ -1,27 +1,17 @@
 import { toRefs, computed } from "vue"
-import { storeToRefs } from "pinia"
-import { useSideStore } from "@/store/useSideStore"
+import { useRouter } from "vue-router"
 export default {
-    name: "pageContainer",
+    name: "PageContainer",
     props: {
-        side: {
-            type: Boolean,
-            default: false
-        }
+
     },
     setup(props) {
-        const sideStore = useSideStore()
-        const { side } = toRefs(props)
-        const { hasSide, sideActive, sideMenus } = storeToRefs(sideStore)
-        if (!side.value) hasSide.value = side.value
-        const hideSide = (e) => {
-            sideActive.value = !e.target.className.includes("overlay")
+        const router = useRouter()
+        const back = () => {
+            router.push("/")
         }
         return {
-            side,
-            hasSide,
-            sideActive,
-            hideSide
+            back
         }
     }
 }

@@ -4,12 +4,7 @@
         <div class="header-main">
             <div class="header-left">
                 <slot name="left">
-                    <IconButton class="header-title" :class="{ showSide: hasSide }" :icon="titleIcon" :text="title"
-                        @click="backHome" />
-                    <div class="side-icon" v-if="hasSide" :class="{ showSide: hasSide }">
-                        <Hamburger type="arrow" align="left" :active="sideActive" @hamburgerClick="showSide">
-                        </Hamburger>
-                    </div>
+                    <IconButton class="header-title" :icon="titleIcon" :text="title"/>
                 </slot>
             </div>
             <div class="header-right">
@@ -46,7 +41,7 @@
     padding: 1rem 0;
     background-color: var(--theme-header-background);
     box-shadow: 0px 2px 8px var(--theme-box-shadow-color);
-    z-index: 999;
+    z-index: 996;
     transition: all .3s ease;
 
     .header-main {

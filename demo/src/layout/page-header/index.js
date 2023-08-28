@@ -3,7 +3,6 @@ import { useRoute, useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
 import { useSideStore } from "@/store/useSideStore"
 import IconButton from "@/components/IconButton/index.vue"
-import Hamburger from "@/components/Hamburger/index.vue"
 export default {
     name: "PageHeader",
     props: {
@@ -39,7 +38,6 @@ export default {
     },
     components: {
         IconButton,
-        Hamburger
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
@@ -62,17 +60,6 @@ export default {
             document.querySelector("html").setAttribute("theme", theme)
         }
 
-        const sideStore = useSideStore()
-        const { hasSide, sideActive } = storeToRefs(sideStore)
-        const showSide = () => {
-            sideActive.value = !sideActive.value
-        }
-
-        const router = useRouter()
-        const backHome = () => {
-            router.push("/")
-        }
-
         return {
             title,
             titleIcon,
@@ -81,10 +68,6 @@ export default {
             themeClass,
             themeIcon,
             themeChange,
-            showSide,
-            backHome,
-            hasSide,
-            sideActive
         }
     }
 }
