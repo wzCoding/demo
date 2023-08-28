@@ -1,11 +1,8 @@
-import { ref,toRefs, computed } from "vue"
+import { ref } from "vue"
 import { useRouter } from "vue-router"
 export default {
     name: "PageContainer",
-    props: {
-
-    },
-    setup(props) {
+    setup() {
         const menuActive = ref(false)
         const showMenu = () => {
               menuActive.value = !menuActive.value
