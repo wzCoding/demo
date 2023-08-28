@@ -3,8 +3,8 @@ Mock.setup({ timeout: '1500' })
 const url = "https://localhost:5173/demo/mock/data"
 
 Mock.mock(url, (options) => {
-    const { id } = JSON.parse(options.body)
-    const data = require(`./data/${id}.json`)
+    const { id, type } = JSON.parse(options.body)
+    const data = require(`./data/${id}/${type}.json`)
 
-    return data[id]
+    return data[type]
 })

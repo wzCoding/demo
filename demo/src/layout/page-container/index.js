@@ -6,7 +6,6 @@ export default {
 
     },
     setup(props) {
-        
         const menuActive = ref(false)
         const showMenu = () => {
               menuActive.value = !menuActive.value
@@ -21,7 +20,6 @@ export default {
             menuActive,
             back,
             showMenu,
-            
         }
     }
 }

@@ -73,22 +73,27 @@
         justify-content: center;
         align-items: center;
         z-index: 5;
-        opacity: 0.3;
         transition: all .2s linear;
-        @extend .box-gradient;
+        z-index:998;
+        opacity: 0.5;
         border-bottom-right-radius: 100%;
-        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.4);
+        box-shadow: 0px 5px 20px 0px var(--theme-box-shadow-color);
+        background: transparent;
         &.active {
             opacity: 1;
+            @extend .box-gradient;
+            .icon{
+                fill:#fff;
+            }
         }
         &:hover {
-            opacity: 1;
+            @extend .active
         }
         span {
             padding: 0 5px 5px 0;
             
             .icon {
-                fill: #fff;
+                fill: var(--theme-gradient-color-2);
                 width: 2rem;
             }
         }
@@ -98,11 +103,12 @@
         position: absolute;
         inset: 0;
         background-color: rgba(0, 0, 0, 0.5);
-        transform: translateX(-100%);
+        transform: scale(0);
+        transform-origin: top left;
         transition: all .5s cubic-bezier(0.075, 0.82, 0.165, 1);
-
+        
         &.active {
-            transform: translate(0);
+            transform: scale(1);
         }
     }
 
