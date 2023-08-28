@@ -1,7 +1,4 @@
-import { ref, toRefs, watch } from "vue"
-import { useRoute, useRouter } from "vue-router"
-import { storeToRefs } from "pinia"
-import { useSideStore } from "@/store/useSideStore"
+import { ref, toRefs } from "vue"
 import IconButton from "@/components/IconButton/index.vue"
 export default {
     name: "PageHeader",

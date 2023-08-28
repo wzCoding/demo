@@ -5,7 +5,7 @@
     --theme-page-background: #ffffff;
     --theme-header-background: #ffffff;
     --theme-button-background: #9f2b83;
-    --theme-box-shadow-color: rgba(0, 0, 0, 0.05);
+    --theme-box-shadow-color: rgba(0, 0, 0, 0.1);
     --header-height:57px;
 }
 
@@ -16,7 +16,7 @@
     --theme-page-background: #22272e;
     --theme-header-background: #22272e;
     --theme-button-background: #00bcd4;
-    --theme-box-shadow-color: rgba(0, 0, 0, 0.3);
+    --theme-box-shadow-color: rgba(64, 158, 255, 0.3);
     --header-height:57px;
 }
 .toolTip{

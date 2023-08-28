@@ -20,7 +20,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    box-shadow: 0px 0px 35px -5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 35px -5px var(--theme-box-shadow-color);
     border-radius: 10px;
     top: 20px;
     left: 20px;
@@ -33,10 +33,10 @@
         position: absolute;
         top: 0;
         right: 25px;
-        padding:0 5px 5px 5px;
+        padding: 0 5px 5px 5px;
         color: #fff;
         border: 0;
-        font-size:1.5rem;
+        font-size: 1.5rem;
         border-radius: 0 0 15px 15px;
         -webkit-box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.4);
         box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.4);
@@ -46,15 +46,39 @@
         align-items: center;
         cursor: pointer;
         @extend .box-gradient;
-        
-        img{
-            width: 1rem;
-        }
     }
 
     .content {
         flex: 1;
         height: 100%;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: -300px;
+        left: -200px;
+        width: 700px;
+        height: 700px;
+        background: -webkit-radial-gradient(rgba(230, 18, 188, 0.2), transparent 65%);
+        background: -o-radial-gradient(rgba(230, 18, 188, 0.2), transparent 65%);
+        background: radial-gradient(rgba(230, 18, 188, 0.2), transparent 65%);
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: -300px;
+        right: -200px;
+        width: 700px;
+        height: 700px;
+        background: -webkit-radial-gradient(rgba(10, 27, 216, 0.2), transparent 65%);
+        background: -o-radial-gradient(rgba(10, 27, 216, 0.2), transparent 65%);
+        background: radial-gradient(rgba(10, 27, 216, 0.2), transparent 65%);
+        border-radius: 50%;
+        z-index: -1;
     }
 }
 </style>

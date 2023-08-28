@@ -1,8 +1,8 @@
 <template>
-  <PageHeader themeControl></PageHeader>
-  <!-- <PageContainer></PageContainer>
-  <Home></Home> -->
-  <component :is="isHome ? Home : PageContainer" />
+  <PageHeader v-show="isHome" themeControl></PageHeader>
+  <Transition name="rotate-in">
+    <component :is="isHome ? Home : PageContainer" />
+  </Transition>
   <PageFooter></PageFooter>
 </template>
 <script setup>
@@ -40,5 +40,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
+  perspective: 1000px;
+  background-color: var(--theme-page-background);
+}
+
+.rotate-in-enter-active,
+.rotate-in-leave-active{
+  transition: all .4s cubic-bezier(0.67, 0.01, 0.36, 1);
+  
+}
+
+.rotate-in-enter-from,
+.rotate-in-leave-to {
+  transform: rotateX(-90deg) translateY(-10%) scale(0.01);
 }
 </style>
