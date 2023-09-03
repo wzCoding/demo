@@ -1,4 +1,4 @@
-import {ref} from "vue"
+import { ref } from "vue"
 
 
 /**
@@ -12,19 +12,22 @@ function throttle(func, delay = 1000) {
     let start = Date.now() //记录触发开始时间
     let timer = null
 
-    return function () {
+    return function (...args) {
+        let current = Date.now() //记录触发当前时间
+        let duration = delay - (current - start) //计算距离下一次触发的剩余时间
+        // console.log(this)
+        const that = this
         if (timer) {
             clearTimeout(timer)
         }
-
-        let current = Date.now() //记录触发当前时间
-        let duration = delay - (current - start) //计算距离下一次触发的剩余时间
-
-        const that = this
-        const args = arguments
-
+        console.log(arguments)
+        console.log("")
+       
+        console.log(this)
+        console.log("")
         if (duration <= 0) {
-            func.apply(that, args)
+            func.call(that, args)
+            start = Date.now()
         } else {
             timer = setTimeout(func, duration)
         }
