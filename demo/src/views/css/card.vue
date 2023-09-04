@@ -10,7 +10,7 @@ export default {
     name: "card",
     setup() {
         const val = ref("")
-        const callback = throttle(()=>{
+        const callback = debounce(()=>{
             alert("throttle: " + val.value)
         },3000)
         return {

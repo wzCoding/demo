@@ -15,18 +15,12 @@ function throttle(func, delay = 1000) {
     return function (...args) {
         let current = Date.now() //记录触发当前时间
         let duration = delay - (current - start) //计算距离下一次触发的剩余时间
-        // console.log(this)
         const that = this
         if (timer) {
             clearTimeout(timer)
         }
-        console.log(arguments)
-        console.log("")
-       
-        console.log(this)
-        console.log("")
         if (duration <= 0) {
-            func.call(that, args)
+            func.apply(that, args)
             start = Date.now()
         } else {
             timer = setTimeout(func, duration)
