@@ -1,5 +1,3 @@
-import { ref } from "vue"
-
 
 /**
  * 
@@ -12,16 +10,19 @@ function throttle(func, delay = 1000) {
     let start = Date.now() //记录触发开始时间
     let timer = null
 
-    return function (...args) {
-        let current = Date.now() //记录触发当前时间
-        let duration = delay - (current - start) //计算距离下一次触发的剩余时间
-        const that = this
+    return function () {
         if (timer) {
             clearTimeout(timer)
         }
+
+        let current = Date.now() //记录触发当前时间
+        let duration = delay - (current - start) //计算距离下一次触发的剩余时间
+
+        const that = this
+        const args = arguments
+
         if (duration <= 0) {
             func.apply(that, args)
-            start = Date.now()
         } else {
             timer = setTimeout(func, duration)
         }
@@ -48,28 +49,60 @@ function debounce(func, delay = 1000) {
         }, delay)
     }
 }
-
-/**
- * 
- * @param {*} el - 需要获取位置的Dom元素
- * @returns {Object} {x,y} 包含该元素x,y坐标的对象
- */
-function getElementPosition(el) {
-    if (!el) return
-    const x = el.getBoundingClientRect().left
-    const y = el.getBoundingClientRect().top
-
-    const left = document.documentElement.scrollLeft
-    const top = document.documentElement.scrollTop
-    return {
-        x: x + left,
-        y: y + top
+function getType(value) {
+    const dataType = Object.prototype.toString.call(value).replace('object ', "").match(/\w+/g)[0];
+    return dataType.toLocaleLowerCase();
+}
+function isObject(value) {
+    return getType(value) === "object";
+}
+function isString(value) {
+    return getType(value) === "string";
+}
+function isEmpty(value) {
+    const type = getType(value);
+    let result = false;
+    switch (type) {
+        case "object":
+            result = Object.keys(value).length === 0;
+            break;
+        case "array":
+            result = value.length === 0;
+            break;
+        case "string":
+            result = value === "" && value.trim().length === 0;
+            break;
+        default: return result;
+    }
+    return result;
+}
+function addClass(target, className) {
+    const node = isString(target) ? document.querySelector(target) : target;
+    if (node.className) {
+        node.className += ` ${className}`;
+    } else {
+        node.className = className;
     }
 }
-
-
+function removeClass(target, className) {
+    const node = isString(target) ? document.querySelector(target) : target;
+    if (className && node.className) {
+        node.className = node.className.replace(className, "").trim();
+    }
+}
+function isMobile() {
+    return ('ontouchstart' in document.documentElement);
+}
+// function deepClone(target){
+//     const {}
+// }
 export {
     throttle,
     debounce,
-    getElementPosition,
+    isObject,
+    isString,
+    isEmpty,
+    addClass,
+    removeClass,
+    isMobile
 }

@@ -6,7 +6,7 @@
     --theme-header-background: #ffffff;
     --theme-button-background: #9f2b83;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.1);
-    --header-height:57px;
+    --header-height: 57px;
 }
 
 :root[theme=dark] {
@@ -17,13 +17,15 @@
     --theme-header-background: #22272e;
     --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(64, 158, 255, 0.3);
-    --header-height:57px;
+    --header-height: 57px;
 }
-.toolTip{
-    padding: 3px 8px;
-    border-radius: 3px;
-    background: linear-gradient(135deg, var(--theme-gradient-color-1), var(--theme-gradient-color-2));
+.loading-position{
+    position: relative !important;
 }
+.loaidng-hidden{
+    overflow: hidden !important;
+}
+
 @font-face {
     font-family: FangYuan;
     src: url(../font/7isTenjrxLF1.woff2);
@@ -85,10 +87,11 @@
     .header .header-main {
         padding: 0 1rem 0 0.5rem !important;
     }
-    .header .header-main .header-left{
+
+    .header .header-main .header-left {
         flex-direction: row-reverse;
     }
-    
+
     .header .header-main .header-right,
     .header .header-main .header-right .header-links {
         gap: 0 1rem !important;
@@ -186,7 +189,8 @@
     .home .home-content .start-btn {
         display: none;
     }
-    .main .side.normal{
-        display:none !important;
+
+    .main .side.normal {
+        display: none !important;
     }
 }

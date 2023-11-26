@@ -20,26 +20,20 @@ const routes = [
     path: '/echarts',
     name: 'echarts',
     nameCN:"echarts",
-    component: () => import(/* webpackChunkName: "card-carousel" */ '../views/css/carousel.vue')
+    component: () => import(/* webpackChunkName: "card-carousel" */ '../views/echarts/echarts1.vue')
   },
   {
     path: '/threeJS',
     name: 'threeJS',
     nameCN:"threeJS",
-    component: () => import(/* webpackChunkName: "echarts1" */ '../views/echarts/echarts1.vue')
+    component: () => import(/* webpackChunkName: "echarts1" */ '../views/three/bird.vue')
   },
   {
     path: '/about',
     name: 'about',
     nameCN:"about",
-    component: () => import(/* webpackChunkName: "echarts2" */ '../views/echarts/echarts2.vue')
+    component: () => import(/* webpackChunkName: "echarts2" */ '../views/about/index.vue')
   },
-  {
-    path: '/build',
-    name: 'build',
-    nameCN:"待建设",
-    component: () => import(/* webpackChunkName: "bird" */ '../views/three/bird.vue')
-  }
 ]
 
 const router = createRouter({

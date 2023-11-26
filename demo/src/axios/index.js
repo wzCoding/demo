@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
-
+import { Message } from '@/components/Message'
 const baseURL = 'https://localhost:5173/demo/'
-const timeOut = 3000
+const timeOut = 2000
 const headers = {
   'X-Requested-With': 'XMLHttpRequest',
   'Access-Control-Allow-Origin': '*',
@@ -46,20 +45,31 @@ const httpStatusCode = {
 }
 service.interceptors.response.use(
   response => {
-    //console.log(response)
     const result = {
       data: response.data,
       statusCode: response.status,
       statusText: response.statusText
     }
-    return result
+    try {
+      //模拟请求报错
+      const limit = 1;
+      const arr = Object.keys(httpStatusCode);
+      if (Math.random() > limit) {
+        throw Error(arr[Math.floor(Math.random() * arr.length)])
+      } else {
+        return result
+      }
+    } catch (error) {
+      Message.error(httpStatusCode[error.message]);
+    }
   },
   error => {
+    console.log(error)
     let errorText = "连接错误"
     if (error && error.response) {
-      errorText = httpStatusCode[error.response.status]
+      errorText = httpStatusCode[error.response.status];
+      Message.error(errorText);
     }
-    ElMessage.error(errorText)
     return Promise.resolve(error.response)
   })
 

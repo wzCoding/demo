@@ -1,19 +1,18 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
 import service from '@/axios'
-const useHomeStore = defineStore("home", () => {
+const useMenuStore = defineStore("menu", () => {
     const menu = ref([])
-    const isLoading = ref(true)
-    async function getHomeMenu() {
+    const type = "menu"
+    async function getHomeMenu(id) {
         if (!menu.value.length) {
-            const params = { id: 'home', type: "menu" }
+            const params = { id: id, type: type }
             const result = await service.post('mock/data', params)
-            menu.value = JSON.parse(JSON.stringify(result.data))
-            isLoading.value = false
+            menu.value = result && result.data ? JSON.parse(JSON.stringify(result.data)) : []
         }
     }
     getHomeMenu()
-    return { menu, isLoading }
+    return { menu }
 })
 
 export { useHomeStore }

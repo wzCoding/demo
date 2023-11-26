@@ -1,22 +1,30 @@
 {
+    "info": {
+        "greet": "Hello",
+        "title": "['欢迎来到我的', 'Demo']",
+        "subTitle": "['I`m', 'wzCoding']",
+        "colorText": "['Demo', 'I`m']",
+        "text": "这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .",
+        "startBtn": "{ name: '开始浏览', icon: 'right-arrow.svg' }"
+    },
     "menu": [
         {
             "index": "1",
             "title": "css",
             "icon": "css.svg",
-            "path":"/css"
+            "path": "/css"
         },
         {
             "index": "2",
             "title": "threeJs",
             "icon": "cubes.svg",
-            "path":"/threeJS"
+            "path": "/threeJS"
         },
         {
             "index": "3",
             "title": "echarts",
             "icon": "chart.svg",
-            "path":"/echarts"
+            "path": "/echarts"
         },
         {
             "index": "4",

@@ -52,7 +52,6 @@ export default {
             }
         ]
         const themeChange = (theme) => {
-            console.log(theme)
             themeClass.value = theme
             document.querySelector("html").setAttribute("theme", theme)
         }

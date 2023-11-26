@@ -15,7 +15,6 @@
             </span>
         </div>
         <div class="menu" :class="{ active: menuActive }">
-
             <div class="menu-content"></div>
         </div>
         <div class="content">
@@ -79,6 +78,7 @@
         border-bottom-right-radius: 100%;
         box-shadow: 0px 5px 20px 0px var(--theme-box-shadow-color);
         background: transparent;
+        outline: none;
         &.active {
             opacity: 1;
             @extend .box-gradient;
