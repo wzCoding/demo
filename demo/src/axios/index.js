@@ -54,11 +54,7 @@ service.interceptors.response.use(
       //模拟请求报错
       const limit = 1;
       const arr = Object.keys(httpStatusCode);
-      if (Math.random() > limit) {
-        throw Error(arr[Math.floor(Math.random() * arr.length)])
-      } else {
-        return result
-      }
+      return Math.random() > limit ? Promise.reject(new Error(arr[Math.floor(Math.random() * arr.length)])) : result
     } catch (error) {
       Message.error(httpStatusCode[error.message]);
     }

@@ -1,4 +1,4 @@
-
+import service from '@/axios'
 /**
  * 
  * @param {function} func - 需要降低触发频率的函数
@@ -28,6 +28,7 @@ function throttle(func, delay = 1000) {
         }
     }
 }
+
 /**
  * 
  * @param {function} func - 需要降低触发频率的函数
@@ -49,20 +50,32 @@ function debounce(func, delay = 1000) {
         }, delay)
     }
 }
+
 function getType(value) {
     const dataType = Object.prototype.toString.call(value).replace('object ', "").match(/\w+/g)[0];
     return dataType.toLocaleLowerCase();
 }
+
 function isObject(value) {
     return getType(value) === "object";
 }
+
+function isArray(value) {
+    return getType(value) === "array";
+}
+
 function isString(value) {
     return getType(value) === "string";
 }
+
+function isNumber(value) {
+    return getType(value) === "number";
+}
+
 function isEmpty(value) {
-    const type = getType(value);
-    let result = false;
-    switch (type) {
+    let result = true;
+    if (!value) return result;
+    switch (getType(value)) {
         case "object":
             result = Object.keys(value).length === 0;
             break;
@@ -74,8 +87,8 @@ function isEmpty(value) {
             break;
         default: return result;
     }
-    return result;
 }
+
 function addClass(target, className) {
     const node = isString(target) ? document.querySelector(target) : target;
     if (node.className) {
@@ -93,16 +106,46 @@ function removeClass(target, className) {
 function isMobile() {
     return ('ontouchstart' in document.documentElement);
 }
-// function deepClone(target){
-//     const {}
-// }
+
+const cache = new WeakMap();
+function deepClone(target) {
+    if (target == null || typeof target !== 'object') {
+        return target;
+    }
+    // 检查是否存在缓存
+    if (cache.has(target)) {
+        return cache.get(target);
+    }
+    let clone = Array.isArray(target) ? [] : {};
+    Object.setPrototypeOf(clone, Object.getPrototypeOf(target));
+    cache.set(target, clone);
+    // 递归复制属性
+    for (let key in target) {
+        if (target.hasOwnProperty(key)) {
+            clone[key] = deepClone(target[key]);
+        }
+    }
+
+    return clone;
+}
+
+async function getData(id, type) {
+    if(!id || !type) return []
+    const param = { id, type }
+    const result = await service.post('mock/data', param)
+    return result && result.data ? deepClone(result.data) : []
+}
 export {
     throttle,
     debounce,
     isObject,
+    isArray,
     isString,
+    isNumber,
     isEmpty,
     addClass,
     removeClass,
-    isMobile
+    isMobile,
+    deepClone,
+    getData
 }

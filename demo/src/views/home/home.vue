@@ -2,16 +2,16 @@
 <template>
     <div class="home" v-loading="loading">
         <div class="home-main">
-            <div class="menu-wrap">
-                <div class="menu-grid">
-                    <template v-if="menus">
-                        <div v-for=" menu  in  menus" :key="menu.title" class="menu-item">
+            <template v-if="menuStore.menu[id]">
+                <div class="menu-wrap">
+                    <div class="menu-grid">
+                        <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
                             <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
                                 @click="toPage(menu.path)" />
                         </div>
-                    </template>
+                    </div>
                 </div>
-            </div>
+            </template>
             <div class="home-content">
                 <h2 class="home-greet">{{ greet }}</h2>
                 <h1 class="home-main-title">
@@ -32,11 +32,21 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useMenuStore } from '@/store/useMenuStore'
 import IconButton from '@/components/IconButton/index.vue'
-import service from '@/axios';
-const menus = ref([])
+
+const id = "home"
+const loading = ref(false)
+const menuStore = useMenuStore()
+
+if (!menuStore.menu[id]) {
+    loading.value = true
+    menuStore.getMenu(id).then(() => {
+        loading.value = false
+    })
+}
 
 const greet = 'Hello !'
 const mainTitle = ['欢迎来到我的', 'Demo']
@@ -44,16 +54,6 @@ const subTitle = ['I`m', 'wzCoding']
 const colorText = ['Demo', 'I`m']
 const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .'
 const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
-
-const loading = reactive({ text: `Loading......`, show: true })
-async function getMenu() {
-    const params = { id: 'home', type: "menu" }
-    const result = await service.post('mock/data', params)
-    menus.value = result && result.data ? JSON.parse(JSON.stringify(result.data)) : []
-    loading.show = false
-}
-
-getMenu()
 
 const router = useRouter()
 const toPage = (path) => {

@@ -47,11 +47,16 @@
     .home .home-main {
         flex-direction: column-reverse;
     }
-
+    
     .home .home-main .menu-wrap .menu-grid {
         margin-top: 60px;
     }
-
+    .home .home-main .home-content{
+        transform: translateY(1%);
+    }
+    .home .home-main .menu-wrap + .home-content {
+        transform: translateY(0);
+    }
     .home .home-content {
         justify-content: center;
         align-items: center;
