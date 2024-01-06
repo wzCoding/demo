@@ -15,4 +15,4 @@ const useMenuStore = defineStore("menu", () => {
     return { menu }
 })
 
-export { useHomeStore }
+export { useMenuStore }

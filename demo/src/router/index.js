@@ -17,16 +17,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "card" */ '../views/css/card.vue')
   },
   {
-    path: '/echarts',
-    name: 'echarts',
-    nameCN:"echarts",
-    component: () => import(/* webpackChunkName: "card-carousel" */ '../views/echarts/echarts1.vue')
+    path: '/charts',
+    name: 'charts',
+    nameCN:"charts",
+    component: () => import(/* webpackChunkName: "card-carousel" */ '../views/charts/echarts1.vue')
   },
   {
-    path: '/threeJS',
-    name: 'threeJS',
-    nameCN:"threeJS",
-    component: () => import(/* webpackChunkName: "echarts1" */ '../views/three/bird.vue')
+    path: '/canvas',
+    name: 'canvas',
+    nameCN:"canvas",
+    component: () => import(/* webpackChunkName: "echarts1" */ '../views/canvas/bird.vue')
   },
   {
     path: '/about',

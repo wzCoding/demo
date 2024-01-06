@@ -4,7 +4,7 @@ import { reactive, render, createVNode } from "vue";
 import { isObject } from "@/utils";
 let instance = null;
 let instanceNum = 0;
-
+const Message = {};
 const createMessage = (options) => {
     const id = `message-${instanceNum}`;
     const props = reactive({
@@ -108,7 +108,7 @@ const defineMessage = () => {
         })
     }
 }
-const Message = {};
+
 defineMessage();
 export {
     Message

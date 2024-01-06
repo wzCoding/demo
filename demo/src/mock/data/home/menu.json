@@ -16,15 +16,15 @@
         },
         {
             "index": "2",
-            "title": "threeJs",
+            "title": "canvas",
             "icon": "cubes.svg",
-            "path": "/threeJS"
+            "path": "/canvas"
         },
         {
             "index": "3",
-            "title": "echarts",
+            "title": "charts",
             "icon": "chart.svg",
-            "path": "/echarts"
+            "path": "/charts"
         },
         {
             "index": "4",

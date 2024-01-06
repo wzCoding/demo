@@ -19,7 +19,7 @@ export default {
         },
         text: {
             type: String,
-            default: ""
+            default: "Loading......"
         }
     },
     setup(props) {
