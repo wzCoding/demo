@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkweb_demo"]=self["webpackChunkweb_demo"]||[]).push([[760],{2008:function(e,n,r){r.r(n),r.d(n,{default:function(){return o}});var c=r(3396);const a={class:"card"};function t(e,n,r,t,u,s){return(0,c.wg)(),(0,c.iD)("div",a)}var u={name:"card"},s=r(89);const d=(0,s.Z)(u,[["render",t]]);var o=d}}]);
+//# sourceMappingURL=card.ae80dc33.js.map

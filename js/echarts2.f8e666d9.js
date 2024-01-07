@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkweb_demo"]=self["webpackChunkweb_demo"]||[]).push([[118],{6783:function(e,n,t){t.r(n),t.d(n,{default:function(){return b}});var u=t(3396);const r={class:"about"};function a(e,n,t,a,c,o){return(0,u.wg)(),(0,u.iD)("div",r)}var c={name:"about"},o=t(89);const s=(0,o.Z)(c,[["render",a]]);var b=s}}]);
+//# sourceMappingURL=echarts2.f8e666d9.js.map
