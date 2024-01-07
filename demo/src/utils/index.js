@@ -135,6 +135,23 @@ async function getData(id, type) {
     const result = await service.post('mock/data', param)
     return result && result.data ? deepClone(result.data) : []
 }
+
+function setStorageCache(key, value) {
+    if(!key) return
+    if (value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    } else {
+        localStorage.removeItem(key);
+    }
+}
+
+function getStorageCache(key) {
+    const value = localStorage.getItem(key);
+    if (value) {
+        return JSON.parse(value);
+    }
+    return null;
+}
 export {
     throttle,
     debounce,
@@ -147,5 +164,7 @@ export {
     removeClass,
     isMobile,
     deepClone,
-    getData
+    getData,
+    setStorageCache,
+    getStorageCache
 }

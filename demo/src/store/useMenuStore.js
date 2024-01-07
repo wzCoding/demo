@@ -2,7 +2,7 @@ import { reactive } from "vue"
 import { defineStore } from "pinia"
 import { getData } from "@/utils"
 
-const useMenuStore = defineStore("menu", () => {
+export const useMenuStore = defineStore("menu", () => {
     const type = "menu"
     const menu = reactive({})
     // 获取数据
@@ -20,5 +20,3 @@ const useMenuStore = defineStore("menu", () => {
         getMenu
     }
 })
-
-export { useMenuStore }

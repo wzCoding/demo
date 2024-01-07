@@ -1,4 +1,5 @@
-import { ref, toRefs } from "vue"
+import { computed, toRefs } from "vue"
+import { useThemeStore } from "@/store/useThemeStore"
 import IconButton from "@/components/IconButton/index.vue"
 export default {
     name: "PageHeader",
@@ -38,7 +39,8 @@ export default {
     },
     setup(props) {
         const { title, titleIcon, themeControl, headerLinks } = toRefs(props)
-        const themeClass = ref("")
+        const themeStore = useThemeStore()
+        const themeClass = computed(() => themeStore.theme)
         const themeIcon = [
             {
                 theme: "light",
@@ -52,8 +54,7 @@ export default {
             }
         ]
         const themeChange = (theme) => {
-            themeClass.value = theme
-            document.querySelector("html").setAttribute("theme", theme)
+            themeStore.toggleTheme(theme)
         }
 
         return {
