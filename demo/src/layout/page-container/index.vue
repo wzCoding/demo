@@ -104,8 +104,8 @@
         inset: 0;
         background-color: rgba(0, 0, 0, 0.5);
         transform: scale(0);
-        transform-origin: top left;
-        transition: all .5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        transform-origin: 10px 10px;
+        transition: all var(--transition-time) cubic-bezier(0.075, 0.82, 0.165, 1);
         
         &.active {
             transform: scale(1);
