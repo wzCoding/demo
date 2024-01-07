@@ -44,14 +44,4 @@ body {
   background-color: var(--theme-page-background);
 }
 
-.rotate-in-enter-active,
-.rotate-in-leave-active{
-  transition: all .4s cubic-bezier(0.67, 0.01, 0.36, 1);
-  
-}
-
-.rotate-in-enter-from,
-.rotate-in-leave-to {
-  transform: rotateX(-90deg) translateY(-10%) scale(0.01);
-}
 </style>

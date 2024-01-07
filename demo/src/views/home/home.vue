@@ -2,16 +2,18 @@
 <template>
     <div class="home" v-loading="loading">
         <div class="home-main">
-            <template v-if="menuStore.menu[id]">
-                <div class="menu-wrap">
-                    <div class="menu-grid">
-                        <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
-                            <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
-                                @click="toPage(menu.path)" />
+            <transition name="rotate-in">
+                <template v-if="menuStore.menu[id]">
+                    <div class="menu-wrap">
+                        <div class="menu-grid">
+                            <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
+                                <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
+                                    @click="toPage(menu.path)" />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </transition>
             <div class="home-content">
                 <h2 class="home-greet">{{ greet }}</h2>
                 <h1 class="home-main-title">

@@ -7,6 +7,7 @@
     --theme-button-background: #9f2b83;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.1);
     --header-height: 57px;
+    --transition-time: 0.3s;
 }
 
 :root[theme=dark] {
@@ -18,11 +19,27 @@
     --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(64, 158, 255, 0.3);
     --header-height: 57px;
+    --transition-time: 0.3s;
 }
-.loading-position{
+
+/* transition组件过渡样式 */
+.rotate-in-enter-active,
+.rotate-in-leave-active {
+    transition: all var(--transition-time) cubic-bezier(0.67, 0.01, 0.36, 1);
+
+}
+
+.rotate-in-enter-from,
+.rotate-in-leave-to {
+    transform: rotateX(-90deg) translateY(-10%) scale(0.01);
+}
+
+/* loading组件样式 */
+.loading-position {
     position: relative !important;
 }
-.loaidng-hidden{
+
+.loaidng-hidden {
     overflow: hidden !important;
 }
 
@@ -31,9 +48,18 @@
     src: url(../font/7isTenjrxLF1.woff2);
 }
 
+/* 页面响应式设置 */
 @media screen and (max-width: 1999px) and (min-width: 1699px) {
     .home .home-main .menu-wrap .menu-grid {
         transform: rotate(-45deg) translate(1rem, 4rem) !important;
+    }
+
+    .home .home-main .home-content {
+        transform: translateX(2%);
+    }
+
+    .home .home-main .menu-wrap+.home-content {
+        transform: translateX(0);
     }
 }
 
@@ -41,26 +67,34 @@
     .home .home-main .menu-wrap .menu-grid {
         transform: rotate(-45deg) translate(-4rem, 1rem) !important;
     }
+
+    .home .home-main .home-content {
+        transform: translateX(2%);
+    }
+
+    .home .home-main .menu-wrap+.home-content {
+        transform: translateX(0);
+    }
 }
 
 @media screen and (max-width: 1199px) and (min-width: 992px) {
     .home .home-main {
         flex-direction: column-reverse;
     }
-    
+
     .home .home-main .menu-wrap .menu-grid {
         margin-top: 60px;
     }
-    .home .home-main .home-content{
-        transform: translateY(1%);
-    }
-    .home .home-main .menu-wrap + .home-content {
+
+    .home .home-main .menu-wrap+.home-content {
         transform: translateY(0);
     }
+
     .home .home-content {
         justify-content: center;
         align-items: center;
         text-align: center;
+        transform: translateY(2%);
     }
 }
 
@@ -81,6 +115,11 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        transform: translateY(2%);
+    }
+
+    .home .home-main .menu-wrap+.home-content {
+        transform: translateY(0);
     }
 }
 
@@ -110,6 +149,14 @@
         flex-direction: column-reverse;
         margin: 0 !important;
         padding: 0 !important;
+    }
+
+    .home .home-main .home-content {
+        transform: translateY(2%);
+    }
+
+    .home .home-main .menu-wrap+.home-content {
+        transform: translateY(0);
     }
 
     .home .home-main .menu-wrap {
