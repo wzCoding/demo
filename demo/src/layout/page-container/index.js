@@ -1,20 +1,22 @@
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import PageMenu from "@/components/Menu/index.vue"
 export default {
     name: "PageContainer",
+    components: { PageMenu },
     setup() {
-        const menuActive = ref(false)
-        const showMenu = () => {
-              menuActive.value = !menuActive.value
+        const menuVisible = ref(false)
+        const showMenu = (visible) => {
+             visible.value = !visible.value
         }
 
         const router = useRouter()
         const back = () => {
             router.push("/")
-            menuActive.value = false
+            menuVisible.value = false
         }
         return {
-            menuActive,
+            menuVisible,
             back,
             showMenu,
         }
