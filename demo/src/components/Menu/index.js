@@ -17,13 +17,17 @@ export default {
     emits: ["visibleChange"],
     setup(props, { emit }) {
         // 获取位置信息
-        const styleObj = computed(() => {
-            const positions = props.position.split('-')
-            const [direction, align] = positions
+        const [direction, align] = props.position.split('-')
+        const positionStyle = computed(() => {
             return {
                 "position": "absolute",
                 [direction]: 0,
                 [align]: 0
+            }
+        })
+        const transformStyle = computed(() => {
+            return {
+                "transform-origin": `${direction} ${align}`,
             }
         })
         const active = ref(props.visible || false)
@@ -32,7 +36,8 @@ export default {
         }
         return {
             active,
-            styleObj,
+            positionStyle,
+            transformStyle,
             handleClick
         }
     }

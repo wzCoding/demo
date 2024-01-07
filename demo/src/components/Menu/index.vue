@@ -1,7 +1,7 @@
 <script src="./index"></script>
 <template>
     <div class="page-menu">
-        <div class="menu-button" :style="styleObj" :class="{ active: active }" @click="handleClick">
+        <div class="menu-button" :style="positionStyle" :class="{ active: active }" @click="handleClick">
             <span>
                 <svg t="1693220439194" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     p-id="6958" width="32" height="32">
@@ -12,7 +12,7 @@
             </span>
         </div>
         <transition name="scale">
-            <div class="menu" v-show="active">
+            <div class="menu" v-show="active" :style="transformStyle">
                 <div class="menu-content"></div>
             </div>
         </transition>
