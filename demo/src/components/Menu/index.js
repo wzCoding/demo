@@ -12,17 +12,34 @@ export default {
         visible: {
             type: Boolean,
             default: false
+        },
+        menus:{
+            type: Array,
+            default: () => []
         }
     },
     emits: ["visibleChange"],
     setup(props, { emit }) {
-        // 获取位置信息
         const [direction, align] = props.position.split('-')
-        const positionStyle = computed(() => {
+        const borderReverse = {
+            top: 'bottom',
+            bottom: 'top',
+            left: 'right',
+            right: 'left',
+        }
+        const buttonStyle = computed(() => {
             return {
                 "position": "absolute",
                 [direction]: 0,
-                [align]: 0
+                [align]: 0,
+                [`border-${borderReverse[direction]}-${borderReverse[align]}-radius`]:'100%'
+            }
+        })
+        const iconStyle = computed(() => {
+            return {
+                "position": "absolute",
+                [direction]: '8px',
+                [align]: '8px',
             }
         })
         const transformStyle = computed(() => {
@@ -36,7 +53,8 @@ export default {
         }
         return {
             active,
-            positionStyle,
+            buttonStyle,
+            iconStyle,
             transformStyle,
             handleClick
         }

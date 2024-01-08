@@ -1,8 +1,8 @@
 <script src="./index"></script>
 <template>
     <div class="page-menu">
-        <div class="menu-button" :style="positionStyle" :class="{ active: active }" @click="handleClick">
-            <span>
+        <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleClick">
+            <span :style="iconStyle">
                 <svg t="1693220439194" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     p-id="6958" width="32" height="32">
                     <path
@@ -25,14 +25,10 @@
     width: 3.75rem;
     height: 3.75rem;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 5;
     transition: all .2s linear;
     z-index: 998;
     opacity: 0.5;
-    border-bottom-right-radius: 100%;
     box-shadow: 0px 5px 20px 0px var(--theme-box-shadow-color);
     background: transparent;
     outline: none;
@@ -51,8 +47,6 @@
     }
 
     span {
-        padding: 0 5px 5px 0;
-
         .icon {
             fill: var(--theme-gradient-color-2);
             width: 2rem;
