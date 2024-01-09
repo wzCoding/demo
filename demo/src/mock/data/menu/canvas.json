@@ -1,0 +1,24 @@
+{
+    "menu": [
+        {
+            "index": "1",
+            "title": "waves",
+            "path": "/canvas/waves"
+        },
+        {
+            "index": "2",
+            "title": "rains",
+            "path": "/canvas/rains"
+        },
+        {
+            "index": "3",
+            "title": "sea",
+            "path": "/canvas/sea"
+        },
+        {
+            "index": "4",
+            "title": "birds",
+            "path": "/canvas/birds"
+        }
+    ]
+}

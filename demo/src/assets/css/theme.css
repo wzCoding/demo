@@ -22,25 +22,10 @@
     --transition-time: 0.3s;
 }
 
-/* transition组件过渡样式 */
-.rotate-in-enter-active,
-.rotate-in-leave-active {
-    transition: all var(--transition-time) cubic-bezier(0.67, 0.01, 0.36, 1);
-
-}
-
-.rotate-in-enter-from,
-.rotate-in-leave-to {
-    transform: rotateX(-90deg) translateY(-10%) scale(0.01);
-}
-
-/* loading组件样式 */
-.loading-position {
-    position: relative !important;
-}
-
-.loaidng-hidden {
-    overflow: hidden !important;
+@property --rotate {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
 }
 
 @font-face {
@@ -245,4 +230,25 @@
     .main .side.normal {
         display: none !important;
     }
+}
+
+/* transition组件过渡样式 */
+.rotate-in-enter-active,
+.rotate-in-leave-active {
+    transition: all var(--transition-time) cubic-bezier(0.67, 0.01, 0.36, 1);
+
+}
+
+.rotate-in-enter-from,
+.rotate-in-leave-to {
+    transform: rotateX(-90deg) translateY(-10%) scale(0.01);
+}
+
+/* loading组件样式 */
+.loading-position {
+    position: relative !important;
+}
+
+.loaidng-hidden {
+    overflow: hidden !important;
 }

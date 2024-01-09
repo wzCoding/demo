@@ -18,7 +18,7 @@ export default {
             default: () => []
         }
     },
-    emits: ["visibleChange"],
+    emits: ["visibleChange","menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')
         const borderReverse = {
@@ -48,15 +48,22 @@ export default {
             }
         })
         const active = ref(props.visible || false)
-        const handleClick = () => {
+        const handleButonClick = () => {
             emit("visibleChange", active)
         }
+
+        const handleMenuClick = () => {
+            emit("menuClick",active)
+        }
+        
         return {
             active,
             buttonStyle,
             iconStyle,
             transformStyle,
-            handleClick
+            close,
+            handleButonClick,
+            handleMenuClick
         }
     }
 }

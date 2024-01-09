@@ -1,7 +1,7 @@
 <script src="./index"></script>
 <template>
     <div class="page-menu">
-        <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleClick">
+        <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleButonClick">
             <span :style="iconStyle">
                 <svg t="1693220439194" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     p-id="6958" width="32" height="32">
@@ -13,7 +13,11 @@
         </div>
         <transition name="scale">
             <div class="menu" v-show="active" :style="transformStyle">
-                <div class="menu-content"></div>
+                <div class="menu-content">
+                    <div class="menu-box" @click="handleMenuClick">
+                        <span>waves</span>
+                    </div>
+                </div>
             </div>
         </transition>
     </div>
@@ -58,12 +62,69 @@
     position: absolute;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
+
+    .menu-content {
+        padding: 3.75rem;
+
+        .menu-box {
+            position: relative;
+            width: 128px;
+            height: 128px;
+            background: repeating-conic-gradient(from var(--rotate), var(--theme-gradient-color-1) 0%, transparent 15%, transparent 30%, var(--theme-gradient-color-1) 50%);
+            text-align: center;
+            line-height: 128px;
+            cursor: pointer;
+            border-radius: 20px;
+            animation: border-rotate 3s linear infinite;
+            animation-play-state: paused;
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+                background: repeating-conic-gradient(from var(--rotate), var(--theme-gradient-color-2) 0%, transparent 15%, transparent 30%, var(--theme-gradient-color-2) 50%);
+                animation: border-rotate 3s linear infinite;
+                animation-play-state: paused;
+                animation-delay: -0.5s;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 6px;
+                border-radius: 15px;
+                background-color:#F5F7FA;
+            }
+            &:hover{
+                animation-play-state: running;
+                &::before{
+                    animation-play-state: running;
+                }
+            }
+            @keyframes border-rotate {
+                0% {
+                    --rotate: 0deg;
+                }
+
+                100% {
+                    --rotate: 360deg;
+                }
+            }
+        }
+    }
 }
-.scale-enter-active, .scale-leave-active {
+
+.scale-enter-active,
+.scale-leave-active {
     transform: scale(1);
     transition: all var(--transition-time) cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-.scale-enter-from, .scale-leave-to {
+
+.scale-enter-from,
+.scale-leave-to {
     transform: scale(0);
 }
 </style>

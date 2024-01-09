@@ -5,20 +5,24 @@ export default {
     name: "PageContainer",
     components: { PageMenu },
     setup() {
-        const menuVisible = ref(false)
-        const showMenu = (visible) => {
-             visible.value = !visible.value
-        }
 
         const router = useRouter()
         const back = () => {
             router.push("/")
-            menuVisible.value = false
         }
+        const showMenu = (visible) => {
+             visible.value = !visible.value
+        }
+
+        const menuClick = (active) => {
+            console.log("menuClick")
+            active.value = false
+        }
+       
         return {
-            menuVisible,
             back,
             showMenu,
+            menuClick,
         }
     }
 }

@@ -4,7 +4,12 @@
         <div class="back" @click="back">
             <span>×</span>
         </div>
-        <PageMenu position="bottom-left" :visible="menuVisible" @visible-change="showMenu"></PageMenu>
+        <PageMenu 
+            position="bottom-left" 
+            :visible="false"
+             @visible-change="showMenu" 
+             @menu-click="menuClick">
+        </PageMenu>
         <div class="content">
             <RouterView />
         </div>
