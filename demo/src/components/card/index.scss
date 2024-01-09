@@ -44,10 +44,12 @@
         }
     }
     &.background-animation {
-        background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4, #c71dc7);
-        background-size: 500%;
-        animation: background-move 3s linear infinite;
-        animation-play-state: paused;
+        &::after {
+            background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4, #c71dc7);
+            background-size: 500%;
+            animation: background-move 6s linear infinite;
+            animation-play-state: paused;
+        }
     }
     &::before {
         content: "";
@@ -63,7 +65,7 @@
         position: absolute;
         z-index: -1;
         inset: var(--border-width);
-        border-radius: var(--border-radius);
+        border-radius: calc(var(--border-radius) - var(--border-width));
         background: var(--theme-card-background);
         box-shadow: 0 0 10px 10px var(--theme-box-shadow-color) inset;
     }
