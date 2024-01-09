@@ -1,37 +1,71 @@
-@import '@/assets/css/index.scss';
+@import "@/assets/css/index.scss";
 
 .card-box {
+    --border-radius: 1.25rem;
+    --border-width: 6px;
     position: relative;
-    background: repeating-conic-gradient(from var(--rotate), var(--theme-gradient-color-1) 0%, transparent 15%, transparent 30%, var(--theme-gradient-color-1) 50%);
     text-align: center;
-    line-height: 128px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    border-radius: 20px;
-    animation: border-rotate 3s linear infinite;
-    animation-play-state: paused;
+    font-size: 1.5rem;
+    color: var(--theme-text-color);
+    border: var(--border-width) solid var(--theme-gradient-color-1);
+    background: var(--theme-page-background);
+    border-radius: var(--border-radius);
     box-shadow: 0 0 10px 5px var(--theme-box-shadow-color);
-
+    z-index: 3;
+    overflow: hidden;
+    padding: var(--border-width);
+    box-sizing: border-box;
+    &.border-animation {
+        border: none;
+        background: repeating-conic-gradient(
+            from var(--rotate),
+            var(--theme-gradient-color-1) 0%,
+            transparent 10%,
+            transparent 30%,
+            var(--theme-gradient-color-1) 50%
+        );
+        animation: border-rotate 3s linear infinite;
+        animation-play-state: paused;
+        &::before {
+            background: repeating-conic-gradient(
+                from var(--rotate),
+                var(--theme-gradient-color-2) 0%,
+                transparent 10%,
+                transparent 30%,
+                var(--theme-gradient-color-2) 50%
+            );
+            animation: border-rotate 3s linear infinite;
+            animation-play-state: paused;
+            animation-delay: -0.5s;
+        }
+    }
+    &.background-animation {
+        background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4, #c71dc7);
+        background-size: 500%;
+        animation: background-move 3s linear infinite;
+        animation-play-state: paused;
+    }
     &::before {
         content: "";
         position: absolute;
         inset: 0;
-        border-radius: 20px;
-        filter: blur(20px);
-        background: repeating-conic-gradient(from var(--rotate), var(--theme-gradient-color-2) 0%, transparent 15%, transparent 30%, var(--theme-gradient-color-2) 50%);
-        animation: border-rotate 3s linear infinite;
-        animation-play-state: paused;
-        animation-delay: -0.5s;
+        z-index: -2;
+        border-radius: var(--border-radius);
+        filter: blur(var(--border-radius));
     }
 
     &::after {
         content: "";
         position: absolute;
-        inset: 6px;
-        border-radius: 15px;
-        background: linear-gradient(90deg,#03a9f4,#f441a5,#ffeb3b,#03a9f4,#c71dc7);
-        background-size: 500%;
-        animation: background-move 3s linear infinite;
-        animation-play-state: paused;
+        z-index: -1;
+        inset: var(--border-width);
+        border-radius: var(--border-radius);
+        background: var(--theme-card-background);
+        box-shadow: 0 0 10px 10px var(--theme-box-shadow-color) inset;
     }
 
     &:hover {
@@ -44,8 +78,44 @@
         &::after {
             animation-play-state: running;
         }
+        .card-title {
+            transform: scale(1.15);
+            color: #333;
+            overflow: unset;
+            white-space: unset;
+            word-break: break-all;
+            text-shadow:
+                0 2px var(--theme-gradient-color-1),
+                2px 0 var(--theme-gradient-color-1),
+                0 -2px var(--theme-gradient-color-1),
+                -2px 0 var(--theme-gradient-color-1),
+                2px 2px var(--theme-gradient-color-1),
+                2px -2px var(--theme-gradient-color-1),
+                -2px -2px var(--theme-gradient-color-1),
+                -2px 2px var(--theme-gradient-color-1);
+        }
     }
 
+    .card-title {
+        font-weight: 600;
+        color: #f5f5f5;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 1rem;
+        box-sizing: border-box;
+        display: block;
+        text-shadow:
+            0 2px var(--theme-gradient-color-2),
+            2px 0 var(--theme-gradient-color-2),
+            0 -2px var(--theme-gradient-color-2),
+            -2px 0 var(--theme-gradient-color-2),
+            2px 2px var(--theme-gradient-color-2),
+            2px -2px var(--theme-gradient-color-2),
+            -2px -2px var(--theme-gradient-color-2),
+            -2px 2px var(--theme-gradient-color-2);
+        transition: all var(--transition-time) ease;
+    }
     @keyframes background-move {
         100% {
             background-position: 500% 0;

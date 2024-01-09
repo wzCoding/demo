@@ -6,6 +6,7 @@
     --theme-header-background: #ffffff;
     --theme-button-background: #9f2b83;
     --theme-box-shadow-color: rgba(0, 0, 0, 0.1);
+    --theme-card-background:#EBEEF5;
     --header-height: 57px;
     --transition-time: 0.3s;
 }
@@ -18,6 +19,7 @@
     --theme-header-background: #22272e;
     --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(64, 158, 255, 0.3);
+    --theme-card-background:#22272e;
     --header-height: 57px;
     --transition-time: 0.3s;
 }

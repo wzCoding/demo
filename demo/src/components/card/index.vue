@@ -1,7 +1,9 @@
 <style lang="scss" src="./index.scss" scoped></style>
 <template>
     <div class="card card-box" :class="cardClass" :style="cardStyle" @click="handleClick">
-        <slot></slot>
+        <slot>
+            <span class="card-title">{{ title }}</span>
+        </slot>
     </div>
 </template>
 <script>
@@ -13,6 +15,7 @@ export default {
         backgroundAnimation: { type: Boolean, default: false },
         autoSize: { type: Boolean, default: false },
         size: { type: String, default: "128" },
+        title: { type: String, default: "" },
     },
     emits: ["cardClick"],
     setup(props, { emit }) {

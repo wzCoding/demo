@@ -14,8 +14,8 @@
         <transition name="scale">
             <div class="menu" v-show="active" :style="transformStyle">
                 <div class="menu-content">
-                    <Card :auto-size="true" :border-animation="false" @cardClick="handleMenuClick">
-                        <span>waves</span>
+                    <Card :auto-size="true" :border-animation="true" title="waves" @cardClick="handleMenuClick">
+                        <!-- <span>waveswaveswaves</span> -->
                     </Card>
                 </div>
             </div>
