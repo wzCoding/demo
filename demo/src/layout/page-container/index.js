@@ -10,8 +10,8 @@ export default {
         const back = () => {
             router.push("/")
         }
-        const showMenu = (visible) => {
-             visible.value = !visible.value
+        const showMenu = (active) => {
+             active.value = !active.value
         }
 
         const menuClick = (active) => {

@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import Card from '@/components/card'
 export default {
     name: "PageMneu",
     props: {
@@ -18,6 +19,7 @@ export default {
             default: () => []
         }
     },
+    components: { Card },
     emits: ["visibleChange","menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')

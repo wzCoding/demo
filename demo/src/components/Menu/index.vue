@@ -14,9 +14,9 @@
         <transition name="scale">
             <div class="menu" v-show="active" :style="transformStyle">
                 <div class="menu-content">
-                    <div class="menu-box" @click="handleMenuClick">
+                    <Card :auto-size="true" :border-animation="false" @cardClick="handleMenuClick">
                         <span>waves</span>
-                    </div>
+                    </Card>
                 </div>
             </div>
         </transition>
@@ -65,55 +65,6 @@
 
     .menu-content {
         padding: 3.75rem;
-
-        .menu-box {
-            position: relative;
-            width: 128px;
-            height: 128px;
-            background: repeating-conic-gradient(from var(--rotate), var(--theme-gradient-color-1) 0%, transparent 15%, transparent 30%, var(--theme-gradient-color-1) 50%);
-            text-align: center;
-            line-height: 128px;
-            cursor: pointer;
-            border-radius: 20px;
-            animation: border-rotate 3s linear infinite;
-            animation-play-state: paused;
-            &::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                border-radius: 20px;
-                background: repeating-conic-gradient(from var(--rotate), var(--theme-gradient-color-2) 0%, transparent 15%, transparent 30%, var(--theme-gradient-color-2) 50%);
-                animation: border-rotate 3s linear infinite;
-                animation-play-state: paused;
-                animation-delay: -0.5s;
-            }
-
-            &::after {
-                content: "";
-                position: absolute;
-                inset: 6px;
-                border-radius: 15px;
-                background-color:#F5F7FA;
-            }
-            &:hover{
-                animation-play-state: running;
-                &::before{
-                    animation-play-state: running;
-                }
-            }
-            @keyframes border-rotate {
-                0% {
-                    --rotate: 0deg;
-                }
-
-                100% {
-                    --rotate: 360deg;
-                }
-            }
-        }
     }
 }
 
