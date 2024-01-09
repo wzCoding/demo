@@ -8,5 +8,4 @@ export default {
     name: "components"
 }
 </script>
-<style lang="scss" scoped>
-</style>
+<style src="./index.scss" lang="scss" scoped></style>

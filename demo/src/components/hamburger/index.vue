@@ -1,4 +1,3 @@
-<script src="./index"></script>
 <template>
     <div class="hamburger" @click="handleClick">
         <div class="hamburger-button" :class="hamburgerClass">
@@ -8,129 +7,58 @@
         </div>
     </div>
 </template>
-<style lang="scss" scoped>
-@import '@/assets/css/index.scss';
-
-.hamburger {
-    .hamburger-button {
-        --hamburger-width: 1.5rem;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
-        span {
-            position: relative;
-            display: block;
-            width: var(--hamburger-width);
-            height: 3px;
-            border-radius: 3px;
-            transition: all .1s linear;
-            @extend .background-gradient;
-
-            &:nth-child(1) {
-                top: -3px;
+<style src="./index.scss" lang="scss" scoped></style>
+<script>
+import { ref, toRefs, computed } from "vue"
+export default {
+    name: "Hamburger",
+    props: {
+        type: {
+            type: String,
+            default: "default",
+            validator: (value) => {
+                return [
+                    "default",
+                    "odd",
+                    "arrow"
+                ].includes(value)
             }
-
-            &:nth-child(3) {
-                top: 3px;
+        },
+        align: {
+            type: String,
+            default: "left",
+            validator: (value) => {
+                return ["left", "right"].includes(value)
             }
+        },
+        active: { type: Boolean, default: null }
+    },
+    emits: ["hamburgerClick"],
+    setup(props, { emit }) {
+        const { type, align, active } = toRefs(props)
+        const selfActive = ref(false)
+        const hamburgerActive = computed(() => {
+            const result = active.value !== null ? active.value : selfActive.value
+            return result
+        })
+        const hamburgerClass = computed(() => {
+            const classObj = {
+                [type.value]: type.value,
+                active: hamburgerActive.value
+            }
+            if (type.value !== "default") classObj[align.value] = align.value
+            return classObj
+        })
+        const handleClick = () => {
+            if (active.value == null) {
+                selfActive.value = !selfActive.value
+            }
+            emit("hamburgerClick", hamburgerActive.value)
         }
-
-        &.default {
-            &.active {
-                span:nth-child(1) {
-                    transform: rotate(45deg) translate(3px, 3px);
-                }
-
-                span:nth-child(2) {
-                    background: transparent;
-                }
-
-                span:nth-child(3) {
-                    transform: rotate(-45deg) translate(5px, -6px);
-                }
-            }
+        return {
+            hamburgerClass,
+            handleClick
         }
-
-        &.odd {
-            span:nth-child(1) {
-                top: -4px;
-                width: var(--hamburger-width);
-            }
-
-            span:nth-child(2) {
-                width: calc(var(--hamburger-width) - 10px);
-            }
-
-            span:nth-child(3) {
-                top: 4px;
-                width: calc(var(--hamburger-width) - 5px)
-            }
-
-            &.left {
-                align-items: flex-start;
-            }
-
-            &.right {
-                align-items: flex-end;
-            }
-
-            &.active {
-                span:nth-child(1) {
-                    transform: rotate(45deg) translate(5px, 5px);
-                }
-
-                span:nth-child(2) {
-                    background: transparent;
-                }
-
-                span:nth-child(3) {
-                    width: var(--hamburger-width) !important;
-                    transform: rotate(-45deg) translate(4px, -5px);
-                }
-            }
-
-            &:hover {
-                span {
-                    width: var(--hamburger-width);
-                }
-            }
-        }
-
-        &.arrow {
-            &.active {
-                &.left {
-                    align-items: flex-start;
-
-                    span:nth-child(1) {
-                        width: calc(var(--hamburger-width) * 0.6);
-                        transform: rotate(-45deg) translate(-2px, 0);
-                    }
-
-                    span:nth-child(3) {
-                        width: calc(var(--hamburger-width) * 0.6);
-                        transform: rotate(45deg) translate(-2px, -1px);
-                    }
-                }
-
-                &.right {
-                    align-items: flex-end;
-
-                    span:nth-child(1) {
-                        width: calc(var(--hamburger-width) * 0.6);
-                        transform: rotate(45deg) translate(3px, -1px);
-                    }
-
-                    span:nth-child(3) {
-                        width: calc(var(--hamburger-width) * 0.6);
-                        transform: rotate(-45deg) translate(3px, 0.5px);
-                    }
-                }
-            }
-        }
-
-
-
-
     }
-}</style>
+}
+</script>

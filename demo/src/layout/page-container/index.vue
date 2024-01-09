@@ -1,4 +1,3 @@
-<script src="./index"></script>
 <template>
     <main class="main">
         <div class="back" @click="back">
@@ -15,75 +14,33 @@
         </div>
     </main>
 </template>
-<style lang="scss" scoped>
-@import '@/assets/css/index.scss';
+<style src="./index.scss" lang="scss" scoped></style>
+<script>
+import { useRouter } from "vue-router"
+import PageMenu from "@/components/Menu/index.vue"
+export default {
+    name: "PageContainer",
+    components: { PageMenu },
+    setup() {
 
-.main {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    box-shadow: 0px 0px 35px -5px var(--theme-box-shadow-color);
-    border-radius: 10px;
-    top: 20px;
-    left: 20px;
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    z-index: 997;
-    background-color: var(--theme-page-background);
+        const router = useRouter()
+        const back = () => {
+            router.push("/")
+        }
+        const showMenu = (active) => {
+             active.value = !active.value
+        }
 
-    .back {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        padding: 0 5px 5px 5px;
-        color: #fff;
-        border: 0;
-        font-size: 1.5rem;
-        border-radius: 0 0 15px 15px;
-        -webkit-box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.4);
-        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.4);
-        z-index: 998;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        @extend .box-gradient;
+        const menuClick = (active) => {
+            console.log("menuClick")
+            active.value = false
+        }
+       
+        return {
+            back,
+            showMenu,
+            menuClick,
+        }
     }
-
-    .content {
-        flex: 1;
-        height: 100%;
-    }
-
-    &::before {
-        content: "";
-        position: absolute;
-        bottom: -300px;
-        left: -200px;
-        width: 700px;
-        height: 700px;
-        background: -webkit-radial-gradient(rgba(230, 18, 188, 0.2), transparent 65%);
-        background: -o-radial-gradient(rgba(230, 18, 188, 0.2), transparent 65%);
-        background: radial-gradient(rgba(230, 18, 188, 0.2), transparent 65%);
-        border-radius: 50%;
-        z-index: -1;
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: -300px;
-        right: -200px;
-        width: 700px;
-        height: 700px;
-        background: -webkit-radial-gradient(rgba(10, 27, 216, 0.2), transparent 65%);
-        background: -o-radial-gradient(rgba(10, 27, 216, 0.2), transparent 65%);
-        background: radial-gradient(rgba(10, 27, 216, 0.2), transparent 65%);
-        border-radius: 50%;
-        z-index: -1;
-    }
-}</style>
+}
+</script>

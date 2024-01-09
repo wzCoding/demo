@@ -1,0 +1,55 @@
+@import '@/assets/css/index.scss';
+
+.menu-button {
+    width: 3.75rem;
+    height: 3.75rem;
+    cursor: pointer;
+    z-index: 5;
+    transition: all .2s linear;
+    z-index: 998;
+    opacity: 0.5;
+    box-shadow: 0px 5px 20px 0px var(--theme-box-shadow-color);
+    background: transparent;
+    outline: none;
+
+    &.active {
+        opacity: 1;
+        @extend .box-gradient;
+
+        .icon {
+            fill: #fff;
+        }
+    }
+
+    &:hover {
+        @extend .active
+    }
+
+    .menu-icon {
+        .icon {
+            fill: var(--theme-gradient-color-2);
+            width: 2rem;
+        }
+    }
+}
+
+.menu {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .menu-content {
+        padding: 3.75rem;
+    }
+}
+
+.scale-enter-active,
+.scale-leave-active {
+    transform: scale(1);
+    transition: all var(--transition-time) cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.scale-enter-from,
+.scale-leave-to {
+    transform: scale(0);
+}

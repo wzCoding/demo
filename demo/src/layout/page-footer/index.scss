@@ -1,0 +1,22 @@
+@import '@/assets/css/index.scss';
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .75rem;
+    color: var(--theme-text-color);
+    .footer-content {
+        padding: .75rem 0;
+        a {
+            text-decoration: none;
+            font-weight: 600;
+            @extend .text-gradient;
+        }
+    }
+
+}
