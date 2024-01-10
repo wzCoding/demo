@@ -3,7 +3,7 @@
         <div class="header-main">
             <div class="header-left">
                 <slot name="left">
-                    <IconButton class="header-title" :icon="titleIcon" :text="title"/>
+                    <icon-button class="header-title" :icon="titleIcon" :text="title" />
                 </slot>
             </div>
             <div class="header-right">
@@ -12,15 +12,23 @@
                         <div class="header-links">
                             <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
                                 target="_blank" rel="noopener noreferrer">
-                                <IconButton :icon="item.icon" :text="item.title" />
+                                <icon-button :text="item.title">
+                                    <icon-svg size="32" color="#fff">
+                                        <component :is="item.icon"></component>
+                                    </icon-svg>
+                                </icon-button>
                             </a>
                         </div>
                     </template>
                     <template v-if="themeControl">
                         <div class="theme-control">
                             <div class="theme-btn" :class="themeClass">
-                                <IconButton v-for=" item  in  themeIcon " :key="item.theme" :icon="item.icon"
-                                    :class="item.theme" gap="0" @click="themeChange(item.toChangeTheme)" />
+                                <icon-button v-for=" item in themeIcon " :key="item.theme" :class="item.theme" gap="0"
+                                    @click="themeChange(item.toChangeTheme)">
+                                    <icon-svg size="32" :color="item.color">
+                                        <component :is="item.icon"></component>
+                                    </icon-svg>
+                                </icon-button>
                             </div>
                         </div>
                     </template>
@@ -34,6 +42,14 @@
 import { computed } from "vue"
 import { useThemeStore } from "@/store/useThemeStore"
 import IconButton from "@/components/IconButton"
+import IconSvg from "@/components/IconSvg"
+
+//引入svg图标
+import blog from "@/assets/images/svg/blog.vue"
+import github from "@/assets/images/svg/github.vue"
+import light from "@/assets/images/svg/light.vue"
+import dark from "@/assets/images/svg/dark.vue"
+
 export default {
     name: "PageHeader",
     props: {
@@ -55,12 +71,12 @@ export default {
                 return [
                     {
                         title: "Blog",
-                        icon: "blog.svg",
+                        icon: blog,
                         path: "https://wzcoding.github.io/blog/",
                     },
                     {
                         title: "Github",
-                        icon: "github.svg",
+                        icon: github,
                         path: "https://github.com/wzCoding?tab=repositories",
                     }
                 ]
@@ -69,6 +85,7 @@ export default {
     },
     components: {
         IconButton,
+        IconSvg
     },
     setup() {
         const themeStore = useThemeStore()
@@ -76,12 +93,14 @@ export default {
         const themeIcon = [
             {
                 theme: "light",
-                icon: require('@/assets/images/theme/light.svg'),
+                color: "#f19b3d",
+                icon: light,
                 toChangeTheme: "dark"
             },
             {
                 theme: "dark",
-                icon: require('@/assets/images/theme/dark.svg'),
+                color: "#0c81e4",
+                icon: dark,
                 toChangeTheme: ""
             }
         ]

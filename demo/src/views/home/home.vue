@@ -7,8 +7,11 @@
                     <div class="menu-wrap">
                         <div class="menu-grid">
                             <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
-                                <IconButton class="menu-btn" direction="top" :icon="menu.icon" :text="menu.title"
-                                    @click="toPage(menu.path)" />
+                                <icon-button class="menu-btn" direction="top" :text="menu.title" @click="toPage(menu.path)">
+                                    <icon-svg size="32" color="#fff">
+                                        <component :is="svgs[getSvgComponent(menu.icon)]"></component>
+                                    </icon-svg>
+                                </icon-button>
                             </div>
                         </div>
                     </div>
@@ -27,8 +30,11 @@
                             title }}</span>
                 </h2>
                 <p class="home-info">{{ info }}</p>
-                <IconButton class="start-btn" :icon="startBtn.icon" @click="toPage()">
-                    {{ startBtn.name }}</IconButton>
+                <icon-button class="start-btn" :icon="startBtn.icon" :text="startBtn.name" @click="toPage()">
+                    <icon-svg size="32" color="#fff">
+                        <component :is="svgs[getSvgComponent(startBtn.icon)]"></component>
+                    </icon-svg>
+                </icon-button>
             </div>
         </div>
     </div>
@@ -37,7 +43,24 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/useMenuStore'
-import IconButton from '@/components/IconButton/index.vue'
+import IconButton from '@/components/IconButton'
+import IconSvg from '@/components/IconSvg'
+//svg图标引入
+import css from '@/assets/images/svg/css.vue'
+import chart from '@/assets/images/svg/chart.vue'
+import canvas from '@/assets/images/svg/canvas.vue'
+import comp from '@/assets/images/svg/comp.vue'
+import about from '@/assets/images/svg/about.vue'
+import rightArrow from '@/assets/images/svg/right-arrow.vue'
+
+const svgs = {
+    'css': css,
+    'chart': chart,
+    'canvas': canvas,
+    'comp': comp,
+    'about': about,
+    'right-arrow': rightArrow
+}
 
 const id = "home"
 const loading = ref(false)
@@ -61,5 +84,7 @@ const router = useRouter()
 const toPage = (path) => {
     if (path) router.push(path)
 }
-
+const getSvgComponent = (icon) => {
+    return icon.split(".")[0]
+}
 </script>

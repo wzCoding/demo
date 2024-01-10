@@ -1,12 +1,9 @@
 <template>
     <div class="icon-btn" :style="styleObj">
-        <span v-if="btnIcon" class="icon">
-            <slot name="icon">
-                <img :src="btnIcon" alt="icon">
-            </slot>
-        </span>
+        <slot>
+            <img v-if="btnIcon" :src="btnIcon" class="icon" alt="icon">
+        </slot>
         <span v-if="text" class="text">{{ text }}</span>
-        <slot></slot>
     </div>
 </template>
 <style src="./index.scss" lang="scss" scoped></style>
@@ -15,7 +12,7 @@ import { computed } from "vue"
 export default {
     name: "IconButton",
     props: {
-        //图标的方向
+        //图标的位置
         direction: {
             type: String,
             default: "left",
@@ -41,7 +38,9 @@ export default {
     setup(props) {
         const btnIcon = computed(() => {
             let resource = ''
-            if (props.icon) resource = props.icon.includes('/img/') ? props.icon : require(`../../assets/images/${props.icon}`)
+            if (props.icon) {
+                resource = props.icon.includes('/img/') ? props.icon : require(`../../assets/images/${props.icon}`)
+            }
             return resource
         })
         const iconDirection = computed(() => {
@@ -62,6 +61,7 @@ export default {
                 gap: ["top", "bottom"].includes(props.direction) ? `${itemGap.value} 0` : `0 ${itemGap.value}`
             }
         })
+
         return {
             btnIcon,
             styleObj

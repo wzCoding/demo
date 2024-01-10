@@ -9,7 +9,7 @@
         {
             "index": "2",
             "title": "canvas",
-            "icon": "cubes.svg",
+            "icon": "canvas.svg",
             "path": "/canvas"
         },
         {
@@ -27,7 +27,7 @@
         {
             "index": "5",
             "title": "组件",
-            "icon": "build.svg",
+            "icon": "comp.svg",
             "path": "/components"
         },
         {

@@ -1,7 +1,7 @@
 <template>
     <div class="page-menu">
         <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleButonClick">
-            <IconButton class="menu-icon" icon="menu.svg"></IconButton>
+            <IconButton class="menu-icon" icon="menu.svg" :style="iconStyle"></IconButton>
         </div>
         <transition name="scale">
             <div class="menu" v-show="active" :style="transformStyle">
