@@ -16,7 +16,7 @@
         justify-content: space-between;
         align-items: center;
         z-index: 5;
-        padding: 0 2rem;
+        padding: 0 1rem;
 
         .header-left {
             display: flex;
@@ -58,9 +58,8 @@
                         @extend .text-gradient;
                     }
 
-                    :deep(.icon img) {
+                    svg {
                         border-radius: 8px;
-                        width: 1.5rem;
                         @extend .box-gradient;
                     }
 
@@ -78,10 +77,6 @@
 
                 .theme-btn {
                     transition: all var(--transition-time) ease;
-
-                    :deep(.icon img) {
-                        width: 1.5rem;
-                    }
 
                     &.dark {
                         transform: translateY(-1.5rem);

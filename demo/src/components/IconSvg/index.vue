@@ -14,7 +14,7 @@ export default {
     props: {
         size: {
             type: [Number, String],
-            default: 18
+            default: 32
         },
         color: {
             type: String,
@@ -38,16 +38,8 @@ export default {
                 width: props.size.includes('px') ? `${props.size}` : `${props.size}px`,
                 height: props.size.includes('px') ? `${props.size}` : `${props.size}px`,
             }
-
         })
-        return { iconName,styles };
+        return { iconName, styles };
     }
 }
 </script>
-<style scoped>
-svg {
-    display: inline-block;
-    vertical-align: baseline;
-    margin-bottom: -2px;
-}
-</style>

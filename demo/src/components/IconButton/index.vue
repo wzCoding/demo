@@ -1,7 +1,9 @@
 <template>
     <div class="icon-btn" :style="styleObj">
         <slot>
-            <img v-if="btnIcon" :src="btnIcon" class="icon" alt="icon">
+            <span class="icon">
+                <img v-if="btnIcon" :src="btnIcon" alt="icon">
+            </span>
         </slot>
         <span v-if="text" class="text">{{ text }}</span>
     </div>

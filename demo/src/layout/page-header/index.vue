@@ -13,7 +13,7 @@
                             <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
                                 target="_blank" rel="noopener noreferrer">
                                 <icon-button :text="item.title">
-                                    <icon-svg size="32" color="#fff">
+                                    <icon-svg size="24" color="#fff">
                                         <component :is="item.icon"></component>
                                     </icon-svg>
                                 </icon-button>
@@ -25,7 +25,7 @@
                             <div class="theme-btn" :class="themeClass">
                                 <icon-button v-for=" item in themeIcon " :key="item.theme" :class="item.theme" gap="0"
                                     @click="themeChange(item.toChangeTheme)">
-                                    <icon-svg size="32" :color="item.color">
+                                    <icon-svg size="24" :color="item.color">
                                         <component :is="item.icon"></component>
                                     </icon-svg>
                                 </icon-button>
