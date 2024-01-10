@@ -1,7 +1,11 @@
 <template>
     <div class="page-menu">
         <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleButonClick">
-            <IconButton class="menu-icon" icon="menu.svg" :style="iconStyle"></IconButton>
+            <icon-button class="menu-icon" :style="iconStyle">
+                <icon-svg size="32">
+                    <component :is="menu"></component>
+                </icon-svg>
+            </icon-button>
         </div>
         <transition name="scale">
             <div class="menu" v-show="active" :style="transformStyle">
@@ -18,6 +22,9 @@
 import { computed, ref } from 'vue'
 import Card from '../Card'
 import IconButton from '../IconButton'
+import IconSvg from '../IconSvg'
+import menu from '@/assets/images/svg/menu.vue'
+
 export default {
     name: "PageMneu",
     props: {
@@ -37,7 +44,7 @@ export default {
             default: () => []
         }
     },
-    components: { IconButton, Card },
+    components: { IconButton, IconSvg, Card },
     emits: ["visibleChange", "menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')
@@ -83,7 +90,8 @@ export default {
             transformStyle,
             close,
             handleButonClick,
-            handleMenuClick
+            handleMenuClick,
+            menu
         }
     }
 }

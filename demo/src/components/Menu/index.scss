@@ -16,8 +16,10 @@
         opacity: 1;
         @extend .box-gradient;
 
-        .icon {
-            fill: #fff;
+        .menu-icon {
+            svg {
+                fill: #fff;
+            }
         }
     }
 
@@ -26,7 +28,7 @@
     }
 
     .menu-icon {
-        .icon {
+        svg {
             fill: var(--theme-gradient-color-2);
             width: 2rem;
         }

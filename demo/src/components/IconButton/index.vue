@@ -1,8 +1,8 @@
 <template>
     <div class="icon-btn" :style="styleObj">
         <slot>
-            <span class="icon">
-                <img v-if="btnIcon" :src="btnIcon" alt="icon">
+            <span v-if="btnIcon" class="icon">
+                <img :src="btnIcon" alt="icon">
             </span>
         </slot>
         <span v-if="text" class="text">{{ text }}</span>
@@ -24,7 +24,7 @@ export default {
         },
         //使用的图标
         icon: {
-            type: String,
+            type: [String, Object],
             default: ""
         },
         text: {
@@ -63,7 +63,7 @@ export default {
                 gap: ["top", "bottom"].includes(props.direction) ? `${itemGap.value} 0` : `0 ${itemGap.value}`
             }
         })
-
+        console.log(props.icon)
         return {
             btnIcon,
             styleObj
