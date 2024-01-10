@@ -63,7 +63,6 @@ export default {
                 gap: ["top", "bottom"].includes(props.direction) ? `${itemGap.value} 0` : `0 ${itemGap.value}`
             }
         })
-        console.log(props.icon)
         return {
             btnIcon,
             styleObj

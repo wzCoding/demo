@@ -45,10 +45,10 @@ import IconButton from "@/components/IconButton"
 import IconSvg from "@/components/IconSvg"
 
 //引入svg图标
-import blog from "@/assets/images/svg/blog.vue"
-import github from "@/assets/images/svg/github.vue"
-import light from "@/assets/images/svg/light.vue"
-import dark from "@/assets/images/svg/dark.vue"
+import IconBlog from "@/assets/images/svg/blog.vue"
+import IconGithub from "@/assets/images/svg/github.vue"
+import IconLight from "@/assets/images/svg/light.vue"
+import IconDark from "@/assets/images/svg/dark.vue"
 
 export default {
     name: "PageHeader",
@@ -71,12 +71,12 @@ export default {
                 return [
                     {
                         title: "Blog",
-                        icon: blog,
+                        icon: IconBlog,
                         path: "https://wzcoding.github.io/blog/",
                     },
                     {
                         title: "Github",
-                        icon: github,
+                        icon: IconGithub,
                         path: "https://github.com/wzCoding?tab=repositories",
                     }
                 ]
@@ -94,13 +94,13 @@ export default {
             {
                 theme: "light",
                 color: "#f19b3d",
-                icon: light,
+                icon: IconLight,
                 toChangeTheme: "dark"
             },
             {
                 theme: "dark",
                 color: "#0c81e4",
-                icon: dark,
+                icon: IconDark,
                 toChangeTheme: ""
             }
         ]

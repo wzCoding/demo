@@ -3,7 +3,7 @@
         <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleButonClick">
             <icon-button class="menu-icon" :style="iconStyle">
                 <icon-svg size="32">
-                    <component :is="menu"></component>
+                    <component :is="IconMenu"></component>
                 </icon-svg>
             </icon-button>
         </div>
@@ -23,7 +23,8 @@ import { computed, ref } from 'vue'
 import Card from '../Card'
 import IconButton from '../IconButton'
 import IconSvg from '../IconSvg'
-import menu from '@/assets/images/svg/menu.vue'
+//引入svg图标
+import IconMenu from '@/assets/images/svg/menu.vue'
 
 export default {
     name: "PageMneu",
@@ -91,7 +92,7 @@ export default {
             close,
             handleButonClick,
             handleMenuClick,
-            menu
+            IconMenu
         }
     }
 }
