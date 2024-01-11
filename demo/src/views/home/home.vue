@@ -52,7 +52,7 @@ import IconCanvas from '@/assets/images/svg/canvas.vue'
 import IconComp from '@/assets/images/svg/comp.vue'
 import IconAbout from '@/assets/images/svg/about.vue'
 import IconArrow from '@/assets/images/svg/arrow.vue'
-import { Message } from '@/components/Message'
+
 const svgs = {
     'css': IconCss,
     'chart': IconChart,
@@ -84,8 +84,6 @@ const router = useRouter()
 const toPage = (path) => {
     if(path){
         router.push(path)
-    }else{
-        Message.info('功能开发中...')
     }
 }
 const getSvgComponent = (icon) => {

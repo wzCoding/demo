@@ -12,6 +12,11 @@
                 <div class="menu-content">
                     <Card :auto-size="true" :border-animation="true" :background-animation="true" title="waves"
                         @cardClick="handleMenuClick" />
+                        <select>
+                            <option value="1">选项1</option>
+        <option value="2">选项2</option>
+        <option value="3">选项3</option>
+    </select>
                 </div>
             </div>
         </transition>
@@ -49,7 +54,7 @@ export default {
     emits: ["visibleChange", "menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')
-        const borderReverse = {
+        const radiusReverse = {
             top: 'bottom',
             bottom: 'top',
             left: 'right',
@@ -60,7 +65,7 @@ export default {
                 "position": "absolute",
                 [direction]: 0,
                 [align]: 0,
-                [`border-${borderReverse[direction]}-${borderReverse[align]}-radius`]: '100%'
+                [`border-${radiusReverse[direction]}-${radiusReverse[align]}-radius`]: '100%'
             }
         })
         const iconStyle = computed(() => {
