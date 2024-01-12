@@ -43,5 +43,4 @@ body {
   perspective: 1000px;
   background-color: var(--theme-page-background);
 }
-
 </style>

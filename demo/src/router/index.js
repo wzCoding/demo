@@ -1,52 +1,51 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 const routes = [
   {
-    path: '/',
     name: 'home',
-    nameCN: "主页",
-    component: () => import(/* webpackChunkName: "home" */ '../views/home/home.vue')
+    path: '/',
+    component: () => import(/* webpackChunkName: "home" */ '../views/home/home.vue'),
   },
   {
-    path: '/css',
-    name: 'css',
-    nameCN: "css",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "card" */ '../views/css/card.vue')
-  },
-  {
-    path: '/charts',
-    name: 'charts',
-    nameCN: "charts",
-    component: () => import(/* webpackChunkName: "card-carousel" */ '../views/charts/echarts1.vue')
-  },
-  {
-    path: '/canvas',
-    name: 'canvas',
-    nameCN: "canvas",
-    component: () => import(/* webpackChunkName: "echarts1" */ '../views/canvas/bird.vue')
-  },
-  {
-    path: '/components',
-    name: 'components',
-    nameCN: "components",
-    component: () => import(/* webpackChunkName: "echarts2" */ '../views/components/index.vue')
-  },
-  {
-    path: '/about',
-    name: 'about',
-    nameCN: "about",
-    component: () => import(/* webpackChunkName: "echarts2" */ '../views/about/index.vue')
-  },
+    path: '/home',
+    redirect: '/'
+  }
 ]
-const views = require.context("@/views",true,/\.vue$/)
-views.keys().forEach(item=>{
-  console.log(item)
+
+const menuPages = require.context("@/views", true, /\.vue$/)
+const indexViews = menuPages.keys().filter(item => item.includes("index.vue"))
+indexViews.forEach(item => {
+  const name = item.split("/")[1]
+  const route = {
+    name,
+    path: `/${name.toLowerCase()}/index`,
+    component: () => import(`@/views/${name}/index.vue`),
+  }
+  const redirect = {
+    path: `/${name.toLowerCase()}`,
+    redirect: `/${name.toLowerCase()}/index`
+  }
+  routes.push(
+     route,
+     redirect
+  )
 })
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
+router.beforeEach(to => {
+  try {
+    console.log(to)
+    console.log(routes)
+
+    if (!router.hasRoute(to.name)) {
+      console.log("no match")
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
 export default router

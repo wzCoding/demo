@@ -3,14 +3,10 @@
         <div class="back" @click="back">
             <span>×</span>
         </div>
-        <PageMenu 
-            position="bottom-left" 
-            :visible="false"
-             @visible-change="showMenu" 
-             @menu-click="menuClick">
+        <PageMenu position="bottom-left" :visible="false" @visible-change="showMenu" @menu-click="menuClick">
         </PageMenu>
         <div class="content">
-            <RouterView />
+           <router-view></router-view>
         </div>
     </main>
 </template>
@@ -28,14 +24,14 @@ export default {
             router.push("/")
         }
         const showMenu = (active) => {
-             active.value = !active.value
+            active.value = !active.value
         }
 
         const menuClick = (active) => {
             console.log("menuClick")
             active.value = false
         }
-       
+
         return {
             back,
             showMenu,
