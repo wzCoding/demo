@@ -1,33 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import Home from '../views/home/home.vue'
 const routes = [
   {
     name: 'home',
     path: '/',
-    component: () => import(/* webpackChunkName: "home" */ '../views/home/home.vue'),
+    component: Home,
   },
   {
-    path: '/home',
-    redirect: '/'
+    name: 'toHome',
+    path: '/:path(.*)',
+    component: Home,
   }
 ]
 
-const menuPages = require.context("@/views", true, /\.vue$/)
-const indexViews = menuPages.keys().filter(item => item.includes("index.vue"))
-indexViews.forEach(item => {
+const pages = require.context("@/views", true, /\.vue$/)
+const indexPages = pages.keys().filter(item => item.includes("index.vue"))
+indexPages.forEach(item => {
   const name = item.split("/")[1]
   const route = {
     name,
     path: `/${name.toLowerCase()}/index`,
     component: () => import(`@/views/${name}/index.vue`),
   }
-  const redirect = {
-    path: `/${name.toLowerCase()}`,
-    redirect: `/${name.toLowerCase()}/index`
-  }
   routes.push(
-     route,
-     redirect
+    route
   )
 })
 
@@ -37,15 +33,10 @@ const router = createRouter({
 })
 
 router.beforeEach(to => {
-  try {
-    console.log(to)
-    console.log(routes)
-
-    if (!router.hasRoute(to.name)) {
-      console.log("no match")
-    }
-  } catch (error) {
-    console.log(error)
-  }
+  const basePath = to.fullPath.split("/").filter(Boolean)[0]
+  const route = routes.filter(item => item.name === basePath)[0]
+  if (to.name === 'toHome') {
+    return route ? route.path : "/home"
+  } 
 })
 export default router
