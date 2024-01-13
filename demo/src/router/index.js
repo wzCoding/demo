@@ -21,9 +21,7 @@ indexPages.forEach(item => {
     path: `/${name.toLowerCase()}/index`,
     component: () => import(`@/views/${name}/index.vue`),
   }
-  routes.push(
-    route
-  )
+  routes.push(route)
 })
 
 const router = createRouter({
