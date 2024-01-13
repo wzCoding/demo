@@ -13,8 +13,7 @@ const routes = [
   }
 ]
 
-const pages = require.context("@/views", true, /\.vue$/)
-const indexPages = pages.keys().filter(item => item.includes("index.vue"))
+const indexPages = require.context("@/views", true, /\.vue$/).keys().filter(item => item.includes("index.vue"))
 indexPages.forEach(item => {
   const name = item.split("/")[1]
   const route = {

@@ -1,9 +1,9 @@
 <template>
-    <div class="bird"></div>
+    <div class="canvas" id="waves"></div>
 </template>
 <script>
 export default {
-    name:"bird"
+    name:"waves"
 }
 </script>
 <style lang="scss" scoped>
