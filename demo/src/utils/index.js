@@ -57,7 +57,7 @@ function getType(value) {
 }
 
 function isObject(value) {
-    return getType(value) === "object";
+    return getType(value) === "object" ? true : getType(value).includes("element");
 }
 
 function isArray(value) {
@@ -130,14 +130,14 @@ function deepClone(target) {
 }
 
 async function getData(id, type) {
-    if(!id || !type) return []
+    if (!id || !type) return []
     const param = { id, type }
     const result = await service.post('mock/data', param)
     return result && result.data ? deepClone(result.data) : []
 }
 
 function setStorageCache(key, value) {
-    if(!key) return
+    if (!key) return
     if (value) {
         localStorage.setItem(key, JSON.stringify(value));
     } else {

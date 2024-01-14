@@ -1,7 +1,7 @@
 import { Wave } from "./material/wave";
 import { Sun } from "./material/sun";
-import { Cloud } from "./material/cloud"
-import { Timer } from "../public/util/timer";
+import { Cloud } from "./material/cloud";
+import { Timer } from "@/utils/timer";
 const timer = new Timer();
 
 let cvs = null;
@@ -11,7 +11,7 @@ const materials = [];
 function handleMaterial(params, type) {
     const list = [];
     materials.push(type);
-
+   
     if (params.length) {
         for (let i = 0; i < params.length; i++) {
             params[i].canvas = cvs;
@@ -77,7 +77,7 @@ class Sea {
         }
     }
     stop() {
-        timer.stop();
+        timer.clear();
         ctx.clearRect(0,0,cvs.width,cvs.height);
         cvs.hide(true);
     }

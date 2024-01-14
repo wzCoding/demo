@@ -3,7 +3,6 @@ class Timer {
 
         this.timerId = null;
         this.timerClear = false;
-        this.timerStop = false;
 
     }
     loop(type, callback, delay) {
@@ -12,10 +11,9 @@ class Timer {
         let startTime = Date.now();
 
         //循环执行计算时间间隔
-        const _loop = () => {
+        const loopStart = () => {
 
             let currentTime = Date.now();
-
 
             if (this.timerClear) {
 
@@ -27,38 +25,35 @@ class Timer {
 
                 //此条件执行interval
                 if (type == "interval") {
-                    if (currentTime - startTime >= delay && !this.timerStop) {
+                    if (currentTime - startTime >= delay) {
                         callback && callback();
                         startTime = Date.now();
                     }
-                    this.timerId = window.requestAnimationFrame(_loop);
+                    this.timerId = window.requestAnimationFrame(loopStart);
                 }
 
                 //此条件执行timeout
                 else if (type == "timeout") {
-                    currentTime - startTime >= delay && !this.timerStop ? (callback && callback()) : (this.timerId = window.requestAnimationFrame(_loop))
+                    currentTime - startTime >= delay  ? (callback && callback()) : (this.timerId = window.requestAnimationFrame(loopStart))
                 }
             }
 
         }
 
         //定时! 启动!
-        this.timerId = requestAnimationFrame(_loop)
+        this.timerId = requestAnimationFrame(loopStart)
     }
 
     interval(callback, delay = 1000) {
-        this.timerStop = false;
+        this.timerClear = false
         this.loop("interval", callback, delay);
     }
 
     timeout(callback, delay = 1000) {
-        this.timerStop = false;
+        this.timerClear = false
         this.loop("timeout", callback, delay);
     }
-    stop() {
-        //this.clear();
-        this.timerStop = true;
-    }
+
     clear() {
         this.timerClear = true;
     }

@@ -1,4 +1,4 @@
-import { Timer } from "../public/util/timer";
+import { Timer } from "@/utils/timer";
 
 let ctx = null;
 let cvs = null;
@@ -11,7 +11,7 @@ const timer = new Timer();
  * @returns
  */
 class Rain {
-    constructor(canvas, text) {
+    constructor(canvas, text, color) {
 
         cvs = canvas;
         ctx = canvas.context;
@@ -19,6 +19,7 @@ class Rain {
         this.fontSize = 16;
         this.fontWeight = 700;
         this.fontFamily = "微软雅黑";
+        this.color = color || "#0f0";
 
         this.text = text && text.length ? text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
         this.letters = Array(Math.ceil(cvs.width / this.fontSize)).fill(0);
@@ -39,7 +40,7 @@ class Rain {
         timer.interval(this.createRain.bind(this), speed);
     }
     stop() {
-        timer.stop();
+        timer.clear();
         ctx.clearRect(0, 0, cvs.width, cvs.height);
         cvs.hide(true);
     }

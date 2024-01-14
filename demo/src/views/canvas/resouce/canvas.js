@@ -1,42 +1,56 @@
-import { debounce } from '../public/util/utils'
+import { debounce,isObject } from '@/utils/index'
 
 let container = null;
 /**
+ * @param {string} canvas.id - 将要创建的canvas的id
  * @param {string} canvas.parent - 放置canvas的容器（父元素）的id或class
- * @param {string} canvas.canvasId - 将要创建的canvas的id
+ * @param {object} canvas.styles - 设置canvas的样式
  * @param {number} canvas.width - 将要创建的canvas的宽度
  * @param {number} canvas.height - 将要创建的canvas的高度
- * @returns {Object} 包含canvas信息的对象
+ * @returns {object} 包含canvas信息的对象
  */
 class myCanvas {
     constructor({
         id,
         parent,
-        styles,
+        style,
         width,
         height,
-        navHeight
     }) {
-        container = parent;
+
+        const options = this.resolve(arguments[0])
+
+        container = options.parent;
         container.style.overflowX = "hidden";
-        this.id = id;
-        this.width = width ? width : parent.clientWidth;
-        this.height = height ? height : parent.clientHeight;
-        this.navHeight = navHeight ? navHeight : 0;
-        this.canvas = document.getElementById(id);
+
+        this.id = options.id;
+        this.width = options.width;
+        this.height = options.height;
+        this.canvas = document.getElementById(options.id);
         if (!this.canvas) {
             this.canvas = this.create();
             this.append();
         }
+        for (let key in options.styles) {
+            this.canvas.style[key] = options.styles[key]
+        }
         this.context = this.canvas.getContext('2d');
+
         this.init();
         this.resize();
-
-        if (styles) {
-            for (let key in styles) {
-                this.canvas.style[key] = styles[key]
-            }
+    }
+    resolve(params) {
+        const options = {
+            id: params.id ? params.id : 'my-canvas',
+            parent: document.body,
+            width: params.width ? params.width : document.documentElement.clientWidth,
+            height: params.height ? params.height : document.documentElement.clientHeight,
+            styles: params.styles ? params.styles : {},
         }
+        if (params.parent) {
+            options.parent = isObject(params.parent) ? params.parent : (document.getElementById(params.parent) || document.getElementsByClassName(params.parent))
+        }
+        return options
     }
     init() {
         const ratio = window.devicePixelRatio || 1;
@@ -45,7 +59,6 @@ class myCanvas {
         this.canvas.style.width = `${this.width}px`;
         this.canvas.style.height = `${this.height}px`;
         this.context.scale(ratio, ratio);
-
     }
     create() {
         const canvas = document.createElement("canvas");
@@ -66,7 +79,7 @@ class myCanvas {
     resize() {
         window.addEventListener('resize', debounce(() => {
             this.width = document.documentElement.clientWidth;
-            this.height = document.documentElement.clientHeight - this.navHeight;
+            this.height = document.documentElement.clientHeight;
             this.init();
         }, 100));
     }
