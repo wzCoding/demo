@@ -24,9 +24,9 @@ onMounted(() => {
         }
     });
     sea.value = new Sea(canvas.value);
-    getData('waves', 'data').then(res => {
+    getData(id, 'data').then(res => {
         loading.value = false
-        sea.value.addWave(res)
+        sea.value.addWave(res[0][id])
         sea.value.start(60)
     })
 

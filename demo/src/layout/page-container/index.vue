@@ -23,7 +23,6 @@ export default {
         const menuStore = useMenuStore()
         const router = useRouter()
         const id = computed(() => {
-            console.log(router.currentRoute.value)
             return router.currentRoute.value.name
         })
         const loading = ref(true)
@@ -39,10 +38,9 @@ export default {
         }
 
         const menuClick = (target,active) => {
-            console.log(target)
-            active.value = false
             router.addRoute({ path: target.path, component: () => import(`@/views${target.path}.vue`)})
             router.push(target.path)
+            active.value = false
         }
 
         return {
