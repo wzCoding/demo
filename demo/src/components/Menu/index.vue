@@ -10,8 +10,8 @@
         <transition name="scale">
             <div class="menu" v-show="visible" :style="transformStyle">
                 <div class="menu-content">
-                    <Card v-for="menu in menuList" :key="menu.title" class="menu-item" :class="{ active: menu.active }"
-                        @click="handleMenuClick(menu)">{{ menu.title }}</Card>
+                    <Card v-for="menu in menuList" :key="menu.title" width="100%" :title="menu.title"
+                        :class="{ active: menu.active }" @click="handleMenuClick(menu)" />
                 </div>
             </div>
         </transition>
@@ -49,7 +49,7 @@ export default {
             default: 0
         }
     },
-    components: { IconButton, IconSvg,Card },
+    components: { IconButton, IconSvg, Card },
     emits: ["visibleChange", "menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')
@@ -80,7 +80,7 @@ export default {
             }
         })
         const menuList = computed(() => {
-            return props.menus.map((menu,index) => {
+            return props.menus.map((menu, index) => {
                 return {
                     ...menu,
                     active: index === props.active,
