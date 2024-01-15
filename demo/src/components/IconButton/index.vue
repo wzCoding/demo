@@ -11,6 +11,7 @@
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
 import { computed } from "vue"
+import { convertCssUnit } from '@/utils/index'
 export default {
     name: "IconButton",
     props: {
@@ -55,7 +56,7 @@ export default {
             return flexs[props.direction]
         })
         const itemGap = computed(() => {
-            return props.gap.includes('px') ? props.gap : `${props.gap}px`
+            return  convertCssUnit(props.gap)
         })
         const styleObj = computed(() => {
             return {

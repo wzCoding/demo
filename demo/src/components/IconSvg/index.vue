@@ -8,7 +8,7 @@
 </template>
 <script>
 import { computed } from 'vue';
-
+import { convertCssUnit } from '@/utils/index'
 export default {
     name: "IconSvg",
     props: {
@@ -28,15 +28,10 @@ export default {
     setup(props) {
         const iconName = `icon-${props.name}`;
         const styles = computed(() => {
-            if (typeof props.size === 'number') {
-                return {
-                    width: `${props.size}px`,
-                    height: `${props.size}px`
-                }
-            }
+            const size = convertCssUnit(props.size);
             return {
-                width: props.size.includes('px') ? `${props.size}` : `${props.size}px`,
-                height: props.size.includes('px') ? `${props.size}` : `${props.size}px`,
+                width: size,
+                height: size
             }
         })
         return { iconName, styles };

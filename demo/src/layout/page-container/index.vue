@@ -3,7 +3,7 @@
         <div class="back" @click="back">
             <span>×</span>
         </div>
-        <PageMenu v-if="showMenu" position="bottom-left" :visible="false" :menus="menus" @visible-change="openMenu" @menu-click="menuClick">
+        <PageMenu v-if="showMenu" position="bottom-left" :menus="menus" @visible-change="openMenu" @menu-click="menuClick">
         </PageMenu>
         <div class="content">
             <router-view></router-view>
@@ -32,14 +32,15 @@ export default {
         const back = () => {
             router.push("/")
         }
-        const openMenu = (active) => {
-            active.value = !active.value
+        const openMenu = (visible) => {
+            visible.value = !visible.value
         }
 
-        const menuClick = (target, active) => {
+        const menuClick = (target, visible) => {
+            console.log(target)
             router.addRoute({ path: target.path, component: () => import(`@/views${target.path}.vue`) })
             router.push(target.path)
-            active.value = false
+            visible.value = false
         }
         if (showMenu.value) {
             menuStore.getMenu(id.value).then(res => {

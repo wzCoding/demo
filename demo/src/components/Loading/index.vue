@@ -10,7 +10,6 @@
 </template>
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
-import { toRefs } from 'vue';
 export default {
     name: "Loading",
     props: {
@@ -22,9 +21,6 @@ export default {
             type: String,
             default: "Loading......"
         }
-    },
-    setup(props) {
-        return toRefs(props);
     }
 }
 </script>

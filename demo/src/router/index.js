@@ -33,7 +33,7 @@ router.beforeEach(to => {
   const basePath = to.fullPath.split("/").filter(Boolean)[0]
   const route = routes.filter(item => item.name === basePath)[0]
   if (to.name === 'toHome') {
-    return route ? route.path : "/home"
+    return route ? route.path : "/"
   } 
 })
 export default router

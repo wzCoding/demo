@@ -152,6 +152,26 @@ function getStorageCache(key) {
     }
     return null;
 }
+
+function convertCssUnit(value, unit = null) {
+    if (!value) return
+    value = String(value).trim()
+    if (value.includes('%')) return value
+    if (!unit) {
+        // 如果未提供单位，尝试自动解析
+        const match = String(value).match(/(\d+(\.\d+)?)(\w+)?/);
+        if (match) {
+            const [, num, , str] = match;
+            const units = ['px', 'em', 'rem', 'vw', 'vh', 'vmin', 'vmax'];
+            const defaultUnit = 'px';
+            value = num;
+            unit = str && units.includes(str) ? str : defaultUnit;
+        }else{
+            return value
+        }
+    }
+    return `${value}${unit}`;
+}
 export {
     throttle,
     debounce,
@@ -166,5 +186,6 @@ export {
     deepClone,
     getData,
     setStorageCache,
-    getStorageCache
+    getStorageCache,
+    convertCssUnit
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="page-menu">
-        <div class="menu-button" :style="buttonStyle" :class="{ active: active }" @click="handleButonClick">
+        <div class="menu-button" :style="buttonStyle" :class="{ visible: visible }" @click="handleButonClick">
             <icon-button class="menu-icon" :style="iconStyle">
                 <icon-svg size="32">
                     <component :is="IconMenu"></component>
@@ -8,10 +8,10 @@
             </icon-button>
         </div>
         <transition name="scale">
-            <div class="menu" v-show="active" :style="transformStyle">
+            <div class="menu" v-show="visible" :style="transformStyle">
                 <div class="menu-content">
-                    <Card v-for="menu in menus" :key="menu.title" :auto-size="true" :border-animation="true"
-                        :title="menu.title" @cardClick="handleMenuClick(menu)" />
+                    <Card v-for="menu in menuList" :key="menu.title" class="menu-item" :class="{ active: menu.active }"
+                        @click="handleMenuClick(menu)">{{ menu.title }}</Card>
                 </div>
             </div>
         </transition>
@@ -20,7 +20,7 @@
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
 import { computed, ref } from 'vue'
-import Card from '../Card'
+import Card from '@/components/Card'
 import IconButton from '../IconButton'
 import IconSvg from '../IconSvg'
 //引入svg图标
@@ -36,16 +36,20 @@ export default {
                 return ['top-left', 'bottom-left', 'bottom-right'].includes(value)
             }
         },
-        visible: {
+        show: {
             type: Boolean,
             default: false
         },
         menus: {
             type: Array,
             default: () => []
+        },
+        active: {
+            type: [String, Number],
+            default: 0
         }
     },
-    components: { IconButton, IconSvg, Card },
+    components: { IconButton, IconSvg,Card },
     emits: ["visibleChange", "menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')
@@ -75,21 +79,30 @@ export default {
                 "transform-origin": `${direction} ${align}`,
             }
         })
-        const active = ref(props.visible || false)
+        const menuList = computed(() => {
+            return props.menus.map((menu,index) => {
+                return {
+                    ...menu,
+                    active: index === props.active,
+                }
+            })
+        })
+        const visible = ref(props.show || false)
         const handleButonClick = () => {
-            emit("visibleChange", active)
+            emit("visibleChange", visible)
         }
 
         const handleMenuClick = (menu) => {
-            emit("menuClick", menu, active)
+            console.log(menu)
+            //emit("menuClick", menu, visible)
         }
 
         return {
-            active,
+            visible,
             buttonStyle,
             iconStyle,
             transformStyle,
-            close,
+            menuList,
             handleButonClick,
             handleMenuClick,
             IconMenu
