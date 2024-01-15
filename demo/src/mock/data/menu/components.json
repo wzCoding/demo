@@ -1,0 +1,14 @@
+{
+    "menu": [
+        {
+            "index": "1",
+            "title": "Loading",
+            "path": "/components/index"
+        },
+        {
+            "index": "2",
+            "title": "Message",
+            "path": "/components/message"
+        }
+    ]
+}

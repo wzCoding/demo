@@ -2,8 +2,8 @@
     "menu": [
         {
             "index": "1",
-            "title": "card",
-            "path": "/css/card"
+            "title": "bar",
+            "path": "/charts/index"
         }
     ]
 }

@@ -3,7 +3,7 @@
         <div class="back" @click="back">
             <span>×</span>
         </div>
-        <PageMenu position="bottom-left" :visible="false" :menus="menus" @visible-change="showMenu" @menu-click="menuClick">
+        <PageMenu v-if="showMenu" position="bottom-left" :visible="false" :menus="menus" @visible-change="openMenu" @menu-click="menuClick">
         </PageMenu>
         <div class="content">
             <router-view></router-view>
@@ -22,31 +22,35 @@ export default {
     setup() {
         const menuStore = useMenuStore()
         const router = useRouter()
+        const menus = ref([])
         const id = computed(() => {
             return router.currentRoute.value.name
         })
-        const loading = ref(true)
-        const menus = ref([])
-        menuStore.getMenu(id.value).then(res =>{
-            menus.value = res
+        const showMenu = computed(() => {
+            return id.value !== "about"
         })
         const back = () => {
             router.push("/")
         }
-        const showMenu = (active) => {
+        const openMenu = (active) => {
             active.value = !active.value
         }
 
-        const menuClick = (target,active) => {
-            router.addRoute({ path: target.path, component: () => import(`@/views${target.path}.vue`)})
+        const menuClick = (target, active) => {
+            router.addRoute({ path: target.path, component: () => import(`@/views${target.path}.vue`) })
             router.push(target.path)
             active.value = false
         }
-
+        if (showMenu.value) {
+            menuStore.getMenu(id.value).then(res => {
+                menus.value = res
+            })
+        }
         return {
             menus,
-            back,
             showMenu,
+            back,
+            openMenu,
             menuClick,
         }
     }
