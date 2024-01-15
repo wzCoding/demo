@@ -2,27 +2,19 @@
     <div id="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { getData } from '@/utils/index';
 import { myCanvas } from './resouce/canvas';
 import { Sea } from './resouce/sea';
 
 const canvasBox = ref(null)
-const canvas = ref(null)
-const waves = ref(null)
-const sea = ref(null)
 const loading = ref(true)
-getData('waves', 'data').then(res => {
-    waves.value = res;
-    loading.value = false
-})
-watch(waves, (newVal) => {
-    sea.value.addWave(newVal)
-    sea.value.start(60)
-})
+const id = "waves"
+const sea = ref()
+const canvas = ref()
 onMounted(() => {
     canvas.value = new myCanvas({
-        id: 'waves',
+        id,
         parent: canvasBox.value,
         width: canvasBox.value.clientWidth,
         height: canvasBox.value.clientHeight,
@@ -32,11 +24,15 @@ onMounted(() => {
         }
     });
     sea.value = new Sea(canvas.value);
+    getData('waves', 'data').then(res => {
+        loading.value = false
+        sea.value.addWave(res)
+        sea.value.start(60)
+    })
+
 })
 onUnmounted(() => {
-    
     sea.value.stop()
-    waves.value = null
     sea.value = null
     canvas.value = null
 })

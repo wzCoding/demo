@@ -2,16 +2,17 @@ import { Wave } from "./material/wave";
 import { Sun } from "./material/sun";
 import { Cloud } from "./material/cloud";
 import { Timer } from "@/utils/timer";
-const timer = new Timer();
 
+let timer = new Timer();
+let interval = null;
 let cvs = null;
 let ctx = null;
-const materials = [];
+let materials = [];
 
 function handleMaterial(params, type) {
     const list = [];
     materials.push(type);
-   
+
     if (params.length) {
         for (let i = 0; i < params.length; i++) {
             params[i].canvas = cvs;
@@ -23,7 +24,6 @@ function handleMaterial(params, type) {
         const instance = createMaterial(params, type);
         list.push(instance);
     }
-
     return list;
 }
 
@@ -64,10 +64,9 @@ class Sea {
         this.sun = handleMaterial(sun, "sun");
     }
     start(speed) {
-        cvs.hide(false);
         if (materials.length) {
-            timer.interval(() => {
-                ctx.clearRect(0, 0, cvs.width, cvs.height);
+            interval = timer.interval(() => {
+                cvs.clear()
                 materials.forEach(material => {
                     this[material].forEach(m => {
                         m.create();
@@ -77,9 +76,15 @@ class Sea {
         }
     }
     stop() {
-        timer.clear();
-        ctx.clearRect(0,0,cvs.width,cvs.height);
-        cvs.hide(true);
+        timer.clear(interval)
+        cvs.clear()
+        this.destory()
+    }
+    destory(){
+        materials = [];
+        cvs = null;
+        ctx = null;
+        interval = null;
     }
 }
 

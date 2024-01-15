@@ -3,23 +3,34 @@
         <div class="back" @click="back">
             <span>×</span>
         </div>
-        <PageMenu position="bottom-left" :visible="false" @visible-change="showMenu" @menu-click="menuClick">
+        <PageMenu position="bottom-left" :visible="false" :menus="menus" @visible-change="showMenu" @menu-click="menuClick">
         </PageMenu>
         <div class="content">
-           <router-view></router-view>
+            <router-view></router-view>
         </div>
     </main>
 </template>
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
+import { computed, ref } from "vue"
 import { useRouter } from "vue-router"
-import PageMenu from "@/components/Menu/index.vue"
+import { useMenuStore } from "@/store/useMenuStore"
+import PageMenu from "@/components/Menu"
 export default {
     name: "PageContainer",
     components: { PageMenu },
     setup() {
-
+        const menuStore = useMenuStore()
         const router = useRouter()
+        const id = computed(() => {
+            console.log(router.currentRoute.value)
+            return router.currentRoute.value.name
+        })
+        const loading = ref(true)
+        const menus = ref([])
+        menuStore.getMenu(id.value).then(res =>{
+            menus.value = res
+        })
         const back = () => {
             router.push("/")
         }
@@ -27,12 +38,15 @@ export default {
             active.value = !active.value
         }
 
-        const menuClick = (active) => {
-            console.log("menuClick")
+        const menuClick = (target,active) => {
+            console.log(target)
             active.value = false
+            router.addRoute({ path: target.path, component: () => import(`@/views${target.path}.vue`)})
+            router.push(target.path)
         }
 
         return {
+            menus,
             back,
             showMenu,
             menuClick,

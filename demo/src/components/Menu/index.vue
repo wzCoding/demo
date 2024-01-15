@@ -10,13 +10,8 @@
         <transition name="scale">
             <div class="menu" v-show="active" :style="transformStyle">
                 <div class="menu-content">
-                    <Card :auto-size="true" :border-animation="true" :background-animation="true" title="waves"
-                        @cardClick="handleMenuClick" />
-                        <select>
-                            <option value="1">选项1</option>
-        <option value="2">选项2</option>
-        <option value="3">选项3</option>
-    </select>
+                    <Card v-for="menu in menus" :key="menu.title" :auto-size="true" :border-animation="true"
+                        :title="menu.title" @cardClick="handleMenuClick(menu)" />
                 </div>
             </div>
         </transition>
@@ -85,8 +80,8 @@ export default {
             emit("visibleChange", active)
         }
 
-        const handleMenuClick = () => {
-            emit("menuClick", active)
+        const handleMenuClick = (menu) => {
+            emit("menuClick", menu, active)
         }
 
         return {

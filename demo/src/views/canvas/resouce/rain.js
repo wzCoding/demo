@@ -1,8 +1,10 @@
 import { Timer } from "@/utils/timer";
 
+let timer = new Timer();
+let interval = null;
 let ctx = null;
 let cvs = null;
-const timer = new Timer();
+
 
 /**
  * 
@@ -24,7 +26,7 @@ class Rain {
         this.text = text && text.length ? text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
         this.letters = Array(Math.ceil(cvs.width / this.fontSize)).fill(0);
     }
-    createRain() {
+    create() {
         ctx.fillStyle = "rgba(0,0,0,0.08)";
         ctx.fillRect(0, 0, cvs.width, cvs.height);
         ctx.font = `${this.fontWeight} ${this.fontSize}px ${this.fontFamily}`;
@@ -36,13 +38,17 @@ class Rain {
         })
     }
     start(speed) {
-        cvs.hide(false);
-        timer.interval(this.createRain.bind(this), speed);
+        interval = timer.interval(this.create.bind(this), speed);
     }
     stop() {
-        timer.clear();
-        ctx.clearRect(0, 0, cvs.width, cvs.height);
-        cvs.hide(true);
+        timer.clear(interval);
+        cvs.clear()
+    }
+    destory(){
+        cvs = null;
+        ctx = null;
+        interval = null;
+        timer = null;
     }
 }
 

@@ -3,12 +3,12 @@
         {
             "index": "1",
             "title": "waves",
-            "path": "/canvas/waves"
+            "path": "/canvas/index"
         },
         {
             "index": "2",
-            "title": "rains",
-            "path": "/canvas/rains"
+            "title": "rain",
+            "path": "/canvas/rain"
         },
         {
             "index": "3",

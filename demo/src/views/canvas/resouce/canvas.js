@@ -1,4 +1,4 @@
-import { debounce,isObject } from '@/utils/index'
+import { debounce, isObject } from '@/utils/index'
 
 let container = null;
 /**
@@ -52,6 +52,11 @@ class myCanvas {
         }
         return options
     }
+    create() {
+        const canvas = document.createElement("canvas");
+        canvas.id = this.id;
+        return canvas;
+    }
     init() {
         const ratio = window.devicePixelRatio || 1;
         this.canvas.width = this.width * ratio;
@@ -60,10 +65,8 @@ class myCanvas {
         this.canvas.style.height = `${this.height}px`;
         this.context.scale(ratio, ratio);
     }
-    create() {
-        const canvas = document.createElement("canvas");
-        canvas.id = this.id;
-        return canvas;
+    clear() {
+        this.context.clearRect(0, 0, this.width, this.height);
     }
     append() {
         if (!container.querySelector(`#${this.id}`)) {
@@ -73,8 +76,11 @@ class myCanvas {
     remove() {
         container.remove(this.canvas);
     }
-    hide(isHide) {
-        this.canvas.style.display = isHide ? "none" : "block";
+    hide() {
+        this.canvas.style.display = "none"
+    }
+    show() {
+        this.canvas.style.display = "block"
     }
     resize() {
         window.addEventListener('resize', debounce(() => {

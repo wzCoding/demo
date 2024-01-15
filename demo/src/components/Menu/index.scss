@@ -1,20 +1,14 @@
-@import '@/assets/css/index.scss';
-select {
-    border: 1px solid #ccc; /* 设置边框样式 */
-    border-radius: 5px; /* 设置边框圆角半径 */
-    padding: 5px 10px; /* 设置内文本填充量 */
-    background-color: #f5f5f5; /* 设置背景颜色 */
-    color: #333; /* 设置内文本颜色 */
-    font-size: 14px; /* 设置内文本字体大小 */
-    width: 200px; /* 设置宽度 */
-    height: 30px; /* 设置高度 */
+@import "@/assets/css/index.scss";
+
+.page-menu {
+    z-index: 997;
 }
 .menu-button {
     width: 3.75rem;
     height: 3.75rem;
     cursor: pointer;
     z-index: 5;
-    transition: all .2s linear;
+    transition: all 0.2s linear;
     z-index: 998;
     opacity: 0.5;
     box-shadow: 0px 5px 20px 0px var(--theme-box-shadow-color);
@@ -33,7 +27,7 @@ select {
     }
 
     &:hover {
-        @extend .active
+        @extend .active;
     }
 
     .menu-icon {
@@ -51,6 +45,11 @@ select {
 
     .menu-content {
         padding: 3.75rem;
+        display: flex;
+        gap: 1.5rem;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: wrap;
     }
 }
 
