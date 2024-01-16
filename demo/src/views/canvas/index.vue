@@ -2,16 +2,27 @@
     <div id="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { getData } from '@/utils/index';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useDataStore } from '@/store/useDataStore';
 import { myCanvas } from './resouce/canvas';
 import { Sea } from './resouce/sea';
 
 const canvasBox = ref(null)
-const loading = ref(true)
+const dataStore = useDataStore()
+const loading = computed(() => dataStore.loading)
 const id = "waves"
-const sea = ref()
 const canvas = ref()
+const sea = ref()
+const startWaves = (data) => {
+    sea.value.addWave(data)
+    sea.value.start(60)
+}
+const stopWaves = () => {
+    sea.value.stop()
+    sea.value = null
+    canvas.value = null
+}
+
 onMounted(() => {
     canvas.value = new myCanvas({
         id,
@@ -24,17 +35,13 @@ onMounted(() => {
         }
     });
     sea.value = new Sea(canvas.value);
-    getData(id, 'data').then(res => {
-        loading.value = false
-        sea.value.addWave(res[0][id])
-        sea.value.start(60)
+    dataStore.getPageData(id).then(res => {
+        startWaves(res[0][id])
     })
 
 })
 onUnmounted(() => {
-    sea.value.stop()
-    sea.value = null
-    canvas.value = null
+    stopWaves()
 })
 </script>
 <style lang="scss" scoped>

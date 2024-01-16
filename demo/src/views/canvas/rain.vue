@@ -2,16 +2,27 @@
     <div id="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { getData } from '@/utils/index';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { useDataStore } from '@/store/useDataStore';
 import { myCanvas } from './resouce/canvas';
 import { Rain } from './resouce/rain';
 
 const canvasBox = ref(null)
-const loading = ref(true)
+const dataStore = useDataStore()
+const loading = computed(() => dataStore.loading)
 const id = "rain"
 const rain = ref()
 const canvas = ref()
+const startRain = (data) => {
+    const { text, color } = data
+    rain.value.set(text, color)
+    rain.value.start(60)
+}
+const stopRain = () => {
+    rain.value.stop()
+    rain.value = null
+    canvas.value = null
+}
 onMounted(() => {
     canvas.value = new myCanvas({
         id,
@@ -23,18 +34,13 @@ onMounted(() => {
             transition: "all 0.3s"
         }
     });
-    
-    getData(id, 'data').then(res => {
-        loading.value = false
-        rain.value = new Rain(canvas.value);
-        rain.value.start(60)
+    rain.value = new Rain(canvas.value)
+    dataStore.getPageData(id).then(res => {
+        startRain(res[0])
     })
-
 })
 onUnmounted(() => {
-    rain.value.stop()
-    rain.value = null
-    canvas.value = null
+   stopRain()
 })
 </script>
 <style lang="scss" scoped>

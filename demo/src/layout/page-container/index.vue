@@ -37,7 +37,6 @@ export default {
         }
 
         const menuClick = (target, visible) => {
-            console.log(target)
             router.addRoute({ path: target.path, component: () => import(`@/views${target.path}.vue`) })
             router.push(target.path)
             visible.value = false

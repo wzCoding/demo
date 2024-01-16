@@ -21,10 +21,8 @@ class Rain {
         this.fontSize = 16;
         this.fontWeight = 700;
         this.fontFamily = "微软雅黑";
-        this.color = color || "#0f0";
-
-        this.text = text && text.length ? text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
         this.letters = Array(Math.ceil(cvs.width / this.fontSize)).fill(0);
+        this.set()
     }
     create() {
         ctx.fillStyle = "rgba(0,0,0,0.08)";
@@ -36,6 +34,10 @@ class Rain {
             ctx.fillText(this.text[Math.floor(Math.random() * this.text.length)], index * this.fontSize, item + this.fontSize);
             this.letters[index] = item >= cvs.height || item > 9999 * Math.random() ? 0 : item + this.fontSize;
         })
+    }
+    set(text,color){
+        this.text = text && text.length ? text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+        this.color = color || "#0f0";
     }
     start(speed) {
         interval = timer.interval(this.create.bind(this), speed);
