@@ -42,7 +42,7 @@ export default {
             visible.value = false
         }
         if (showMenu.value) {
-            menuStore.getMenu(id.value).then(res => {
+            menuStore.getPageMenu(id.value).then(res => {
                 menus.value = res
             })
         }

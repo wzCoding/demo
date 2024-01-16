@@ -40,7 +40,7 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/useMenuStore'
 import IconButton from '@/components/IconButton'
@@ -63,15 +63,9 @@ const svgs = {
 }
 
 const id = "home"
-const loading = ref(false)
+const loading = computed(() => menuStore.loading)
 const menuStore = useMenuStore()
-
-if (!menuStore.menu[id]) {
-    loading.value = true
-    menuStore.getMenu(id).then(() => {
-        loading.value = false
-    })
-}
+menuStore.getPageMenu(id)
 
 const greet = 'Hello !'
 const mainTitle = ['欢迎来到我的', 'Demo']
@@ -82,7 +76,7 @@ const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
 
 const router = useRouter()
 const toPage = (path) => {
-    if(path){
+    if (path) {
         router.push(path)
     }
 }
