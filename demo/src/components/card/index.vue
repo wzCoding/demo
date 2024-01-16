@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-import { ref,computed } from 'vue';
+import { computed } from 'vue';
 import { convertCssUnit } from '@/utils/index'
 import { useThemeStore } from '@/store/useThemeStore';
 export default {
@@ -24,7 +24,6 @@ export default {
     setup(props, { emit }) {
         const themeStore = useThemeStore();
         const cardEffect = computed(()=>{
-            console.log(themeStore.theme)
              return props.effect === 'auto' ? (themeStore.theme || 'light') : props.effect;
         })
         const cardStyle = computed(() => {

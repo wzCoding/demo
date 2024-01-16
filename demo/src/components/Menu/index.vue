@@ -10,7 +10,7 @@
         <transition name="scale">
             <div class="menu" v-show="visible" :style="transformStyle">
                 <div class="menu-content">
-                    <Card v-for="menu in menuList" :key="menu.title" width="100%" :title="menu.title"
+                    <Card v-for="menu in menulist" :key="menu.title" width="100%" :title="menu.title"
                         :class="{ active: menu.active }" @click="handleMenuClick(menu)" />
                 </div>
             </div>
@@ -19,7 +19,7 @@
 </template>
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import Card from '@/components/Card'
 import IconButton from '../IconButton'
 import IconSvg from '../IconSvg'
@@ -79,22 +79,28 @@ export default {
                 "transform-origin": `${direction} ${align}`,
             }
         })
-        const menuList = computed(() => {
-            return props.menus.map((menu, index) => {
-                return {
-                    ...menu,
-                    active: index === props.active,
-                }
+
+        const active = ref(props.active)
+        const menulist = computed(() => {
+            return props.menus.map((item, index) => {
+                return { ...item, active: index === active.value }
             })
         })
+        const setActive = (menu) => {
+            menulist.value.forEach((item, index) => {
+                if (menu.title == item.title) {
+                    active.value = index
+                }
+            })
+        }
         const visible = ref(props.show || false)
         const handleButonClick = () => {
             emit("visibleChange", visible)
         }
 
         const handleMenuClick = (menu) => {
-            console.log(menu)
-            //emit("menuClick", menu, visible)
+            setActive(menu)
+            emit("menuClick", menu, visible)
         }
 
         return {
@@ -102,7 +108,7 @@ export default {
             buttonStyle,
             iconStyle,
             transformStyle,
-            menuList,
+            menulist,
             handleButonClick,
             handleMenuClick,
             IconMenu
