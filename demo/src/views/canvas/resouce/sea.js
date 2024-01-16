@@ -43,6 +43,13 @@ function createMaterial(param, type) {
     }
     return material;
 }
+
+/**
+ * 
+ * @param {object} canvas - 画布对象，用来绘制 sea、waves、clouds、sun
+ * @returns
+ */
+
 class Sea {
     constructor(canvas) {
         cvs = canvas;

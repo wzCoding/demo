@@ -3,7 +3,7 @@ import { debounce, isObject } from '@/utils/index'
 let container = null;
 /**
  * @param {string} canvas.id - 将要创建的canvas的id
- * @param {string} canvas.parent - 放置canvas的容器（父元素）的id或class
+ * @param {string} canvas.parent - 放置canvas的容器（父元素）的id或class或dom对象
  * @param {object} canvas.styles - 设置canvas的样式
  * @param {number} canvas.width - 将要创建的canvas的宽度
  * @param {number} canvas.height - 将要创建的canvas的高度
@@ -48,7 +48,7 @@ class myCanvas {
             styles: params.styles ? params.styles : {},
         }
         if (params.parent) {
-            options.parent = isObject(params.parent) ? params.parent : (document.getElementById(params.parent) || document.getElementsByClassName(params.parent))
+            options.parent = typeof params.parent == 'object' ? params.parent : (document.getElementById(params.parent) || document.getElementsByClassName(params.parent))
         }
         return options
     }

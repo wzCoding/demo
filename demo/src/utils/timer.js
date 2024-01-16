@@ -1,5 +1,3 @@
-
-
 class Timer {
     constructor() {
         this.record = {}
@@ -58,6 +56,7 @@ class Timer {
     }
 
     clear(timer) {
+        if(!timer) return
         const { record, type } = timer
         window.cancelAnimationFrame(this.record[type][record]);
         this.record[type][record] = null

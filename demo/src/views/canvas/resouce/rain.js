@@ -5,11 +5,11 @@ let interval = null;
 let ctx = null;
 let cvs = null;
 
-
 /**
  * 
  * @param {object} canvas - 画布对象，用来绘制 rain
  * @param {string} text - 形成rain的文字字符串
+ * @param {string} color - rain的文字颜色
  * @returns
  */
 class Rain {
@@ -22,7 +22,7 @@ class Rain {
         this.fontWeight = 700;
         this.fontFamily = "微软雅黑";
         this.letters = Array(Math.ceil(cvs.width / this.fontSize)).fill(0);
-        this.set()
+        this.set(text, color)
     }
     create() {
         ctx.fillStyle = "rgba(0,0,0,0.08)";
@@ -35,7 +35,7 @@ class Rain {
             this.letters[index] = item >= cvs.height || item > 9999 * Math.random() ? 0 : item + this.fontSize;
         })
     }
-    set(text,color){
+    set(text, color) {
         this.text = text && text.length ? text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
         this.color = color || "#0f0";
     }
@@ -46,11 +46,10 @@ class Rain {
         timer.clear(interval);
         cvs.clear()
     }
-    destory(){
+    destory() {
         cvs = null;
         ctx = null;
         interval = null;
-        timer = null;
     }
 }
 
