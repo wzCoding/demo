@@ -41,10 +41,3 @@ onUnmounted(() => {
    stopRain()
 })
 </script>
-<style lang="scss" scoped>
-#sea {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-</style>

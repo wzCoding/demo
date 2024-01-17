@@ -43,6 +43,11 @@ class myCanvas {
             this.canvas.style[key] = options.styles[key]
         }
 
+
+        this.resetSize();
+        this.resize();
+    }
+    resetSize() {
         // 根据设备像素比重新调整canvas宽高以使图像清晰
         const ratio = window.devicePixelRatio || 1;
         this.canvas.width = this.width * ratio;
@@ -50,8 +55,6 @@ class myCanvas {
         this.canvas.style.width = `${this.width}px`;
         this.canvas.style.height = `${this.height}px`;
         this.context.scale(ratio, ratio);
-
-        this.resize();
     }
     resolve(params) {
         const defaultStyle = { "position": "absolute", "inset": "0" }
@@ -90,7 +93,7 @@ class myCanvas {
         window.addEventListener('resize', debounce(() => {
             this.width = document.documentElement.clientWidth;
             this.height = document.documentElement.clientHeight;
-            this.init();
+            this.resetSize();
         }, 100));
     }
     clear() {
