@@ -1,25 +1,25 @@
 <template>
-    <div id="canvas-box" ref="canvasBox" v-loading="loading"></div>
+    <div class="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useDataStore } from '@/store/useDataStore';
-import { myCanvas } from './resouce/canvas';
-import { Sea } from './resouce/sea';
+import { myCanvas } from './resouce/canvas/canvas';
+import { Waves } from './resouce/canvas/waves';
 
 const canvasBox = ref(null)
 const dataStore = useDataStore()
 const loading = computed(() => dataStore.loading)
 const id = "waves"
 const canvas = ref()
-const sea = ref()
+const waves = ref()
 const startWaves = (data) => {
-    sea.value.addWave(data)
-    sea.value.start(60)
+    waves.value.addWave(data)
+    waves.value.start(60)
 }
 const stopWaves = () => {
-    sea.value.stop()
-    sea.value = null
+    waves.value.stop()
+    waves.value = null
     canvas.value = null
 }
 
@@ -34,7 +34,7 @@ onMounted(() => {
             transition: "all 0.3s"
         }
     });
-    sea.value = new Sea(canvas.value);
+    waves.value = new Waves(canvas.value);
     dataStore.getPageData(id).then(res => {
         startWaves(res[0][id])
     })
@@ -44,10 +44,3 @@ onUnmounted(() => {
     stopWaves()
 })
 </script>
-<style lang="scss" scoped>
-#sea {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-</style>

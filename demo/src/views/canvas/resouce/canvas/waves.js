@@ -3,15 +3,13 @@ import { Sun } from "./material/sun";
 import { Cloud } from "./material/cloud";
 import { Timer } from "@/utils/timer";
 
-let timer = new Timer();
+let timer = null;
 let interval = null;
 let cvs = null;
 let ctx = null;
-let materials = [];
 
 function handleMaterial(params, type) {
     const list = [];
-    materials.push(type);
 
     if (params.length) {
         for (let i = 0; i < params.length; i++) {
@@ -44,57 +42,57 @@ function createMaterial(param, type) {
     return material;
 }
 
-/**
- * 
- * @param {object} canvas - 画布对象，用来绘制 sea、waves、clouds、sun
- * @returns
- */
-
-class Sea {
+class Waves {
     constructor(canvas) {
         cvs = canvas;
         ctx = cvs.context;
 
-        this.sun = null;
-        this.waves = null;
-        this.clouds = null;
+        this.init()
     }
-
+    init() {
+        timer = new Timer()
+        this.materials = {}
+    }
+    addMaterial(material, type) {
+        if (!material) return
+        type = type || Symbol("material")
+        if (!this.materials[type]) {
+            this.materials[type] = handleMaterial(material, type);
+        }
+    }
     addWave(waves) {
-        this.waves = handleMaterial(waves, "waves");
+        this.addMaterial(waves, "waves");
     }
 
     addCloud(clouds) {
-        this.clouds = handleMaterial(clouds, "clouds");
+        this.addMaterial(clouds, "clouds");
     }
     addSun(sun) {
-        this.sun = handleMaterial(sun, "sun");
+        this.addMaterial(sun, "sun");
     }
     start(speed) {
-        if (materials.length) {
-            interval = timer.interval(() => {
-                cvs.clear()
-                materials.forEach(material => {
-                    this[material].forEach(m => {
-                        m.create();
-                    })
-                })
-            }, speed);
-        }
+        cvs.show()
+        interval = timer.interval(() => {
+            cvs.clear()
+            Object.values(this.materials).forEach(material => {
+                material.forEach(m => m.create())
+            })
+        }, speed);
     }
     stop() {
         timer.clear(interval)
         cvs.clear()
-        this.destory()
+        cvs.hide()
     }
-    destory(){
-        materials = [];
+    destory() {
         cvs = null;
         ctx = null;
         interval = null;
+        timer = null;
+        this.materials = null;
     }
 }
 
 export {
-    Sea
+    Waves
 }

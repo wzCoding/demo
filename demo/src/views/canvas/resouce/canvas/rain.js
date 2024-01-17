@@ -1,6 +1,6 @@
 import { Timer } from "@/utils/timer";
 
-let timer = new Timer();
+let timer = null;
 let interval = null;
 let ctx = null;
 let cvs = null;
@@ -8,21 +8,31 @@ let cvs = null;
 /**
  * 
  * @param {object} canvas - 画布对象，用来绘制 rain
- * @param {string} text - 形成rain的文字字符串
- * @param {string} color - rain的文字颜色
+ * @param {string} options.text - 形成rain的文字字符串
+ * @param {string} options.color - rain的文字颜色
  * @returns
  */
 class Rain {
-    constructor(canvas, text, color) {
+    constructor(canvas, options = {}) {
 
         cvs = canvas;
-        ctx = canvas.context;
+        ctx = cvs.context;
 
+        this.init(options)
+
+    }
+    init(options) {
+        timer = new Timer()
         this.fontSize = 16;
         this.fontWeight = 700;
         this.fontFamily = "微软雅黑";
         this.letters = Array(Math.ceil(cvs.width / this.fontSize)).fill(0);
-        this.set(text, color)
+        this.set(options)
+    }
+    set(options) {
+        if(!options) return
+        this.text = options.text && options.text.length ? options.text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+        this.color = options.color || "#0f0";
     }
     create() {
         ctx.fillStyle = "rgba(0,0,0,0.08)";
@@ -35,21 +45,21 @@ class Rain {
             this.letters[index] = item >= cvs.height || item > 9999 * Math.random() ? 0 : item + this.fontSize;
         })
     }
-    set(text, color) {
-        this.text = text && text.length ? text.split("") : "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
-        this.color = color || "#0f0";
-    }
+    
     start(speed) {
+        cvs.show()
         interval = timer.interval(this.create.bind(this), speed);
     }
     stop() {
         timer.clear(interval);
         cvs.clear()
+        cvs.hide()
     }
     destory() {
         cvs = null;
         ctx = null;
         interval = null;
+        timer = null;
     }
 }
 

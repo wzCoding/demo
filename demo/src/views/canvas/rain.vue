@@ -1,11 +1,11 @@
 <template>
-    <div id="canvas-box" ref="canvasBox" v-loading="loading"></div>
+    <div class="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useDataStore } from '@/store/useDataStore';
-import { myCanvas } from './resouce/canvas';
-import { Rain } from './resouce/rain';
+import { myCanvas } from './resouce/canvas/canvas';
+import { Rain } from './resouce/canvas/rain';
 
 const canvasBox = ref(null)
 const dataStore = useDataStore()
@@ -14,8 +14,7 @@ const id = "rain"
 const rain = ref()
 const canvas = ref()
 const startRain = (data) => {
-    const { text, color } = data
-    rain.value.set(text, color)
+    rain.value.set(data)
     rain.value.start(60)
 }
 const stopRain = () => {
@@ -30,7 +29,6 @@ onMounted(() => {
         width: canvasBox.value.clientWidth,
         height: canvasBox.value.clientHeight,
         styles: {
-            background: "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)",
             transition: "all 0.3s"
         }
     });

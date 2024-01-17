@@ -36,8 +36,10 @@ class Timer {
 
             }
         }
+        
         //定时! 启动!
         this.setRecord(record, type, loopStart);
+
         return { record, type }
 
     }
@@ -48,10 +50,12 @@ class Timer {
     }
 
     interval(callback, delay = 1000) {
+        delay = delay < (1000 / 60) ? (1000 / 60) : delay;
         return this.loop("interval", callback, delay);
     }
 
     timeout(callback, delay = 1000) {
+        delay = delay < (1000 / 60) ? (1000 / 60) : delay;
         return this.loop("timeout", callback, delay);
     }
 
