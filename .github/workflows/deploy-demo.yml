@@ -1,42 +1,24 @@
-
-name: 部署demo
-
+name: GitHub Actions Build and Deploy
 on:
   push:
     branches:
-      # 确保这是你正在使用的分支名称
       - main
-
 jobs:
-  deploy-gh-pages:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout 🛎️
         uses: actions/checkout@v3
-       
-      - name: 设置 Node.js
-        uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: npm
-          # cache-dependency-path: "demo"
-          
-      - name: Clean Cache
-        run: npm cache clean --force
-        
-      - name: 安装依赖
-        run: npm install
+          persist-credentials: false
 
-      - name: 构建demo
-        env:
-          NODE_OPTIONS: --max_old_space_size=8192
-        run: |-
+      - name: Install and Build 🔧
+        run: |
+          npm install
           npm run build
-          > /dist/.nojekyll
-
-      - name: 部署demo
+      - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # 这是文档部署到的分支名称
-          branch: gh-pages
-          folder: /dist
+          BRANCH: gh-pages
+          FOLDER: dist
+          CLEAN: true
