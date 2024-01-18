@@ -16,6 +16,7 @@ const world = ref()
 async function init(data) {
     const { loop, scene, control } = world.value.getComponents()
     const { Parrot, Flamingo, Stork } = await loadBirds(data)
+    
     control.target.copy(Parrot.position)
     scene.add(Parrot, Flamingo, Stork)
     loop.updateList.push(Parrot, Flamingo, Stork)
