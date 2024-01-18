@@ -5,7 +5,7 @@ import { createRenderer } from "./components/renderer"
 import { Resizer } from "./systems/resizer"
 import { Loop } from "./systems/loop"
 import { createControls } from "./systems/control"
-
+import { loadBirds } from "./birds/birds";
 let camera, scene, renderer
 let loop, control
 
@@ -17,6 +17,7 @@ class World {
         rendererOption: {}, // 渲染器配置项
         animationList: [], // 动画列表
     }) {
+
         const { el, animationList } = options
         const resolveOptions = this.resolve(options)
 
@@ -24,6 +25,9 @@ class World {
         camera = createCamera(resolveOptions.camera)
         scene = createScene(resolveOptions.scene)
         renderer = createRenderer(resolveOptions.renderer)
+        
+        //将渲染创建添加到页面
+        el.append(renderer.domElement)
 
         control = createControls({ camera, canvas: renderer.domElement })
 
@@ -37,8 +41,7 @@ class World {
         //设置尺寸变化监听
         new Resizer(renderer.domElement, camera, renderer)
 
-        //将渲染创建添加到页面
-        el.append(renderer.domElement)
+
     }
     resolve(params) {
         const { cameraOption, sceneOption, rendererOption } = params
@@ -53,7 +56,7 @@ class World {
         }
         let scene = {
             background: 0xa0a0a0,
-            needLights: false,
+            needLights: true,
             sceneObjects: []
         }
         let renderer = {
@@ -66,6 +69,7 @@ class World {
         camera = Object.assign(camera, cameraOption)
         scene = Object.assign(scene, sceneOption)
         renderer = Object.assign(renderer, rendererOption)
+
         return {
             camera,
             scene,
@@ -75,11 +79,12 @@ class World {
     render() {
         renderer.render(scene, camera)
     }
-
-    start() {
+    start(callback) {
+        callback && callback()
         loop.start()
     }
-    stop() {
+    stop(callback) {
+        callback && callback()
         loop.stop()
     }
     getComponents() {

@@ -7,12 +7,12 @@
         },
         { 
             "name": "Flamingo", 
-            "url": "../static/models/Flamingo", 
+            "url": "../static/models/Flamingo.glb", 
             "position": [30, -5, -10] 
         },
         { 
             "name": "Stork", 
-            "url": "../static/models/Stork", 
+            "url": "../static/models/Stork.glb", 
             "position": [-15, -6, -10] 
         }
     ]

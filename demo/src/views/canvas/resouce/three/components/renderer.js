@@ -13,6 +13,7 @@ function createRenderer(options = {
     physicallyCorrectLights: true,
     antialias: true,
 }) {
+    
     const { dpr, size, toneMapping, physicallyCorrectLights, antialias } = options;
     //开启抗锯齿
     const renderOptions = { antialias: antialias }
@@ -20,7 +21,7 @@ function createRenderer(options = {
     if (physicallyCorrectLights) renderer.physicallyCorrectLights = physicallyCorrectLights;
 
     renderer.setPixelRatio(dpr);
-    renderer.setSize(size);
+    renderer.setSize(size.width, size.height);
     renderer.toneMapping = toneMapping;
     return renderer;
 }

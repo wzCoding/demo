@@ -5,17 +5,14 @@ import { setupModel } from "./setupModel";
 
 
 async function loadBirds(birds = [
-    { name: "", url: "", position: [] }
+    { name: "", url: "", position: [] },
 ]) {
     const loader = new GLTFLoader();
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("../../../../../../canvas/resouce/three/static/draco/gltf/");
+    dracoLoader.setDecoderPath("../static/draco/gltf/");
     dracoLoader.preload();
     loader.setDRACOLoader(dracoLoader);
     // 加载模型
-    // loader.loadAsync("@/static/models/Parrot.glb"),
-    // loader.loadAsync("@/static/models/Flamingo.glb"),
-    // loader.loadAsync("@/static/models/Stork.glb")
     const birdData = await Promise.all(birds.map(item => loader.loadAsync(item.url)));
     const birdsModels = {}
     for (let i = 0; i < birdData.length; i++) {
