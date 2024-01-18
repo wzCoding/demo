@@ -7,7 +7,7 @@ import { useDataStore } from '@/store/useDataStore';
 import { myCanvas } from './resouce/canvas/canvas';
 import { Rain } from './resouce/canvas/rain';
 
-const canvasBox = ref(null)
+const canvasBox = ref()
 const dataStore = useDataStore()
 const loading = computed(() => dataStore.loading)
 const id = "rain"

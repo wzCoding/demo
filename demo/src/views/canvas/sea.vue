@@ -1,11 +1,10 @@
 <template>
-    <div class="sea">sea</div>
+    <div class="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
-<script>
-export default {
-    name:"sea"
-}
-</script>
-<style lang="scss" scoped>
+<script setup>
+import { ref,computed } from 'vue';
+import { useDataStore } from '@/store/useDataStore';
 
-</style>
+const dataStore = useDataStore()
+const loading = computed(() => dataStore.loading)
+</script>
