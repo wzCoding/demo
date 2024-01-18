@@ -25,19 +25,19 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          cache-dependency-path: subdir/package-lock.json
+          cache-dependency-path: ./package-lock.json
 
       - name: 安装依赖
         run: npm ci
 
-      - name: 构建文档
+      - name: 构建demo
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           npm run build
           > /dist/.nojekyll
 
-      - name: 部署文档
+      - name: 部署demo
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # 这是文档部署到的分支名称
