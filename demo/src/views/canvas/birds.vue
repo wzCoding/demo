@@ -14,7 +14,6 @@ const loading = computed(() => dataStore.loading)
 const id = "birds"
 const world = ref()
 async function init(data) {
-    console.log("animation init !!!")
     const { loop, scene, control } = world.value.getComponents()
     const { Parrot, Flamingo, Stork } = await loadBirds(data)
     control.target.copy(Parrot.position)
@@ -26,8 +25,8 @@ onMounted(() => {
         el: canvasBox.value,
         cameraOption: {
             fov: 35,
-            near: 10,
-            far: 20000,
+            near: 5,
+            far: 10000,
             x: 10, y: 0, z: 100
         },
         rendererOption: {

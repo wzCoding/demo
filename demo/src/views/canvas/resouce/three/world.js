@@ -25,7 +25,7 @@ class World {
         camera = createCamera(resolveOptions.camera)
         scene = createScene(resolveOptions.scene)
         renderer = createRenderer(resolveOptions.renderer)
-        
+
         //将渲染创建添加到页面
         el.append(renderer.domElement)
 
