@@ -31,7 +31,7 @@ jobs:
         run: npm cache clean --force
         
       - name: 安装依赖
-        run: npm ci
+        run: npm install
 
       - name: 构建demo
         env:
@@ -39,6 +39,7 @@ jobs:
         run: |-
           cd demo
           npm run build
+          > /dist/.nojekyll
 
       - name: 部署demo
         uses: JamesIves/github-pages-deploy-action@v4
