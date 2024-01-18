@@ -24,19 +24,21 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: yarn
+          cache: npm
           cache-dependency-path: "demo"
-
+          
+      - name: Clean Cache
+        run: npm cache clean --force
+        
       - name: 安装依赖
-        run: yarn install
+        run: npm ci
 
       - name: 构建demo
         env:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           cd demo
-          yarn build
-          > /dist/.nojekyll
+          npm run build
 
       - name: 部署demo
         uses: JamesIves/github-pages-deploy-action@v4
