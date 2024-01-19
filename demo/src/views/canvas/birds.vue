@@ -18,7 +18,6 @@ async function init(data) {
     const { Parrot, Flamingo, Stork } = await loadBirds(data)
     control.target.copy(Parrot.position)
     scene.add(Parrot, Flamingo, Stork)
-    console.log(scene)
     loop.updateList.push(Parrot, Flamingo, Stork)
 }
 onMounted(() => {
@@ -37,8 +36,8 @@ onMounted(() => {
             toneMapping: ACESFilmicToneMapping
         },
         sceneOption: {
-            background:"#a0cfff",
-            needLights: true,
+            background:"#d9ecff",
+            needLights: ['main','ambi'],
         }
     }
     world.value = new World(options)

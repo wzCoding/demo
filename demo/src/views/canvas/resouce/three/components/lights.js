@@ -1,4 +1,4 @@
-import { DirectionalLight, AmbientLight, HemisphereLight } from "three";
+import { DirectionalLight, AmbientLight, HemisphereLight } from "three"
 
 
 /**
@@ -16,28 +16,30 @@ function createLights(options = {
     y: 10,
     z: 10
 }) {
-    const { types, lightColor, groundColor, lightStrength, x, y, z } = options;
-    const lights = {}
+    const { types, lightColor, groundColor, lightStrength, x, y, z } = options
+    const lights = []
+    let light
     for (const type of types) {
         switch (type) {
             case "main":
                 // 创建主光源
-                lights.mainLignt = new DirectionalLight(lightColor, lightStrength);
-                lights.mainLignt.position.set(x, y, z);
-                break;
+                light = new DirectionalLight(lightColor, lightStrength)
+                light.position.set(x, y, z)
+                break
             case "ambi":
                 // 创建环境光
-                lights.ambientLight = new AmbientLight(lightColor, lightStrength);
-                lights.ambientLight.position.set(x, y, z);
-                break;
+                light = new AmbientLight(lightColor, lightStrength)
+                light.position.set(x, y, z)
+                break
             case "hemi":
                 // 创建半球光
-                lights.hemisphereLight = new HemisphereLight(lightColor, groundColor, lightStrength);
-                lights.hemisphereLight.position.set(x, y, z);
-                break;
+                light = new HemisphereLight(lightColor, groundColor, lightStrength)
+                light.position.set(x, y, z)
+                break
         }
+        lights.push(light)
     }
-    return lights;
+    return lights
 }
 
 export { createLights }

@@ -1,17 +1,22 @@
-import { createLoader } from "../components/loader";
-import { setupModel } from "./setupModel";
+import { createLoader } from "../components/loader"
+import { setupModel } from "./setupModel"
 
+const modelsPath = [
+    "../static/models/Parrot.glb",
+    "../static/models/Flamingo.glb",
+    "../static/models/Stork.glb"
+]
 
 async function loadBirds(birds = [
-    { name: "", url: "", position: [] },
+    { name: "", position: [] },
 ]) {
-    const loader = createLoader();
+    const loader = createLoader('draco')
     // 加载模型
-    const birdData = await Promise.all(birds.map(item => loader.loadAsync(item.url)));
+    const birdData = await Promise.all(modelsPath.map(path => loader.loadAsync(path)))
     const birdsModels = {}
     for (let i = 0; i < birdData.length; i++) {
-        birdsModels[birds[i].name] = setupModel(birdData[i]);
-        birdsModels[birds[i].name].position.set(...birds[i].position);
+        birdsModels[birds[i].name] = setupModel(birdData[i])
+        birdsModels[birds[i].name].position.set(...birds[i].position)
     }
 
     return birdsModels

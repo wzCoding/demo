@@ -10,17 +10,16 @@ import { createLights } from './lights';
  */
 function createScene(options = {
     background: "#a0cfff",
-    needLights: true,
+    needLights: [],
     sceneObjects: []
 }) {
     const { background, needLights, sceneObjects } = options;
     const scene = new Scene();
     scene.background = new Color(background); //设置场景默认背景色
 
-    if (needLights) {
-        const types = ["ambi", "main", "hemi"];
-        const { ambientLight, mainLignt, hemisphereLight } = createLights({ types });
-        scene.add(ambientLight, mainLignt, hemisphereLight);
+    if (needLights && needLights.length) {
+        const lights = createLights({ types:needLights });
+        scene.add(...lights);
     }
     if (sceneObjects && sceneObjects.length) {
         sceneObjects.forEach(obj => { scene.add(obj) }); //设置向场景中添加的展示物体

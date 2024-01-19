@@ -32,7 +32,6 @@ async function init(data) {
             toneMappingExposure:0.5
         },
         sceneOption: {
-            needLights: false,
             sceneObjects: [water, sky]
         },
         animationList: [water]
@@ -42,7 +41,8 @@ async function init(data) {
     const { renderer, scene, control } = world.value.getComponents()
 
     setSun({ scene, renderer, elevation: data.elevation, azimuth: data.azimuth })
-    control.maxPolarAngle = Math.PI * 0.495
+
+    control.maxPolarAngle = Math.PI * 0.5
     control.target.set(0, 10, 0)
     control.minDistance = 40.0
     control.maxDistance = 200.0
@@ -50,25 +50,8 @@ async function init(data) {
     world.value.start()
 }
 onMounted(() => {
-    const options = {
-        el: canvasBox.value,
-        cameraOption: {
-            fov: 35,
-            near: 5,
-            far: 10000,
-            x: 10, y: 0, z: 100
-        },
-        rendererOption: {
-            dpr: window.devicePixelRatio,
-            size: { width: canvasBox.value.clientWidth, height: canvasBox.value.clientHeight },
-            toneMapping: ACESFilmicToneMapping
-        },
-        sceneOption: {
-            needLights: true,
-        }
-    }
     dataStore.getPageData(id).then(res => {
-        init(res[0], options)
+        init(res[0])
     })
 })
 onUnmounted(() => {

@@ -1,4 +1,4 @@
-import { WebGLRenderer, ACESFilmicToneMapping } from "three";
+import { WebGLRenderer } from "three"
 
 /**
  * 创建一个Three.js的WebGL渲染器。
@@ -9,22 +9,22 @@ import { WebGLRenderer, ACESFilmicToneMapping } from "three";
 function createRenderer(options = {
     dpr: window.devicePixelRatio,
     size: { width: window.innerWidth, height: window.innerHeight },
-    toneMapping: ACESFilmicToneMapping,
+    toneMapping: 1,
     toneMappingExposure: 0,
     physicallyCorrectLights: true,
     antialias: true,
 }) {
 
-    const { dpr, size, toneMapping, toneMappingExposure, physicallyCorrectLights, antialias } = options;
+    const { dpr, size, toneMapping, toneMappingExposure, physicallyCorrectLights, antialias } = options
     //开启抗锯齿
     const renderOptions = { antialias: antialias }
-    const renderer = new WebGLRenderer(renderOptions);
-    if (physicallyCorrectLights) renderer.physicallyCorrectLights = physicallyCorrectLights;
+    const renderer = new WebGLRenderer(renderOptions)
+    if (physicallyCorrectLights) renderer.physicallyCorrectLights = physicallyCorrectLights
 
-    renderer.setPixelRatio(dpr);
-    renderer.setSize(size.width, size.height);
-    renderer.toneMapping = toneMapping;
-    renderer.toneMappingExposure = toneMappingExposure
-    return renderer;
+    renderer.setPixelRatio(dpr)
+    renderer.setSize(size.width, size.height)
+    if(toneMapping) renderer.toneMapping = toneMapping
+    if(toneMappingExposure) renderer.toneMappingExposure = toneMappingExposure
+    return renderer
 }
 export { createRenderer }

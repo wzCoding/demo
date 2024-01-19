@@ -1,15 +1,20 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
-const dracoPath = "../static/draco/gltf/"
+const loaderPath = {
+    draco: "../static/draco/gltf/",
+}
 
-function createLoader() {
+function createLoader(type = 'draco') {
 
     const loader = new GLTFLoader();
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath(dracoPath);
-    dracoLoader.preload();
-    loader.setDRACOLoader(dracoLoader);
+    
+    if (type === 'draco') {
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath(loaderPath[type]);
+        dracoLoader.preload();
+        loader.setDRACOLoader(dracoLoader);
+    }
 
     return loader;
 }

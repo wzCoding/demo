@@ -5,7 +5,7 @@ import { createRenderer } from "./components/renderer"
 import { Resizer } from "./systems/resizer"
 import { Loop } from "./systems/loop"
 import { createControls } from "./systems/control"
-import { loadBirds } from "./birds/birds";
+
 let camera, scene, renderer
 let loop, control
 
@@ -55,15 +55,17 @@ class World {
             z: 10
         }
         let scene = {
-            background: 0xa0a0a0,
-            needLights: true,
+            background: "#ffffff",
+            needLights: [],
             sceneObjects: []
         }
         let renderer = {
             dpr: Math.min(window.devicePixelRatio, 2),
             size: { width: window.innerWidth, height: window.innerHeight },
             physicallyCorrectLights: true,
-            antialias: true
+            antialias: true,
+            toneMapping: 1,
+            toneMappingExposure: 0
         }
         // 处理参数
         camera = Object.assign(camera, cameraOption)
