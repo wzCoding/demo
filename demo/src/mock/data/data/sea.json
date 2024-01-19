@@ -1,0 +1,19 @@
+{
+    "data": [
+        {
+            "seaWidth": 10000,
+            "seaHeight": 10000,
+            "skyWidth": 10000,
+            "sunColor": "#ffffff",
+            "waterColor": "#001E0F",
+            "waterSpeed": 0.016,
+            "turbidity": 1,
+            "rayleigh": 2,
+            "mieCoefficient": 0.005,
+            "mieDirectionalG": 0.8,
+            "elevation": 2,
+            "azimuth": 180,
+            "fog": true
+        }
+    ]
+}

@@ -4,22 +4,18 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
-import { loadBirds } from './resouce/three/birds/birds'
 import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
-
+import { loadCarModel } from './resouce/three/car/car'
 const canvasBox = ref()
 const dataStore = useDataStore()
 const loading = computed(() => dataStore.loading)
-const id = "birds"
+const id = "car"
 const world = ref()
 async function init(data) {
-    const { loop, scene, control } = world.value.getComponents()
-    const { Parrot, Flamingo, Stork } = await loadBirds(data)
-    control.target.copy(Parrot.position)
-    scene.add(Parrot, Flamingo, Stork)
-    console.log(scene)
-    loop.updateList.push(Parrot, Flamingo, Stork)
+    console.log(data)
+    const car = loadCarModel(data)
+    console.log(car)
 }
 onMounted(() => {
     const options = {
@@ -37,17 +33,17 @@ onMounted(() => {
             toneMapping: ACESFilmicToneMapping
         },
         sceneOption: {
-            background:"#a0cfff",
+            background: "#a0cfff",
             needLights: true,
         }
     }
-    world.value = new World(options)
+    //world.value = new World(options)
     dataStore.getPageData(id).then(res => {
-        world.value.start()
-        init(res)
+        // world.value.start()
+        init(res[0])
     })
 })
-onUnmounted(()=>{
-    world.value.stop()
+onUnmounted(() => {
+    //world.value.stop()
 })
 </script>

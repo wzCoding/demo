@@ -10,11 +10,12 @@ function createRenderer(options = {
     dpr: window.devicePixelRatio,
     size: { width: window.innerWidth, height: window.innerHeight },
     toneMapping: ACESFilmicToneMapping,
+    toneMappingExposure: 0,
     physicallyCorrectLights: true,
     antialias: true,
 }) {
-    
-    const { dpr, size, toneMapping, physicallyCorrectLights, antialias } = options;
+
+    const { dpr, size, toneMapping, toneMappingExposure, physicallyCorrectLights, antialias } = options;
     //开启抗锯齿
     const renderOptions = { antialias: antialias }
     const renderer = new WebGLRenderer(renderOptions);
@@ -23,6 +24,7 @@ function createRenderer(options = {
     renderer.setPixelRatio(dpr);
     renderer.setSize(size.width, size.height);
     renderer.toneMapping = toneMapping;
+    renderer.toneMappingExposure = toneMappingExposure
     return renderer;
 }
 export { createRenderer }

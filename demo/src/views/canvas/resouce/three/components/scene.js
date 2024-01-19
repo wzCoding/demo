@@ -18,9 +18,9 @@ function createScene(options = {
     scene.background = new Color(background); //设置场景默认背景色
 
     if (needLights) {
-        const types = ["ambi", "main"];
-        const { ambientLight, mainLignt } = createLights({ types });
-        scene.add(ambientLight, mainLignt);
+        const types = ["ambi", "main", "hemi"];
+        const { ambientLight, mainLignt, hemisphereLight } = createLights({ types });
+        scene.add(ambientLight, mainLignt, hemisphereLight);
     }
     if (sceneObjects && sceneObjects.length) {
         sceneObjects.forEach(obj => { scene.add(obj) }); //设置向场景中添加的展示物体

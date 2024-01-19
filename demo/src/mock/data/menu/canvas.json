@@ -19,6 +19,11 @@
             "index": "4",
             "title": "birds",
             "path": "/canvas/birds"
+        },
+        {
+            "index": "5",
+            "title": "car",
+            "path": "/canvas/car"
         }
     ]
 }

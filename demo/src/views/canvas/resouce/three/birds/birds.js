@@ -1,17 +1,11 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-
+import { createLoader } from "../components/loader";
 import { setupModel } from "./setupModel";
 
 
 async function loadBirds(birds = [
     { name: "", url: "", position: [] },
 ]) {
-    const loader = new GLTFLoader();
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("../static/draco/gltf/");
-    dracoLoader.preload();
-    loader.setDRACOLoader(dracoLoader);
+    const loader = createLoader();
     // 加载模型
     const birdData = await Promise.all(birds.map(item => loader.loadAsync(item.url)));
     const birdsModels = {}

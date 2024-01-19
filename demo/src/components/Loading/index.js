@@ -128,7 +128,6 @@ const LoadingDirective = {
                 if (binding.value && !binding.oldValue) {
                     createInstance(el, binding)
                 } else {
-                    console.log("loading end");
                     instance.instance.close();
                 }
             }

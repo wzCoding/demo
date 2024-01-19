@@ -1,0 +1,26 @@
+{
+    "data": [
+        {
+            "carWidth": 2.62,
+            "carLength": 5.2,
+            "body": {
+                "color": "#FF0000",
+                "metalness": 1.0,
+                "roughness": 0.5,
+                "clearcoat": 1.0,
+                "clearcoatRoughness": 0.03
+            },
+            "glass": {
+                "color": "#FFFFFF",
+                "metalness": 0.25,
+                "roughness": 0,
+                "transmission": 1.0
+            },
+            "detail": {
+                "color": "#FFFFFF",
+                "metalness": 1.0,
+                "roughness": 0.5
+            }
+        }
+    ]
+}

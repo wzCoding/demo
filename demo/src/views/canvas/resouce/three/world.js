@@ -39,7 +39,7 @@ class World {
         }
 
         //设置尺寸变化监听
-        new Resizer(renderer.domElement, camera, renderer)
+        new Resizer(el, camera, renderer)
 
 
     }
