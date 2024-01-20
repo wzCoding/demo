@@ -8,7 +8,7 @@ import { setSun } from './resouce/three/sea/sun'
 import { setSky } from './resouce/three/sea/sky'
 import { setWater } from './resouce/three/sea/water'
 import { World } from './resouce/three/world'
-import { ACESFilmicToneMapping } from 'three'
+import { PMREMGenerator,ACESFilmicToneMapping } from 'three'
 const canvasBox = ref()
 const dataStore = useDataStore()
 const loading = computed(() => dataStore.loading)
@@ -17,6 +17,11 @@ const world = ref()
 async function init(data) {
     const water = setWater(data)
     const sky = setSky(data)
+    const sun = setSun(data)
+
+    water.material.uniforms['sunDirection'].value.copy(sun).normalize()
+    sky.material.uniforms['sunPosition'].value.copy(sun)
+
     const options = {
         el: canvasBox.value,
         cameraOption: {
@@ -39,8 +44,12 @@ async function init(data) {
 
     world.value = new World(options)
     const { renderer, scene, control } = world.value.getComponents()
-
-    setSun({ scene, renderer, elevation: data.elevation, azimuth: data.azimuth })
+    
+    //设置场景环境贴图
+    const pmremGenerator = new PMREMGenerator(renderer)
+    const renderTarget = pmremGenerator.fromScene(sky)
+    if (renderTarget !== undefined) renderTarget.dispose()
+    scene.environment = renderTarget.texture
 
     control.maxPolarAngle = Math.PI * 0.5
     control.target.set(0, 10, 0)

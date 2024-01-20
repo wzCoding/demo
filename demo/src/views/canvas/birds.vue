@@ -5,8 +5,10 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
 import { loadBirds } from './resouce/three/birds/birds'
-import { ACESFilmicToneMapping } from "three"
+import { PMREMGenerator, ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
+import { setSky } from './resouce/three/sea/sky'
+import { setSun } from './resouce/three/sea/sun'
 
 const canvasBox = ref()
 const dataStore = useDataStore()
@@ -16,11 +18,23 @@ const world = ref()
 async function init(data) {
     const { loop, scene, control } = world.value.getComponents()
     const { Parrot, Flamingo, Stork } = await loadBirds(data)
+
     control.target.copy(Parrot.position)
     scene.add(Parrot, Flamingo, Stork)
     loop.updateList.push(Parrot, Flamingo, Stork)
 }
 onMounted(() => {
+    const sky = setSky({
+        skyWidth: 20000,
+        turbidity: 1.2,
+        rayleigh: 5,
+        mieCoefficient: 0.005, 
+        mieDirectionalG: 0.8
+    })
+    const sun = setSun()
+
+    sky.material.uniforms['sunPosition'].value.copy(sun)
+
     const options = {
         el: canvasBox.value,
         cameraOption: {
@@ -28,7 +42,7 @@ onMounted(() => {
             near: 5,
             far: 10000,
             aspect: canvasBox.value.clientWidth / canvasBox.value.clientHeight,
-            x: 10, y: 0, z: 100
+            x: 30, y: 0, z: 100
         },
         rendererOption: {
             dpr: window.devicePixelRatio,
@@ -36,17 +50,24 @@ onMounted(() => {
             toneMapping: ACESFilmicToneMapping
         },
         sceneOption: {
-            background:"#d9ecff",
-            needLights: ['main','ambi'],
+            needLights: ['main', 'ambi'],
+            sceneObjects: [sky]
         }
     }
     world.value = new World(options)
+    const { renderer, scene, control } = world.value.getComponents()
+
+    // const pmremGenerator = new PMREMGenerator(renderer)
+    // const renderTarget = pmremGenerator.fromScene(sky)
+    // if (renderTarget !== undefined) renderTarget.dispose()
+    // scene.environment = renderTarget.texture
+
     dataStore.getPageData(id).then(res => {
         world.value.start()
         init(res)
     })
 })
-onUnmounted(()=>{
+onUnmounted(() => {
     world.value.stop()
 })
 </script>
