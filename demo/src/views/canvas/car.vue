@@ -16,6 +16,7 @@ const loading = computed(() => dataStore.loading)
 const id = "car"
 const world = ref()
 async function init(data) {
+    data.modelPath = "../static/models/ferrari.glb"
     const car = await loadCarModel(data)
     const { wheels, grid } = setWheels(car)
     const near = 0.1,far = 100

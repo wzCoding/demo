@@ -50,7 +50,7 @@ onMounted(() => {
             toneMapping: ACESFilmicToneMapping
         },
         sceneOption: {
-            needLights: ['main', 'ambi'],
+            needLights: [{type:'main',strength:5},{type:'ambi',strength:2}],
             sceneObjects: [sky]
         }
     }

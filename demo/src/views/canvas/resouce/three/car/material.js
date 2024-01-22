@@ -1,7 +1,6 @@
 import { MeshPhysicalMaterial, MeshStandardMaterial } from "three"
 
 function createCarMaterial(type, options = {
-    type: 'physical',
     color: 0xffffff,
     metalness: 1.0,
     roughness: 0.5,

@@ -18,7 +18,7 @@ function createScene(options = {
     scene.background = new Color(background); //设置场景默认背景色
 
     if (needLights && needLights.length) {
-        const lights = createLights({ types:needLights });
+        const lights = createLights(needLights);
         scene.add(...lights);
     }
     if (sceneObjects && sceneObjects.length) {

@@ -24,6 +24,11 @@
             "index": "5",
             "title": "car",
             "path": "/canvas/car"
+        },
+        {
+            "index": "6",
+            "title": "periodic",
+            "path": "/canvas/periodic"
         }
     ]
 }

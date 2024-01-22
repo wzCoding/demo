@@ -8,7 +8,7 @@ function setWheels(carModel = {}, wheelNames = ['wheel_fl', 'wheel_fr', 'wheel_r
 
     for (const name of wheelNames) {
 
-        const eachWheel = carModel.getObjectByName(name)
+        const eachWheel = carModel.getObjectByName(name.toLowerCase())
 
         eachWheel.tick = () => {
             const time = - performance.now() / 1000

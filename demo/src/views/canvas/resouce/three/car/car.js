@@ -2,24 +2,23 @@ import { TextureLoader, MultiplyBlending, Mesh, PlaneGeometry, MeshBasicMaterial
 import { createLoader } from "../components/loader"
 import { createCarMaterial } from "./material"
 
-const texturePath = "../static/texture/ferrari_ao.png"
-const modelPath = "../static/models/ferrari.glb"
-
 async function loadCarModel(options = {
+    modelPath: "../static/models/ferrari.glb",
+    texturePath: "../static/texture/ferrari_ao.png",
     carWidth: 2.5,
     carLength: 5.2,
     body: {},
     glass: {},
     detail: {},
 }) {
-    const shadow = new TextureLoader().load(texturePath)
+
     const loader = createLoader("draco")
 
     const loadCar = async () => {
-        return await loader.loadAsync(modelPath)
+        return await loader.loadAsync(options.modelPath)
     }
 
-    const { carWidth, carLength, body, glass, detail } = options
+    const { body, glass, detail } = options
 
     const bodyMaterial = createCarMaterial('physical', body)
     const detailsMaterial = createCarMaterial('standard', detail)
@@ -39,16 +38,20 @@ async function loadCarModel(options = {
     carModel.getObjectByName('glass').material = glassMaterial
 
     // shadow
-    const mesh = new Mesh(
-        new PlaneGeometry(carWidth, carLength),
-        new MeshBasicMaterial({
-            map: shadow, blending: MultiplyBlending, toneMapped: false, transparent: true
-        })
-    )
-    mesh.rotation.x = - Math.PI / 2
-    mesh.renderOrder = 2
+    if (options.texturePath) {
+        const { texturePath, carWidth, carLength } = options
+        const shadow = new TextureLoader().load(texturePath)
+        const mesh = new Mesh(
+            new PlaneGeometry(carWidth, carLength),
+            new MeshBasicMaterial({
+                map: shadow, blending: MultiplyBlending, toneMapped: false, transparent: true
+            })
+        )
+        mesh.rotation.x = - Math.PI / 2
+        mesh.renderOrder = 2
 
-    carModel.add(mesh)
+        carModel.add(mesh)
+    }
 
     return carModel
 }
