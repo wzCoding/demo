@@ -29,6 +29,11 @@
             "index": "6",
             "title": "suv",
             "path": "/canvas/suv"
+        },
+        {
+            "index": "7",
+            "title": "tank",
+            "path": "/canvas/tank"
         }
     ]
 }

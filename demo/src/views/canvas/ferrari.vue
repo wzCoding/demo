@@ -6,9 +6,9 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
 import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
-import { loadCarModel } from './resouce/three/car/car'
-import { setWheels } from "./resouce/three/car/wheels"
-import { createCarMaterial } from "./resouce/three/car/material"
+import { loadGlbModel } from './resouce/three/glb/load'
+import { setWheels } from "./resouce/three/glb/wheels"
+import { createCarMaterial } from "./resouce/three/glb/material"
 
 const canvasBox = ref()
 const dataStore = useDataStore()
@@ -18,7 +18,7 @@ const world = ref()
 async function init(data) {
     // 设置汽车模型
     data.modelPath = "../static/models/ferrari.glb"
-    const car = await loadCarModel(data)
+    const car = await loadGlbModel(data)
     const { wheels, grid } = setWheels(car)
     setCarMaterial(car, data)
     // 创建场景

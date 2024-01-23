@@ -6,8 +6,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
 import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
-import { loadCarModel } from './resouce/three/car/car'
-import { setWheels } from "./resouce/three/car/wheels"
+import { loadGlbModel } from './resouce/three/glb/load'
+import { setWheels } from "./resouce/three/glb/wheels"
 
 const canvasBox = ref()
 const dataStore = useDataStore()
@@ -16,7 +16,7 @@ const id = "suv"
 const world = ref()
 async function init(data) {
     data.modelPath = "../static/models/nissan_terra_2020.glb"
-    const car = await loadCarModel(data)
+    const car = await loadGlbModel(data)
     const { wheels, grid } = setWheels(car)
     const near = 0.1, far = 100
     const options = {
