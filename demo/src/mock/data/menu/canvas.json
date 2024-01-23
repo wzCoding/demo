@@ -22,13 +22,13 @@
         },
         {
             "index": "5",
-            "title": "car",
-            "path": "/canvas/car"
+            "title": "ferrari",
+            "path": "/canvas/ferrari"
         },
         {
             "index": "6",
-            "title": "periodic",
-            "path": "/canvas/periodic"
+            "title": "suv",
+            "path": "/canvas/suv"
         }
     ]
 }

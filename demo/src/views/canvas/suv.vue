@@ -4,8 +4,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
-import { ACESFilmicToneMapping, EquirectangularReflectionMapping, Fog } from "three"
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
 import { loadCarModel } from './resouce/three/car/car'
 import { setWheels } from "./resouce/three/car/wheels"
