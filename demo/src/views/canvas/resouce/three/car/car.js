@@ -1,43 +1,38 @@
-import { TextureLoader, MultiplyBlending, Mesh, PlaneGeometry, MeshBasicMaterial } from "three"
+import { TextureLoader, MultiplyBlending, Mesh, PlaneGeometry, MeshBasicMaterial, Vector3, Box3 } from "three"
 import { createLoader } from "../components/loader"
-import { createCarMaterial } from "./material"
+
 
 async function loadCarModel(options = {
     modelPath: "../static/models/ferrari.glb",
     texturePath: "../static/texture/ferrari_ao.png",
     carWidth: 2.5,
     carLength: 5.2,
+    enlarge: 4.5,
     body: {},
     glass: {},
     detail: {},
 }) {
-
+    
+    //loader
     const loader = createLoader("draco")
-
     const loadCar = async () => {
         return await loader.loadAsync(options.modelPath)
     }
-
-    const { body, glass, detail } = options
-
-    const bodyMaterial = createCarMaterial('physical', body)
-    const detailsMaterial = createCarMaterial('standard', detail)
-    const glassMaterial = createCarMaterial('physical', glass)
-
     const gltf = await loadCar()
     const carModel = gltf.scene.children[0]
 
-    carModel.getObjectByName('body').material = bodyMaterial
+    //enlarge 根据提供的放大尺寸来放大模型
+    if (options.enlarge) {
+        const box = new Box3().setFromObject(gltf.scene)
+        const x = box.max.x - box.min.x
+        const y = box.max.y - box.min.y
+        const z = box.max.z - box.min.z
+        carModel.maxSize = Math.max(x, y, z)
+        const enlarge = Number((options.enlarge / carModel.maxSize).toFixed(3))
+        carModel.scale.set(enlarge, enlarge, enlarge)
+    }
 
-    carModel.getObjectByName('rim_fl').material = detailsMaterial
-    carModel.getObjectByName('rim_fr').material = detailsMaterial
-    carModel.getObjectByName('rim_rr').material = detailsMaterial
-    carModel.getObjectByName('rim_rl').material = detailsMaterial
-    carModel.getObjectByName('trim').material = detailsMaterial
-
-    carModel.getObjectByName('glass').material = glassMaterial
-
-    // shadow
+    // shadow 将提供的纹理贴图应用到模型上
     if (options.texturePath) {
         const { texturePath, carWidth, carLength } = options
         const shadow = new TextureLoader().load(texturePath)
@@ -52,7 +47,7 @@ async function loadCarModel(options = {
 
         carModel.add(mesh)
     }
-
+    
     return carModel
 }
 

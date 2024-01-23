@@ -35,9 +35,22 @@ function createControls(options = {
     }
     if (minDistance) controls.minDistance = 0.1;
     if (maxDistance) controls.maxDistance = 10;
-
+    
+    // 实时更新OrbitControls
     controls.tick = () => controls.update();
-
+    
+    // OrbitControls限制缩放
+    controls.limitZoom = (min, max) => {
+        controls.addEventListener('change', () => {
+            const distance = controls.getDistance()
+            if (distance < min) {
+                controls.minDistance = min
+            }
+            if (distance > max) {
+                controls.maxDistance = max
+            }
+        })
+    }
     return controls
 }
 export { createControls }

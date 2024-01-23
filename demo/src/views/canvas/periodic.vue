@@ -18,15 +18,15 @@ const world = ref()
 async function init(data) {
     data.modelPath = "../static/models/nissan_terra_2020.glb"
     const car = await loadCarModel(data)
-    const { wheels, grid } = setWheels(car,['WHEEL_RR','WHEEL_RL', 'WHEEL_FR', 'WHEEL_FL'])
+    const { wheels, grid } = setWheels(car)
     const near = 0.1, far = 100
     const options = {
         el: canvasBox.value,
         cameraOption: {
             fov: 50,
-            near: 0.05,
-            far: 1500,
-            x: -0.05, y: 0.05, z: 0.05,
+            near,
+            far,
+            x: -5, y:5, z: 5,
             aspect: canvasBox.value.clientWidth / canvasBox.value.clientHeight,
         },
         rendererOption: {
@@ -39,28 +39,23 @@ async function init(data) {
         sceneOption: {
             background: "#333333",
             needLights: [
-                { type: 'main', strength: 8, x: -0.6, y: 0.1, z: 0.03 },
-                { type: 'main', strength: 6, x: 0.4, y: 0.6, z: 0.04 },
-                { type: 'main', strength: 8, x: 0.2, y: 0.01, z: -0.5 },
+                { type: 'main', strength: 8, x: -6, y: 1, z: 0.3 },
+                { type: 'main', strength: 6, x: 4, y: 6, z: 0.4 },
             ],
-            sceneObjects: [car, grid]
+            sceneObjects: [car, grid],
+            env:true,
+            fog:true,
         },
         animationList: [...wheels, grid]
     }
     world.value = new World(options)
-    const { scene, control } = world.value.getComponents()
-    const rgbeLoader = new RGBELoader()
-    const loadEnv = async () => {
-        return await rgbeLoader.loadAsync('../static/texture/venice_sunset_1k.hdr')
-    }
-    scene.environment = await loadEnv()
-    scene.environment.mapping = EquirectangularReflectionMapping;
-    scene.fog = new Fog("#333333", 10, 15);
-
+    const { control } = world.value.getComponents()
+   
     control.maxPolarAngle = Math.PI * 0.45
     control.minDistance = near
     control.maxDistance = far
-
+    control.limitZoom(6,12)
+    
     world.value.start()
 
 }
