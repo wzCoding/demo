@@ -8,7 +8,7 @@ import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
 import { loadGlbModel } from './resouce/three/glb/load'
 import { setWheels } from "./resouce/three/glb/wheels"
-import { createCarMaterial } from "./resouce/three/glb/material"
+import { createMaterial } from "./resouce/three/glb/material"
 
 const canvasBox = ref()
 const dataStore = useDataStore()
@@ -61,9 +61,9 @@ async function init(data) {
 
 function setCarMaterial(carModel, data) {
     const { body, glass, detail } = data
-    const bodyMaterial = createCarMaterial('physical', body)
-    const detailsMaterial = createCarMaterial('standard', detail)
-    const glassMaterial = createCarMaterial('physical', glass)
+    const bodyMaterial = createMaterial('physical', body)
+    const detailsMaterial = createMaterial('standard', detail)
+    const glassMaterial = createMaterial('physical', glass)
 
     carModel.getObjectByName('body').material = bodyMaterial
 

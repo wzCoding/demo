@@ -9,8 +9,11 @@
         </div>
         <transition name="scale">
             <div class="menu" v-show="visible" :style="transformStyle">
+                <div v-if="title" class="menu-header">
+                    <h1>{{ title }}</h1>
+                </div>
                 <div class="menu-content">
-                    <Card v-for="menu in menulist" :key="menu.title" width="100%" :title="menu.title"
+                    <Card v-for="menu in menulist" :key="menu.title" width="100%" :title="menu.titleCN"
                         :class="{ active: menu.active }" @click="handleMenuClick(menu)" />
                 </div>
             </div>
@@ -19,7 +22,7 @@
 </template>
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 import Card from '@/components/Card'
 import IconButton from '../IconButton'
 import IconSvg from '../IconSvg'
@@ -39,6 +42,10 @@ export default {
         show: {
             type: Boolean,
             default: false
+        },
+        title: {
+            type: String,
+            default: ''
         },
         menus: {
             type: Array,

@@ -3,7 +3,7 @@
         <div class="back" @click="back">
             <span>×</span>
         </div>
-        <PageMenu v-if="showMenu" position="bottom-left" :menus="menus" @visible-change="openMenu" @menu-click="menuClick">
+        <PageMenu v-if="showMenu" position="bottom-left" :title="id" :menus="menus" @visible-change="openMenu" @menu-click="menuClick">
         </PageMenu>
         <div class="content">
             <router-view></router-view>
@@ -47,6 +47,7 @@ export default {
             })
         }
         return {
+            id,
             menus,
             showMenu,
             back,

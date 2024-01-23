@@ -15,7 +15,7 @@ const loading = ref(true)
 const id = "suv"
 const world = ref()
 async function init(data) {
-    data.modelPath = "../static/models/nissan_terra_2020.glb"
+    data.modelPath = "../static/models/suv.glb"
     const car = await loadGlbModel(data)
     const { wheels, grid } = setWheels(car)
     const near = 0.1, far = 100

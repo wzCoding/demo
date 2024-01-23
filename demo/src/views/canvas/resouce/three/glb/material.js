@@ -1,6 +1,6 @@
 import { MeshPhysicalMaterial, MeshStandardMaterial } from "three"
 
-function createCarMaterial(type, options = {
+function createMaterial(type, options = {
     color: 0xffffff,
     metalness: 1.0,
     roughness: 0.5,
@@ -26,4 +26,4 @@ function createCarMaterial(type, options = {
     return material
 }
 
-export { createCarMaterial }
+export { createMaterial }

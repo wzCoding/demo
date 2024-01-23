@@ -14,7 +14,7 @@ const loading = ref(true)
 const id = "tank"
 const world = ref()
 async function init(data) {
-    data.modelPath = "../static/models/russian_tank_kv-8.glb"
+    data.modelPath = "../static/models/tank.glb"
     const tank = await loadGlbModel(data)
     const grid = setGrid()
     tank.position.set(0, 0.5, 0)

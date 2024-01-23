@@ -39,17 +39,43 @@
 }
 
 .menu {
+    --content-padding: 3.75rem;
     position: absolute;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
-
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    .menu-header{
+        padding: var(--content-padding);
+        padding-bottom: 0;
+        text-align: center;
+        h1{
+            font-size:3rem;
+            text-shadow:
+            0 2px var(--theme-gradient-color-1),
+            2px 0 var(--theme-gradient-color-1),
+            0 -2px var(--theme-gradient-color-1),
+            -2px 0 var(--theme-gradient-color-1),
+            2px 2px var(--theme-gradient-color-1),
+            2px -2px var(--theme-gradient-color-1),
+            -2px -2px var(--theme-gradient-color-1),
+            -2px 2px var(--theme-gradient-color-1);
+        }
+    }
     .menu-content {
-        padding: 3.75rem;
-        display: flex;
-        gap: 1.5rem;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-wrap: wrap;
+        
+        padding: var(--content-padding);
+       
+        .card-box {
+            margin: 1.5rem 0;
+        }
+        .card-box:first-child {
+            margin-top: 0;
+        }
+        .card-box:last-child {
+            margin-bottom: 0;
+        }
     }
 }
 

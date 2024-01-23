@@ -6,7 +6,7 @@
     --theme-header-background: #ffffff;
     --theme-button-background: #9f2b83;
     --theme-box-shadow-color: rgba(248, 177, 39, 0.1);
-    --theme-card-background:#EBEEF5;
+    --theme-card-background: #EBEEF5;
     --header-height: 57px;
     --transition-time: 0.3s;
 }
@@ -19,9 +19,20 @@
     --theme-header-background: #22272e;
     --theme-button-background: #00bcd4;
     --theme-box-shadow-color: rgba(64, 158, 255, 0.3);
-    --theme-card-background:#22272e;
+    --theme-card-background: #22272e;
     --header-height: 57px;
     --transition-time: 0.3s;
+}
+
+::-webkit-scrollbar {
+    width: 0.5rem;
+    background-color: rgba(255,255,255,0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--theme-gradient-color-1);
+    border-radius: 0.5rem;
+    cursor: pointer;
 }
 
 @property --rotate {
@@ -255,10 +266,11 @@
     overflow: hidden !important;
 }
 
-.canvas-box{
+/* canvas页面容器样式 */
+.canvas-box {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    
+
 }
