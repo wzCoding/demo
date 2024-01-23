@@ -2,7 +2,7 @@
     <div class="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
 import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
@@ -12,7 +12,7 @@ import { createCarMaterial } from "./resouce/three/car/material"
 
 const canvasBox = ref()
 const dataStore = useDataStore()
-const loading = computed(() => dataStore.loading)
+const loading = ref(true)
 const id = "car"
 const world = ref()
 async function init(data) {
@@ -55,6 +55,8 @@ async function init(data) {
     control.limitZoom(6, 12)
 
     world.value.start()
+
+    loading.value = false
 }
 
 function setCarMaterial(carModel, data) {

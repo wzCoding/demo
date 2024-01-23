@@ -21,12 +21,15 @@ function createControls(options = {
     listenToKeyEvents: false,
     autoRotate: false,
     autoRotateSpeed: 1,
-    minDistance: 0.1,
-    maxDistance: 10
+    minDistance: 5,
+    maxDistance: 1
 }) {
     const { camera, canvas, enableDamping, listenToKeyEvents, autoRotate, autoRotateSpeed, minDistance, maxDistance } = options;
     const controls = new OrbitControls(camera, canvas);
-    
+
+    controls.minDistance = minDistance || 5;
+    controls.maxDistance = maxDistance || 15;
+
     if (enableDamping) controls.enableDamping = enableDamping;
     if (listenToKeyEvents) controls.listenToKeyEvents(window);
 
@@ -34,8 +37,6 @@ function createControls(options = {
         controls.autoRotate = true;
         controls.autoRotateSpeed = autoRotateSpeed;
     }
-    if (minDistance) controls.minDistance = 0.1;
-    if (maxDistance) controls.maxDistance = 10;
 
     // 实时更新OrbitControls
     controls.tick = () => controls.update();

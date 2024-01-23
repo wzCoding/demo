@@ -41,7 +41,6 @@ class World {
         //设置尺寸变化监听
         new Resizer(el, camera, renderer)
 
-
     }
     resolve(params) {
         const { cameraOption, sceneOption, rendererOption } = params
@@ -57,7 +56,9 @@ class World {
         let scene = {
             background: "#ffffff",
             needLights: [],
-            sceneObjects: []
+            sceneObjects: [],
+            env:false,
+            fog:false
         }
         let renderer = {
             dpr: Math.min(window.devicePixelRatio, 2),

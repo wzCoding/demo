@@ -2,7 +2,7 @@
     <div class="canvas-box" ref="canvasBox" v-loading="loading"></div>
 </template>
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useDataStore } from '@/store/useDataStore'
 import { ACESFilmicToneMapping } from "three"
 import { World } from './resouce/three/world'
@@ -11,7 +11,7 @@ import { setWheels } from "./resouce/three/car/wheels"
 
 const canvasBox = ref()
 const dataStore = useDataStore()
-const loading = computed(() => dataStore.loading)
+const loading = ref(true)
 const id = "suv"
 const world = ref()
 async function init(data) {
@@ -57,6 +57,7 @@ async function init(data) {
     
     world.value.start()
 
+    loading.value = false
 }
 onMounted(() => {
     dataStore.getPageData(id).then(res => {
