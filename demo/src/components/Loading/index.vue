@@ -1,7 +1,7 @@
 <template>
     <Transition name="fade">
         <div class="loading-mask" v-show="show">
-            <div class="loading-spinner" ref="spinner">
+            <div class="loading-spinner">
                 <div class="loading-circle"></div>
             </div>
             <div class="loading-text">{{ text }}</div>
@@ -28,11 +28,9 @@ export default {
         }
     },
     setup(props) {
-        const spinner = ref(null)
         onMounted(() => {
             if (props.spinner) {
-                console.log(props.spinner)
-                spinner.value.innerHTML = props.spinner
+                document.querySelector(".loading-spinner").innerHTML = props.spinner
             }
         })
     }

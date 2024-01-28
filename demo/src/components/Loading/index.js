@@ -7,7 +7,8 @@ let fullScreenInstance;  //全屏loading使用同一个实例
 function createLoading(options = {}) {
     const data = reactive({
         show: options.show,
-        text: options.text
+        text: options.text,
+        spinner: options.spinner
     });
     const close = function () {
         data.show = false;
@@ -18,7 +19,7 @@ function createLoading(options = {}) {
         vm.$el.parentNode.removeChild(vm.$el);
     }
 
-    const loadingVnode = h(LoadingTemplate,data );
+    const loadingVnode = h(LoadingTemplate, data);
     const loadingApp = createApp(loadingVnode);
     const vm = loadingApp.mount(document.createElement("div"))
 
@@ -122,10 +123,10 @@ const LoadingDirective = {
     updated(el, binding) {
         const instance = el[INSTANCE_KEY];
         if (isObject(binding.value)) {
-            if(!binding.value.show) instance.instance.close();
+            if (!binding.value.show) instance.instance.close();
             if (binding.value && binding.oldValue) updateOptions(binding.value, instance.options)
         } else {
-            if(binding.value !== binding.oldValue){
+            if (binding.value !== binding.oldValue) {
                 if (binding.value && !binding.oldValue) {
                     createInstance(el, binding)
                 } else {

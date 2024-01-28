@@ -7,15 +7,8 @@
 import { ref, onMounted,h } from 'vue';
 import { Loading } from '@/components/Loading';
 
-const examples = [
-    {
-        func: () => {
-            Loading.service({ target: "#loading-item1" })
-        }
-    }
-]
 onMounted(() => {
-    Loading.service({ target: "#loading-item1", show: true })
+    Loading.service({ target: "#loading-item1", show: true,spinner:"123" })
 })
 </script>
 <style lang="scss" scoped>
