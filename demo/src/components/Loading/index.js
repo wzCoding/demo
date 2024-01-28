@@ -58,7 +58,8 @@ function resolveOptions(options) {
     }
     return {
         parent: target === document.body ? document.body : target,
-        text: options.text || "",
+        text: options.text || "Loading......",
+        spinner: options.spinner || "",
         fullScreen: target == document.body && options.fullScreen,
         scrollLock: options.scrollLock,
         show: options.show,
