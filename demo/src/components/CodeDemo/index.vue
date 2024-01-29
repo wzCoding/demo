@@ -10,7 +10,16 @@
 <script>
 import { computed, onMounted } from 'vue'
 import hljs from 'highlight.js'
-import 'highlight.js/styles/atom-one-dark.css'
+import 'highlight.js/styles/atom-one-dark.css' //默认样式主题
+import javascript from 'highlight.js/lib/languages/javascript'
+import html from 'highlight.js/lib/languages/xml'
+import css from 'highlight.js/lib/languages/css'
+
+// 注册语言
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('html', html)
+hljs.registerLanguage('css', css)
+
 export default {
     name: 'CodeDemo',
     props: {
@@ -34,7 +43,7 @@ export default {
         })
         onMounted(() => {
             document.querySelectorAll('.code-demo pre code').forEach((block) => {
-                hljs.highlightBlock(block)
+                hljs.highlightElement(block)
                 block.innerHTML = block.innerHTML.trim()
             })
           
@@ -45,6 +54,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .code-demo {
+    width: 100%;
     code.hljs{
         color:var(--theme-code-color);
         background-color: var(--theme-code-background);

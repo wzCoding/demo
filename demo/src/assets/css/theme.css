@@ -9,8 +9,8 @@
     --theme-card-background: #EBEEF5;
     --header-height: 57px;
     --transition-time: 0.3s;
-    --theme-code-color:#383a42;
-    --theme-code-background:#fafafa;
+    --theme-code-color: #383a42;
+    --theme-code-background: #fafafa;
 }
 
 :root[theme=dark] {
@@ -24,13 +24,13 @@
     --theme-card-background: #22272e;
     --header-height: 57px;
     --transition-time: 0.3s;
-    --theme-code-color:#abb2af;
-    --theme-code-background:#282c34;
+    --theme-code-color: #abb2af;
+    --theme-code-background: #282c34;
 }
 
 ::-webkit-scrollbar {
     width: 0.5rem;
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -126,6 +126,10 @@
 }
 
 @media screen and (max-width: 767px) and (min-width: 280px) {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
     .header {
         padding: .8rem 0 !important;
     }

@@ -45,7 +45,7 @@
                     margin-left: 0%;
                     margin-right: 0%;
                     overflow: hidden;
-                    transition: 0.3s;
+                    transition:transform 0.3s;
                     @extend .background-gradient;
 
                     .menu-btn {
@@ -58,7 +58,7 @@
                         text-align: center;
                         color: #fff;
                         transform: rotate(45deg) translate(-43px, 0);
-                        transition: 0.3s;
+                        transition:transform 0.3s;
                         cursor: pointer;
 
                         &:hover {
@@ -121,7 +121,7 @@
             display: flex;
             flex-direction: column;
             color: var(--theme-text-color);
-            transition: all var(--transition-time);
+            transition: height var(--transition-time);
             h1,
             h2 {
                 padding-bottom: 1rem;

@@ -4,7 +4,7 @@
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
             <div class="info-area">
-                <span class="desc">{{ item.desc }}</span>
+                <h4 class="desc">{{ item.desc }}</h4>
                 <code-demo :code="item.code"></code-demo>
             </div>
         </div>
@@ -26,7 +26,7 @@ const examples = [
         desc: "通过服务方式使用",
         id: "loading-area2",
         code: [
-`Loading.service({
+            `Loading.service({
     zIndex: 901,
     target: '#loading-area3', 
     show: true
@@ -38,7 +38,7 @@ const examples = [
         desc: "更改颜色",
         id: "loading-area3",
         code: [
-`Loading.service({
+            `Loading.service({
     zIndex: 901,
     target: '#loading-area3', 
     show: true,
@@ -52,7 +52,7 @@ const examples = [
         desc: "使用自定义加载样式",
         id: "loading-area4",
         code: [
-`Loading.service({
+            `Loading.service({
     zIndex: 901,
     target: '#loading-area3', 
     show: true,
@@ -67,7 +67,7 @@ const examples = [
 onMounted(() => {
     Loading.service({ target: "#loading-area2", show: true, zIndex: 901, })
     Loading.service({ target: "#loading-area3", show: true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })
-    Loading.service({ target: "#loading-area4", show: true, zIndex: 901, })
+    Loading.service({ target: "#loading-area4", show: true, zIndex: 901, customClass: 'custom-class' })
 })
 
 </script>
@@ -77,7 +77,6 @@ onMounted(() => {
     height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 100%;
     gap: 1px;
     background-color: #f5f5f5;
     overflow-y: auto;
@@ -85,20 +84,53 @@ onMounted(() => {
 
     .item {
         display: grid;
-        grid-template-rows: 3fr 1fr;
         background-color: var(--theme-page-background);
 
+        .display-area {
+            min-height: 300px;
+        }
+
         .info-area {
+            min-height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-size: 14px;
             color: var(--theme-text-color);
+            padding-top: .5rem;
 
             .desc {
-                padding-bottom: 0.25rem;
+                width: 100%;
+                padding: 0 1em;
             }
+        }
+    }
+}
+
+:deep(.custom-class) {
+    width: 200px;
+    height: 30px;
+    border: 1px solid var(--theme-gradient-color-1);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 5px var(--theme-gradient-color-1);
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 3px;
+        background-image: repeating-linear-gradient(to right, var(--theme-gradient-color-2), var(--theme-gradient-color-1) 8%, transparent 8%, transparent 10%);
+        animation: move 4s steps(10, start) infinite;
+    }
+
+    @keyframes move {
+        0% {
+            transform: translate(-100%);
+        }
+
+        100% {
+            transform: translate(0);
         }
     }
 }
