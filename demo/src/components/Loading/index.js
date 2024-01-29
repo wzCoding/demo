@@ -8,8 +8,12 @@ function createLoading(options = {}) {
     const data = reactive({
         show: options.show,
         text: options.text,
-        spinner: options.spinner
+        zIndex: options.zIndex,
+        customClass: options.customClass,
+        background: options.background,
+        color: options.color
     });
+    
     const close = function () {
         data.show = false;
         removeElLoadingChild();
@@ -38,6 +42,7 @@ function LoadingInstance(options) {
     if (resolved.fullScreen && fullScreenInstance) {
         return fullScreenInstance;
     }
+    
     const instance = createLoading({
         ...resolved,
     });
@@ -60,7 +65,10 @@ function resolveOptions(options) {
     return {
         parent: target === document.body ? document.body : target,
         text: options.text || "Loading......",
-        spinner: options.spinner || "",
+        zIndex: options.zIndex || 999,
+        background: options.background || "rgba(0, 0, 0, 0.5)",
+        color: options.color || "",
+        customClass: options.customClass || "",
         fullScreen: target == document.body && options.fullScreen,
         scrollLock: options.scrollLock,
         show: options.show,
@@ -85,20 +93,33 @@ function setParentStyle(options) {
 //注册loading指令
 const INSTANCE_KEY = Symbol("Loading");
 const createInstance = function (el, binding) {
+    //console.log(binding)
     const getParam = (key) => {
-        let param;
+        let result;
         if (isObject(binding.value)) {
-            param = binding.value[key];
+            result = binding.value[key];
         } else {
-            param = key == "text" ? "" :
-                key == "show" ? binding.value : binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false)
+            switch (key) {
+                case "show":
+                    result = binding.value;
+                    break;
+                case "fullScreen":
+                case "scrollLock":
+                    result = binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false);
+                    break;
+                default:
+            }
         }
-        return ref(param);
+        return ref(result);
     }
     const options = {
         target: el,
         show: getParam("show"),
         text: getParam("text"),
+        zIndex: getParam("zIndex"),
+        background: getParam("background"),
+        customClass: getParam("customClass"),
+        color: getParam("color"),
         fullScreen: getParam("fullScreen"),
         scrollLock: getParam("scrollLock")
     }

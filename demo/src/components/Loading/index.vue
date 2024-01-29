@@ -1,16 +1,16 @@
 <template>
     <Transition name="fade">
-        <div class="loading-mask" v-show="show">
+        <div class="loading-mask" v-show="show" :style="styles">
             <div class="loading-spinner">
-                <div class="loading-circle"></div>
+                <div :class="spinnerClass"></div>
             </div>
             <div class="loading-text">{{ text }}</div>
         </div>
     </Transition>
 </template>
-<style src="./index.scss" lang="scss" scoped></style>
+<style src="./index.scss" lang="scss"></style>
 <script>
-import { ref,onMounted } from 'vue'
+import { computed } from 'vue'
 export default {
     name: "Loading",
     props: {
@@ -22,17 +22,42 @@ export default {
             type: String,
             default: "Loading......"
         },
-        spinner: {
+        zIndex: {
+            type: [String, Number],
+            default: "999"
+        },
+        background: {
+            type: String,
+            default: "rgba(0, 0, 0, 0.5)"
+        },
+        customClass: {
             type: String,
             default: ""
+        },
+        color: {
+            type: [String, Array],
+            default: ''
         }
     },
     setup(props) {
-        onMounted(() => {
-            if (props.spinner) {
-                document.querySelector(".loading-spinner").innerHTML = props.spinner
-            }
+        const spinnerClass = computed(() => {
+            return props.customClass ? props.customClass : 'loading-circle'
         })
+        const styles = computed(() => {
+            const style = {
+                zIndex: props.zIndex,
+                backgroundColor: props.background
+            }
+            if (typeof props.color === 'object') {
+                for (let i = 0; i < props.color.length; i++) {
+                    style[`--border-color${i + 1}`] = props.color[i]
+                }
+            } else if (props.color && typeof props.color === 'string') {
+                style[`--border-color1`] = props.color
+            }
+            return style
+        })
+        return { spinnerClass, styles }
     }
 }
 </script>
