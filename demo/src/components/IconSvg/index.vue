@@ -1,14 +1,15 @@
 <template>
     <svg xmlns="http://www.w3.org/2000/svg" :style="styles" viewBox="0 0 1024 1024" :aria-labelledby="iconName"
         role="presentation">
-        <g :fill="color">
+        <g :fill="iconColor">
             <slot></slot>
         </g>
     </svg>
 </template>
 <script>
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { convertCssUnit } from '@/utils/index'
+import { useThemeStore } from '@/store/useThemeStore';
 export default {
     name: "IconSvg",
     props: {
@@ -18,7 +19,7 @@ export default {
         },
         color: {
             type: String,
-            default: ''
+            default: 'auto'
         },
         name: {
             type: String,
@@ -26,6 +27,7 @@ export default {
         },
     },
     setup(props) {
+        const iconColor = ref(props.color)
         const iconName = `icon-${props.name}`;
         const styles = computed(() => {
             const size = convertCssUnit(props.size);
@@ -34,7 +36,16 @@ export default {
                 height: size
             }
         })
-        return { iconName, styles };
+        if (props.color === 'auto') {
+            onMounted(() => {
+                const themeStore = useThemeStore();
+                iconColor.value = computed(() => {
+                    return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue('--theme-text-color')
+                })
+            })
+        }
+
+        return { iconColor,iconName, styles };
     }
 }
 </script>

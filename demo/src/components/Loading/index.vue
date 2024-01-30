@@ -4,7 +4,7 @@
             <div class="loading-spinner">
                 <div :class="spinnerClass"></div>
             </div>
-            <div class="loading-text">{{ text }}</div>
+            <div v-if="text" class="loading-text">{{ text }}</div>
         </div>
     </Transition>
 </template>

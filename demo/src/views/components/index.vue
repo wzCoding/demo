@@ -4,8 +4,8 @@
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
             <div class="info-area">
-                <h4 class="desc">{{ item.desc }}</h4>
-                <code-demo :code="item.code"></code-demo>
+                <!-- <h4 class="desc">{{ item.desc }}</h4> -->
+                <code-demo :desc="item.desc" :code="item.code"></code-demo>
             </div>
         </div>
     </div>
@@ -29,7 +29,8 @@ const examples = [
             `Loading.service({
     zIndex: 901,
     target: '#loading-area3', 
-    show: true
+    show: true,
+    text: "加载中......",
 })`,
         ],
         mode: "service"
@@ -56,8 +57,6 @@ const examples = [
     zIndex: 901,
     target: '#loading-area3', 
     show: true,
-    background: 'rgba(214, 255, 255, 0.5)', 
-    color: ['green', 'yellowgreen'],
     customClass: 'custom-class'
 })`,
         ],
@@ -65,7 +64,7 @@ const examples = [
     }
 ]
 onMounted(() => {
-    Loading.service({ target: "#loading-area2", show: true, zIndex: 901, })
+    Loading.service({ target: "#loading-area2", show: true, text: "加载中......", zIndex: 901, })
     Loading.service({ target: "#loading-area3", show: true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })
     Loading.service({ target: "#loading-area4", show: true, zIndex: 901, customClass: 'custom-class' })
 })
@@ -91,7 +90,6 @@ onMounted(() => {
         }
 
         .info-area {
-            min-height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -116,6 +114,7 @@ onMounted(() => {
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 5px var(--theme-gradient-color-1);
+
     &::after {
         content: '';
         position: absolute;
