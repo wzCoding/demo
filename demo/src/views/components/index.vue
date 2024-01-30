@@ -3,7 +3,7 @@
         <div class="item" v-for="item in examples" :key="item.id">
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
-            <code-demo :desc="item.desc" :code="item.code" @open-code ="openCode"></code-demo>
+            <code-demo :desc="item.desc" :code="item.code" @open-code="openCode"></code-demo>
         </div>
     </div>
 </template>

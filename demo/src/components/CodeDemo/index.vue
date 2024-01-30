@@ -90,7 +90,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5rem 1rem;
+        padding: 1rem;
 
         .code-desc {
             color: var(--theme-text-color);
