@@ -3,7 +3,7 @@
         <div class="item" v-for="item in examples" :key="item.id">
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
-            <code-demo :desc="item.desc" :code="item.code"></code-demo>
+            <code-demo :desc="item.desc" :code="item.code" @open-code ="openCode"></code-demo>
         </div>
     </div>
 </template>
@@ -60,6 +60,9 @@ const examples = [
         mode: "service"
     }
 ]
+const openCode = (param)=>{
+    param.open.value = !param.open.value
+}
 onMounted(() => {
     Loading.service({ target: "#loading-area2", show: true, text: "加载中......", zIndex: 901, })
     Loading.service({ target: "#loading-area3", show: true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })

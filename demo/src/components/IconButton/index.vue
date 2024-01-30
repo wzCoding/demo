@@ -1,5 +1,5 @@
 <template>
-    <div class="icon-btn" :style="styleObj">
+    <div class="icon-btn" :style="styleObj" @click="buttonClick($event)">
         <slot>
             <span v-if="btnIcon" class="icon">
                 <img :src="btnIcon" alt="icon">
@@ -38,7 +38,8 @@ export default {
             default: "5"
         }
     },
-    setup(props) {
+    emits: ["btnClick"],
+    setup(props,{emit}) {
         const btnIcon = computed(() => {
             let resource = ''
             if (props.icon) {
@@ -64,9 +65,13 @@ export default {
                 gap: ["top", "bottom"].includes(props.direction) ? `${itemGap.value} 0` : `0 ${itemGap.value}`
             }
         })
+        const buttonClick = (e) => {
+            emit("btnClick",e)
+        }
         return {
             btnIcon,
-            styleObj
+            styleObj,
+            buttonClick
         }
     }
 }

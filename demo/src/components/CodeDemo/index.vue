@@ -4,7 +4,7 @@
             <slot>
                 <h4 class="code-desc">{{ desc }}</h4>
             </slot>
-            <icon-button class="code-open" @click="openCode(e)">
+            <icon-button class="code-open" @btn-click="openCode">
                 <icon-svg size="24">
                     <icon-code></icon-code>
                 </icon-svg>
@@ -52,12 +52,12 @@ export default {
             default: false
         }
     },
+    emits: ['openCode'],
     components: { IconButton, IconSvg, IconCode },
-    setup(props) {
+    setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {
-            showCode.value = !showCode.value
-            console.log(e)
+            emit('openCode', { open: showCode, event: e })
         }
         const hljsCode = computed(() => {
             const codes = []
@@ -77,7 +77,7 @@ export default {
             })
 
         })
-        return { hljsCode,showCode, openCode }
+        return { hljsCode, showCode, openCode }
     }
 }
 </script>
@@ -95,8 +95,6 @@ export default {
         .code-desc {
             color: var(--theme-text-color);
         }
-
-        .code-open {}
     }
 
     code.hljs {
@@ -106,5 +104,4 @@ export default {
     }
 
 }
-
 </style>
