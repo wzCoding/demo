@@ -3,10 +3,7 @@
         <div class="item" v-for="item in examples" :key="item.id">
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
-            <div class="info-area">
-                <!-- <h4 class="desc">{{ item.desc }}</h4> -->
-                <code-demo :desc="item.desc" :code="item.code"></code-demo>
-            </div>
+            <code-demo :desc="item.desc" :code="item.code"></code-demo>
         </div>
     </div>
 </template>

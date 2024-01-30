@@ -7,7 +7,7 @@
     </svg>
 </template>
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { convertCssUnit } from '@/utils/index'
 import { useThemeStore } from '@/store/useThemeStore';
 export default {
@@ -27,8 +27,14 @@ export default {
         },
     },
     setup(props) {
-        const iconColor = ref(props.color)
         const iconName = `icon-${props.name}`;
+        const iconColor = computed(() => {
+            if (props.color === 'auto') {
+                const themeStore = useThemeStore();
+                return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue('--theme-text-color')
+            }
+            return props.color
+        })
         const styles = computed(() => {
             const size = convertCssUnit(props.size);
             return {
@@ -36,16 +42,8 @@ export default {
                 height: size
             }
         })
-        if (props.color === 'auto') {
-            onMounted(() => {
-                const themeStore = useThemeStore();
-                iconColor.value = computed(() => {
-                    return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue('--theme-text-color')
-                })
-            })
-        }
 
-        return { iconColor,iconName, styles };
+        return { iconName, iconColor, styles };
     }
 }
 </script>
