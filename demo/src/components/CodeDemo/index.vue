@@ -5,7 +5,7 @@
                 <h4 class="code-desc">{{ desc }}</h4>
             </slot>
             <icon-button class="code-open" @btn-click="openCode">
-                <icon-svg size="24">
+                <icon-svg size="24" color="theme-gradient">
                     <icon-code></icon-code>
                 </icon-svg>
             </icon-button>

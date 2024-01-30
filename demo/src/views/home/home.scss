@@ -45,7 +45,7 @@
                     margin-left: 0%;
                     margin-right: 0%;
                     overflow: hidden;
-                    transition:transform 0.3s;
+                    transition:transform var(--transition-time);
                     @extend .background-gradient;
 
                     .menu-btn {
@@ -58,7 +58,7 @@
                         text-align: center;
                         color: #fff;
                         transform: rotate(45deg) translate(-43px, 0);
-                        transition:transform 0.3s;
+                        transition:transform var(--transition-time),background-color var(--transition-time),color var(--transition-time);
                         cursor: pointer;
 
                         &:hover {
@@ -145,6 +145,7 @@
                 border-radius: 5px;
                 color: #fff;
                 cursor: pointer;
+                transition: transform var(--transition-time);
                 @extend .background-gradient;
 
                 &:hover {

@@ -49,21 +49,21 @@
                 gap: 0 1.5rem;
 
                 .link-item {
-                    font-weight: 600;
                     text-decoration: none;
-                    color: var(--theme-text-color);
-
-                    &:hover {
-                        @extend .text-gradient;
-                    }
-
                     svg {
                         border-radius: 8px;
                         @extend .box-gradient;
                     }
 
                     :deep(.text) {
-                        transition: background var(--transition-time) linear;
+                        font-weight: 600;
+                        color: var(--theme-text-color);
+                        transition:
+                            background var(--transition-time) linear,
+                            color var(--transition-time) linear;
+                        &:hover {
+                            @extend .text-gradient;
+                        }
                     }
                 }
             }

@@ -19,7 +19,7 @@ export default {
         },
         color: {
             type: String,
-            default: 'auto'
+            default: ''
         },
         name: {
             type: String,
@@ -27,11 +27,12 @@ export default {
         },
     },
     setup(props) {
+        const defaultColors = {'theme-text':'--theme-text-color','theme-gradient':'--theme-gradient-color-2'}
         const iconName = `icon-${props.name}`;
         const iconColor = computed(() => {
-            if (props.color === 'auto') {
+            if (defaultColors[props.color]) {
                 const themeStore = useThemeStore();
-                return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue('--theme-text-color')
+                return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue(defaultColors[props.color])
             }
             return props.color
         })

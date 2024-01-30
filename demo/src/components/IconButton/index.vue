@@ -1,12 +1,12 @@
 <template>
-    <div class="icon-btn" :style="styleObj" @click="buttonClick($event)">
+    <button class="icon-btn" :style="btnStyle" :class="btnClass" @click="buttonClick($event)">
         <slot>
             <span v-if="btnIcon" class="icon">
                 <img :src="btnIcon" alt="icon">
             </span>
         </slot>
         <span v-if="text" class="text">{{ text }}</span>
-    </div>
+    </button>
 </template>
 <style src="./index.scss" lang="scss" scoped></style>
 <script>
@@ -25,7 +25,7 @@ export default {
         },
         //使用的图标
         icon: {
-            type: [String, Object],
+            type: String,
             default: ""
         },
         text: {
@@ -36,10 +36,19 @@ export default {
         gap: {
             type: String,
             default: "5"
+        },
+        size: {
+            type: String,
+            default: "auto" // 默认为 'auto'，表示可以自定义尺寸
+        },
+        type: {
+            type: String,
+            default: "" // 默认为 ''，表示自定义，也可以是 'default'、'primary'、'success'、'warning'、'danger'、'info' 等类型
         }
     },
     emits: ["btnClick"],
-    setup(props,{emit}) {
+    setup(props, { emit }) {
+
         const btnIcon = computed(() => {
             let resource = ''
             if (props.icon) {
@@ -57,20 +66,26 @@ export default {
             return flexs[props.direction]
         })
         const itemGap = computed(() => {
-            return  convertCssUnit(props.gap)
+            return convertCssUnit(props.gap)
         })
-        const styleObj = computed(() => {
+        const btnClass = computed(() => {
+            let _class = `size-${props.size}`
+            if(props.type) _class += ` btn-${props.type}`
+            return _class
+        })
+        const btnStyle = computed(() => {
             return {
                 flexDirection: iconDirection.value,
                 gap: ["top", "bottom"].includes(props.direction) ? `${itemGap.value} 0` : `0 ${itemGap.value}`
             }
         })
         const buttonClick = (e) => {
-            emit("btnClick",e)
+            emit("btnClick", e)
         }
         return {
             btnIcon,
-            styleObj,
+            btnClass,
+            btnStyle,
             buttonClick
         }
     }

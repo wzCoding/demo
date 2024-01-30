@@ -5,7 +5,27 @@
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
-
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1rem;
+    &.size-auto {
+        width: auto;
+        height: auto;
+    }
+    &.size-small {
+        font-size:12px;
+        height: 28px;
+        line-height: 1;
+    }
+    &.size-medium {
+        width: 128px;
+        height: 48px;
+    }
+    &.size-large {
+        width: 256px;
+        height: 64px;
+    }
     .icon {
         display: flex;
         justify-content: center;
