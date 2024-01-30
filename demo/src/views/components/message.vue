@@ -3,6 +3,18 @@
         <icon-button size="small" type="default">
             button
         </icon-button>
+        <icon-button size="default" type="primary">
+            button
+        </icon-button>
+        <icon-button size="large" type="success">
+            button
+        </icon-button>
+        <icon-button size="default" type="warning">
+            button
+        </icon-button>
+        <icon-button size="small" type="danger">
+            button
+        </icon-button>
     </div>
 </template>
 <script setup>
@@ -65,39 +77,17 @@ const openCode = (param)=>{
 
 </script>
 <style lang="scss" scoped>
-.loading-page {
+.message-page {
     width: 100%;
     height: 100%;
-    display: grid;
-    grid-template-columns: 100%;
-    gap: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: #f5f5f5;
     overflow-y: auto;
     overflow-x: hidden;
-
-    .item {
-        display: grid;
-        background-color: var(--theme-page-background);
-
-        .display-area {
-            min-height: 300px;
-        }
-
-        .info-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            color: var(--theme-text-color);
-            padding-top: .5rem;
-
-            .desc {
-                width: 100%;
-                padding: 0 1em;
-            }
-        }
-    }
+    gap: 10px;
 }
 
 

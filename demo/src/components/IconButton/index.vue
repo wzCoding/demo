@@ -46,7 +46,7 @@ export default {
             default: "" // 默认为 ''，表示自定义，也可以是 'default'、'primary'、'success'、'warning'、'danger'、'info' 等类型
         }
     },
-    emits: ["btnClick"],
+    emits: ["click"],
     setup(props, { emit }) {
 
         const btnIcon = computed(() => {
@@ -80,7 +80,7 @@ export default {
             }
         })
         const buttonClick = (e) => {
-            emit("btnClick", e)
+            emit("click", e)
         }
         return {
             btnIcon,

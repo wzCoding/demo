@@ -4,27 +4,78 @@
     align-items: center;
     text-align: center;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all var(--transition-time);
     border: none;
     outline: none;
     background: none;
     font-size: 1rem;
-    &.size-auto {
-        width: auto;
-        height: auto;
-    }
+    line-height: 1;
     &.size-small {
-        font-size:12px;
-        height: 28px;
-        line-height: 1;
+        font-size: 12px;
+        height: 24px;
+        padding: 4px 10px;
     }
-    &.size-medium {
-        width: 128px;
-        height: 48px;
+    &.size-default {
+        font-size: 16px;
+        height: 32px;
+        padding: 6px 12px;
     }
     &.size-large {
-        width: 256px;
-        height: 64px;
+        font-size: 20px;
+        height: 36px;
+        padding: 8px 16px;
+    }
+    &.btn-default {
+        border: 1px solid #999;
+        color: #444;
+        border-radius: 3px;
+        background-color: #ffffff;
+        &:hover {
+            color: #409eff;
+            background-color: #ecf5ff;
+            border-color: #409eff;
+        }
+    }
+
+    &.btn-primary {
+        color: #fff;
+        background-color: #409eff;
+        border-color: #409eff;
+        border-radius: 3px;
+        &:hover {
+            background: #66b1ff;
+            border-color: #66b1ff;
+        }
+    }
+    &.btn-success {
+        color: #fff;
+        background-color: #67c23a;
+        border-color: #67c23a;
+        border-radius: 3px;
+        &:hover {
+            background: #85ce61;
+            border-color: #85ce61;
+        }
+    }
+    &.btn-danger {
+        color: #fff;
+        background-color: #f56c6c;
+        border-color: #f56c6c;
+        border-radius: 3px;
+        &:hover {
+            background: #f78989;
+            border-color: #f78989;
+        }
+    }
+    &.btn-warning {
+        color: #fff;
+        background-color: #e6a23c;
+        border-color: #e6a23c;
+        border-radius: 3px;
+        &:hover {
+            background: #ebb563;
+            border-color: #ebb563;
+        }
     }
     .icon {
         display: flex;

@@ -4,7 +4,7 @@
             <slot>
                 <h4 class="code-desc">{{ desc }}</h4>
             </slot>
-            <icon-button class="code-open" @btn-click="openCode">
+            <icon-button class="code-open" @click="openCode">
                 <icon-svg size="24" color="theme-gradient">
                     <icon-code></icon-code>
                 </icon-svg>
@@ -12,29 +12,19 @@
         </div>
         <transition name="rotate-in">
             <pre v-show="showCode">
-                <code autodetect v-for="code in hljsCode" :key="code.id">
-                    {{ code.code }}
-                </code>
+                <code v-for="code in hljsCode" :key="code.id" :class="code.class" :innerHTML="code.code"></code>
             </pre>
         </transition>
     </div>
 </template>
 <script>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import IconButton from '@/components/IconButton'
 import IconSvg from '@/components/IconSvg'
 import IconCode from '@/assets/images/svg/code.vue'
 
 import hljs from 'highlight.js'
-import javascript from 'highlight.js/lib/languages/javascript'
-import html from 'highlight.js/lib/languages/xml'
-import css from 'highlight.js/lib/languages/css'
 import 'highlight.js/styles/atom-one-dark.css' //默认样式主题
-
-// 注册语言
-hljs.registerLanguage('javascript', javascript)
-hljs.registerLanguage('html', html)
-hljs.registerLanguage('css', css)
 
 export default {
     name: 'CodeDemo',
@@ -43,6 +33,7 @@ export default {
             type: String,
             default: ''
         },
+        type: { type: String, default: 'javascript' },
         code: {
             type: [String, Array],
             default: ''
@@ -64,19 +55,15 @@ export default {
             if (typeof props.code === 'string') codes.push(props.code)
             else codes.push(...props.code)
             return codes.map((item, index) => {
+                const { value } = hljs.highlight(item, { language: props.type })
                 return {
-                    code: item,
+                    code: value.trim(),
+                    class: `hljs language-${props.type}`,
                     id: `code-${index}`
                 }
             })
         })
-        onMounted(() => {
-            document.querySelectorAll('.code-demo pre code').forEach((block) => {
-                hljs.highlightElement(block)
-                block.innerHTML = block.innerHTML.trim()
-            })
 
-        })
         return { hljsCode, showCode, openCode }
     }
 }
