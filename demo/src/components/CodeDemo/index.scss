@@ -1,0 +1,22 @@
+.code-demo {
+    width: 100%;
+
+    .code-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        .code-desc {
+            color: var(--theme-text-color);
+        }
+    }
+    pre {
+        margin-top: -1rem;
+        code.hljs {
+            color: var(--theme-code-color);
+            background-color: var(--theme-code-background);
+            font-family: FangYuan;
+        }
+    }
+}

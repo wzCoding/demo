@@ -81,27 +81,4 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-.code-demo {
-    width: 100%;
-
-    .code-info {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-
-        .code-desc {
-            color: var(--theme-text-color);
-        }
-    }
-
-    code.hljs {
-        color: var(--theme-code-color);
-        background-color: var(--theme-code-background);
-        font-family: FangYuan;
-    }
-
-}
-</style>
+<style lang="scss" src="./index.scss" scoped></style>
