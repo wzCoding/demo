@@ -24,7 +24,9 @@ const examples = [
         desc: "通过服务方式使用",
         id: "loading-area2",
         code: [
-            `Loading.service({
+            `import { Loading } from '@/components/Loading'
+
+Loading.service({
     zIndex: 901,
     target: '#loading-area3', 
     show: true,
@@ -77,15 +79,11 @@ onMounted(() => {
     height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    gap: 1px;
-    background-color: #f5f5f5;
     overflow-y: auto;
     overflow-x: hidden;
 
     .item {
-        display: grid;
         background-color: var(--theme-page-background);
-
         .display-area {
             min-height: 300px;
         }

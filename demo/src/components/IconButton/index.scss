@@ -40,41 +40,33 @@
     &.btn-primary {
         color: #fff;
         background-color: #409eff;
-        border-color: #409eff;
         border-radius: 3px;
         &:hover {
-            background: #66b1ff;
-            border-color: #66b1ff;
+            background-color: #66b1ff;
         }
     }
     &.btn-success {
         color: #fff;
         background-color: #67c23a;
-        border-color: #67c23a;
         border-radius: 3px;
         &:hover {
-            background: #85ce61;
-            border-color: #85ce61;
+            background-color: #85ce61;
         }
     }
     &.btn-danger {
         color: #fff;
         background-color: #f56c6c;
-        border-color: #f56c6c;
         border-radius: 3px;
         &:hover {
-            background: #f78989;
-            border-color: #f78989;
+            background-color: #f78989;
         }
     }
     &.btn-warning {
         color: #fff;
         background-color: #e6a23c;
-        border-color: #e6a23c;
         border-radius: 3px;
         &:hover {
             background: #ebb563;
-            border-color: #ebb563;
         }
     }
     .icon {

@@ -1,20 +1,6 @@
 <template>
     <div class="message-page">
-        <icon-button size="small" type="default">
-            button
-        </icon-button>
-        <icon-button size="default" type="primary">
-            button
-        </icon-button>
-        <icon-button size="large" type="success">
-            button
-        </icon-button>
-        <icon-button size="default" type="warning">
-            button
-        </icon-button>
-        <icon-button size="small" type="danger">
-            button
-        </icon-button>
+       
     </div>
 </template>
 <script setup>

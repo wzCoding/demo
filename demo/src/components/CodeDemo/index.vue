@@ -31,7 +31,7 @@ export default {
     props: {
         desc: {
             type: String,
-            default: ''
+            default: 'code demo'
         },
         type: { type: String, default: 'javascript' },
         code: {

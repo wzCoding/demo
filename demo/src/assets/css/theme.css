@@ -30,12 +30,12 @@
 
 ::-webkit-scrollbar {
     width: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(137, 131, 131, 0.329);
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: var(--theme-gradient-color-1);
-    border-radius: 0.5rem;
+    border-radius: 0.25rem;
     cursor: pointer;
 }
 

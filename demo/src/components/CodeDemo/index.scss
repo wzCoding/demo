@@ -1,6 +1,7 @@
 .code-demo {
     width: 100%;
-
+    border-top: 1px solid var(--theme-gradient-color-2);
+    border-bottom: 1px solid var(--theme-gradient-color-2);
     .code-info {
         width: 100%;
         display: flex;
