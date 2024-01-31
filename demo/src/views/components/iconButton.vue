@@ -2,7 +2,7 @@
     <div class="iconButton-page">
         <div class="item">
             <div class="display-area">
-                <icon-button size="default" type="default">button</icon-button>
+                <icon-button size="default" type="default" @click="handleClick">button</icon-button>
                 <icon-button size="default" type="primary">button</icon-button>
                 <icon-button size="default" type="success">button</icon-button>
                 <icon-button size="default" type="warning">button</icon-button>
@@ -31,7 +31,9 @@
 import { ref } from 'vue'
 import IconButton from '@/components/IconButton'
 import CodeDemo from '@/components/CodeDemo';
-
+const handleClick = ($event) => {
+   
+}
 const examples = [
     {
         desc: "普通按钮",
@@ -51,9 +53,12 @@ const examples = [
     height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    
+    overflow-y: auto;
+    overflow-x: hidden;
+
     .item {
         background-color: var(--theme-page-background);
+
         .display-area {
             min-height: 200px;
             display: flex;

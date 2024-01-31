@@ -1,9 +1,7 @@
 <template>
     <div class="code-demo">
         <div class="code-info">
-            <slot>
-                <h4 class="code-desc">{{ desc }}</h4>
-            </slot>
+            <h4 class="code-desc">{{ desc }}</h4>
             <icon-button class="code-open" @click="openCode">
                 <icon-svg size="24" color="theme-gradient">
                     <icon-code></icon-code>
@@ -48,7 +46,9 @@ export default {
     setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {
-            emit('openCode', { open: showCode, event: e })
+            e.codeElement = e.currentTarget.parentNode.nextSibling
+            const param = { open: showCode, event: e }
+            emit('openCode', param)
         }
         const hljsCode = computed(() => {
             const codes = []

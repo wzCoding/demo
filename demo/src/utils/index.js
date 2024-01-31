@@ -172,6 +172,33 @@ function convertCssUnit(value, unit = null) {
     }
     return `${value}${unit}`;
 }
+
+function findScrollElement(el, dir = "parent", result = []) {
+    const nodeDirection = {
+        "parent": "parentNode",
+        "child": "childNodes"
+    }
+    if (!el || !nodeDirection[dir]) return
+
+    const node = el[nodeDirection[dir]];
+    if (node && dir === "parent") {
+        const styles = getComputedStyle(node).getPropertyValue("overflow").split(" ");
+        if (styles.includes("auto") || styles.includes("scroll") || styles.includes("overlay")) {
+            result.push(node);
+        } else {
+            findScrollElement(node, dir, result);
+        }
+    }
+
+    else if (node && node.length && dir === "child") {
+        node.forEach(item => {
+            result.push(findScrollElement(item, "parent", result));
+        })
+    }
+
+    return result;
+}
+
 export {
     throttle,
     debounce,
@@ -187,5 +214,6 @@ export {
     getData,
     setStorageCache,
     getStorageCache,
-    convertCssUnit
+    convertCssUnit,
+    findScrollElement
 }

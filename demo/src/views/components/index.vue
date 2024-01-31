@@ -1,5 +1,5 @@
 <template>
-    <div class="loading-page">
+    <div class="loading-page" ref="page">
         <div class="item" v-for="item in examples" :key="item.id">
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
@@ -8,9 +8,10 @@
     </div>
 </template>
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Loading } from '@/components/Loading';
 import CodeDemo from '@/components/CodeDemo';
+const page = ref();
 const examples = [
     {
         desc: "通过自定义指令 v-loading 使用",
@@ -65,7 +66,15 @@ Loading.service({
 ]
 const openCode = (param) => {
     param.open.value = !param.open.value
+    // if(param.open.value){
+    //     page.value.scroll({
+    //         left:0,
+    //         top:param.event.codeElement.clientHeight,
+    //         behavior: "smooth",
+    //     })
+    // }
 }
+
 onMounted(() => {
     Loading.service({ target: "#loading-area2", show: true, text: "加载中......", zIndex: 901, })
     Loading.service({ target: "#loading-area3", show: true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })
@@ -84,6 +93,7 @@ onMounted(() => {
 
     .item {
         background-color: var(--theme-page-background);
+
         .display-area {
             min-height: 300px;
         }
