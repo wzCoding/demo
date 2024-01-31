@@ -85,12 +85,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .loading-page {
     width: 100%;
-    height: 100%;
     display: grid;
     grid-template-columns: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-
     .item {
         background-color: var(--theme-page-background);
 

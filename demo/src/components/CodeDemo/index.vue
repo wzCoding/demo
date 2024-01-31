@@ -16,7 +16,8 @@
     </div>
 </template>
 <script>
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
+import { findScrollElement } from '@/utils/index'
 import IconButton from '@/components/IconButton'
 import IconSvg from '@/components/IconSvg'
 import IconCode from '@/assets/images/svg/code.vue'
@@ -46,9 +47,32 @@ export default {
     setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {
-            e.codeElement = e.currentTarget.parentNode.nextSibling
-            const param = { open: showCode, event: e }
-            emit('openCode', param)
+            
+            emit('openCode', { open: showCode, event: e })
+
+            if (showCode.value) {
+
+                const codeElement = e.currentTarget.parentNode.nextSibling
+                const [scrollElement] = findScrollElement(codeElement)
+                const containers = document.querySelectorAll('.code-demo')
+                const isLast = [...containers].indexOf(codeElement.parentNode) === containers.length - 1
+  
+                nextTick(() => {
+                    // 滚动到当前元素，避免scrollIntoView方法产生改变页面高度的问题
+                    if (isLast) {
+                        scrollElement.scroll({
+                            top: codeElement.clientHeight + scrollElement.scrollTop,
+                            left: 0,
+                            behavior: "smooth",
+                        });
+                    } else {
+                        codeElement.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+                    }
+                })
+            }
         }
         const hljsCode = computed(() => {
             const codes = []
