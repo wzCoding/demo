@@ -8,67 +8,98 @@
     border: none;
     outline: none;
     background: none;
-    font-size: 1rem;
-    line-height: 1;
-    &.size-small {
-        font-size: 12px;
-        height: 24px;
-        padding: 4px 10px;
-    }
-    &.size-default {
-        font-size: 16px;
-        height: 32px;
-        padding: 6px 12px;
-    }
-    &.size-large {
-        font-size: 20px;
-        height: 36px;
-        padding: 8px 16px;
-    }
-    &.btn-default {
-        border: 1px solid #999;
-        color: #444;
-        border-radius: 3px;
-        background-color: #ffffff;
-        &:hover {
-            color: #409eff;
-            background-color: #ecf5ff;
-            border-color: #409eff;
+    border-radius: 3px;
+    font-size: var(--fontSize);
+    line-height: var(--height);
+    height: var(--height);
+    padding: var(--padding);
+    color: var(--color);
+    background-color: var(--background-color);
+
+    &[class*="size-"] {
+        :deep(svg),
+        :deep(img),
+        :deep(img[class*="icon"]),
+        :deep(svg[class*="icon"]) {
+            fill:var(--color);
+            width: var(--iconSize) !important;
+            height: var(--iconSize) !important;
         }
     }
 
-    &.btn-primary {
-        color: #fff;
-        background-color: #409eff;
-        border-radius: 3px;
-        &:hover {
-            background-color: #66b1ff;
+    &[class*="type-"]:hover {
+        color: var(--hover-color);
+        background-color: var(--hover-background-color);
+        border-color: var(--hover-border-color);
+        
+        :deep(svg),
+        :deep(svg[class*="icon"]) {
+            fill: var(--hover-color) !important;
         }
     }
-    &.btn-success {
-        color: #fff;
-        background-color: #67c23a;
-        border-radius: 3px;
-        &:hover {
-            background-color: #85ce61;
-        }
+
+    &.size-small {
+        --fontSize: 12px;
+        --iconSize: 16px;
+        --height: 24px;
+        --padding: 4px 10px;
     }
-    &.btn-danger {
-        color: #fff;
-        background-color: #f56c6c;
-        border-radius: 3px;
-        &:hover {
-            background-color: #f78989;
-        }
+    &.size-default {
+        --fontSize: 16px;
+        --iconSize: var(--fontSize);
+        --height: 32px;
+        --padding: 6px 12px;
     }
-    &.btn-warning {
-        color: #fff;
-        background-color: #e6a23c;
-        border-radius: 3px;
-        &:hover {
-            background: #ebb563;
-        }
+    &.size-large {
+        --fontSize: 20px;
+        --iconSize: var(--fontSize);
+        --height: 36px;
+        --padding: 8px 16px;
     }
+
+    &.type-default {
+        --color: #444;
+        --background-color: #ffffff;
+        --hover-color: #409eff;
+        --hover-background-color: #ecf5ff;
+        --hover-border-color: var(--hover-color);
+
+        border: 1px solid;
+        border-color: #999999;
+    }
+
+    &.type-primary {
+        --color: #fff;
+        --background-color: #409eff;
+        --hover-color: var(--color);
+        --hover-background-color: #66b1ff;
+        --hover-border-color: var(--hover-background-color);
+    }
+
+    &.type-success {
+        --color: #fff;
+        --background-color: #67c23a;
+        --hover-color: var(--color);
+        --hover-background-color: #85ce61;
+        --hover-border-color: var(--hover-background-color);
+    }
+
+    &.type-warning {
+        --color: #fff;
+        --background-color: #e6a23c;
+        --hover-color: var(--color);
+        --hover-background-color: #ebb563;
+        --hover-border-color: var(--hover-background-color);
+    }
+
+    &.type-danger {
+        --color: #fff;
+        --background-color: #f56c6c;
+        --hover-color: var(--color);
+        --hover-background-color: #f78989;
+        --hover-border-color: var(--hover-background-color);
+    }
+
     .icon {
         display: flex;
         justify-content: center;

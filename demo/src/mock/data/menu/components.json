@@ -2,21 +2,22 @@
     "menu": [
         {
             "index": "1",
-            "title": "Loading",
-            "titleCN": "等待组件",
+            "title": "Button",
+            "titleCN": "Button 按钮",
             "path": "/components/index"
         },
         {
             "index": "2",
-            "title": "Message",
-            "titleCN": "消息组件",
-            "path": "/components/message"
+            "title": "Loading",
+            "titleCN": "Loading 等待",
+            "path": "/components/loading"
         },
         {
             "index": "3",
-            "title": "Icon Button",
-            "titleCN": "图标按钮组件",
-            "path": "/components/iconButton"
+            "title": "Message",
+            "titleCN": "Message 消息",
+            "path": "/components/message"
         }
+        
     ]
 }

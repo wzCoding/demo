@@ -77,12 +77,17 @@
 }
 .components-page .item {
     position: relative;
+    border-bottom: 1px solid var(--theme-gradient-color-2);
+}
+.components-page .item:last-child {
+    border-bottom: none;
 }
 .components-page .item .display-area {
     min-height: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
 }
 
 

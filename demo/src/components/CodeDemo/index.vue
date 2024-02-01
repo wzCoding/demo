@@ -3,7 +3,7 @@
         <div class="code-info">
             <h4 class="code-desc">{{ desc }}</h4>
             <icon-button class="code-open" @click="openCode">
-                <icon-svg size="24" color="--theme-gradient-color-1">
+                <icon-svg size="24" color="--theme-gradient-color-2">
                     <icon-code></icon-code>
                 </icon-svg>
             </icon-button>
@@ -47,16 +47,22 @@ export default {
     setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {
+            if (!props.code || !props.code.length) return
             showCode.value = !showCode.value
             emit('openCode', { open: showCode.value, event: e })
-           
+
             if (showCode.value) {
 
                 const codeElement = e.currentTarget.parentNode.nextSibling
                 const [scrollElement] = findScrollElement(codeElement)
-                const containers = scrollElement.querySelectorAll('.code-demo')
-                const isLast = [...containers].indexOf(codeElement.parentNode) === containers.length - 1
-  
+                const [children] = [...scrollElement.children]
+                console.log(children.clientHeight, scrollElement.scrollHeight)
+                const codeDemo = scrollElement.querySelectorAll('.code-demo')
+
+                //判断是否最后一个元素
+                const isLast = [...codeDemo].indexOf(codeElement.parentNode) === codeDemo.length - 1
+                //判断是否需要滚动
+                const needScroll = children.clientHeight !== scrollElement.scrollHeight
                 nextTick(() => {
                     // 滚动到当前元素，避免scrollIntoView方法产生改变页面高度的问题
                     if (isLast) {
@@ -64,12 +70,12 @@ export default {
                             top: codeElement.clientHeight + scrollElement.scrollTop,
                             left: 0,
                             behavior: "smooth",
-                        });
-                    } else {
+                        })
+                    } else if (needScroll) {
                         codeElement.scrollIntoView({
                             behavior: "smooth",
                             block: "center"
-                        });
+                        })
                     }
                 })
             }

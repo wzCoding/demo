@@ -39,16 +39,15 @@ export default {
         },
         size: {
             type: String,
-            default: "auto" // 默认为 'auto'，表示可以自定义尺寸
+            default: "" // 默认为 ''，表示自定义，也可以是 'small'、'default'、'large'尺寸
         },
         type: {
             type: String,
-            default: "" // 默认为 ''，表示自定义，也可以是 'default'、'primary'、'success'、'warning'、'danger'、'info' 等类型
+            default: "" // 默认为 ''，表示自定义，也可以是 'default'、'primary'、'success'、'warning'、'danger'类型
         }
     },
     emits: ["click"],
     setup(props, { emit }) {
-
         const btnIcon = computed(() => {
             let resource = ''
             if (props.icon) {
@@ -69,9 +68,10 @@ export default {
             return convertCssUnit(props.gap)
         })
         const btnClass = computed(() => {
-            let _class = `size-${props.size}`
-            if(props.type) _class += ` btn-${props.type}`
-            return _class
+            let _class = []
+            if (props.size) _class.push(`size-${props.size}`)
+            if (props.type) _class.push(`type-${props.type}`)
+            return _class.join(" ")
         })
         const btnStyle = computed(() => {
             return {

@@ -1,103 +1,120 @@
 <template>
-    <div class="components-loading components-page">
-        <div class="item" v-for="item in examples" :key="item.id">
-            <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
-            <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
-            <code-demo :desc="item.desc" :type="item.type" :code="item.code"></code-demo>
+    <div class="components-button components-page">
+        <div class="item">
+            <div class="display-area">
+                <icon-button size="default" type="default" @click="handleClick">button</icon-button>
+                <icon-button size="default" type="primary" @click="handleClick">button</icon-button>
+                <icon-button size="default" type="success" @click="handleClick">button</icon-button>
+                <icon-button size="default" type="warning" @click="handleClick">button</icon-button>
+                <icon-button size="default" type="danger" @click="handleClick">button</icon-button>
+            </div>
+            <code-demo :desc="examples[0].desc" :type="examples[0].type" :code="examples[0].code"></code-demo>
+        </div>
+        <div class="item">
+            <div class="display-area">
+                <icon-button size="small" type="default">button</icon-button>
+                <icon-button size="default" type="primary">button</icon-button>
+                <icon-button size="large" type="success">button</icon-button>
+                <icon-button size="default" type="warning">button</icon-button>
+                <icon-button size="small" type="danger">button</icon-button>
+            </div>
+            <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code"></code-demo>
+        </div>
+        <div class="item">
+            <div class="display-area">
+                <icon-button size="default" type="default">
+                    <icon-svg><icon-comp/></icon-svg>
+                    组件
+                </icon-button>
+                <icon-button size="default" type="primary">
+                    <icon-svg><icon-info/></icon-svg>
+                    info
+                </icon-button>
+                <icon-button size="default" type="success">
+                    <icon-svg><icon-success/></icon-svg>
+                    success
+                </icon-button>
+                <icon-button size="default" type="warning">
+                    <icon-svg><icon-warning/></icon-svg>
+                    warning
+                </icon-button>
+                <icon-button size="default" type="danger">
+                    <icon-svg><icon-error/></icon-svg>
+                    error
+                </icon-button>
+            </div>
+            <code-demo :desc="examples[2].desc" :type="examples[2].type" :code="examples[2].code"></code-demo>
         </div>
     </div>
 </template>
 <script setup>
-import { onMounted } from 'vue';
-import { Loading } from '@/components/Loading';
+import { ref } from 'vue'
+import IconButton from '@/components/IconButton'
 import CodeDemo from '@/components/CodeDemo';
+import IconSvg from '@/components/IconSvg';
+
+import IconComp from '@/assets/images/svg/comp.vue'
+import IconInfo from '@/assets/images/svg/info.vue'
+import IconSuccess from '@/assets/images/svg/success.vue'
+import IconWarning from '@/assets/images/svg/warning.vue'
+import IconError from '@/assets/images/svg/error.vue'
+
+const handleClick = ($event) => {
+
+}
 const examples = [
     {
-        desc: "通过自定义指令 v-loading 使用",
-        id: "loading-area1",
-        direction: { show: true, zIndex: 901 },
-        code: `<div v-loading="true"></div>`,
+        desc: "普通按钮",
+        code:
+`<icon-button size="default" type="default">button</icon-button>
+<icon-button size="default" type="primary">button</icon-button>
+<icon-button size="default" type="success">button</icon-button>
+<icon-button size="default" type="warning">button</icon-button>
+<icon-button size="default" type="danger">button</icon-button>`,
         type: "html",
-        mode: "direction"
     },
     {
-        desc: "通过服务方式使用",
-        id: "loading-area2",
-        code: [
-            `import { Loading } from '@/components/Loading'
-
-Loading.service({
-    zIndex: 901,
-    target: '#loading-area3', 
-    show: true,
-    text: "加载中......",
-})`,
-        ],
-        mode: "service"
+        desc: "调整尺寸",
+        code:
+`<icon-button size="small" type="default">button</icon-button>
+<icon-button size="default" type="primary">button</icon-button>
+<icon-button size="large" type="success">button</icon-button>
+<icon-button size="default" type="warning">button</icon-button>
+<icon-button size="small" type="danger">button</icon-button>`,
+        type: "html",
     },
     {
-        desc: "更改颜色",
-        id: "loading-area3",
-        code: [
-            `Loading.service({
-    zIndex: 901,
-    target: '#loading-area3', 
-    show: true,
-    background: 'rgba(214, 255, 255, 0.5)', 
-    color: ['green', 'yellowgreen']
-})`,
-        ],
-        mode: "service"
+        desc: "添加图标",
+        code:
+`<icon-button size="default" type="default">
+    <icon-svg><icon-comp/></icon-svg>
+    组件
+</icon-button>
+<icon-button size="default" type="primary">
+    <icon-svg><icon-info/></icon-svg>
+    info
+</icon-button>
+<icon-button size="default" type="success">
+    <icon-svg><icon-success/></icon-svg>
+    success
+</icon-button>
+<icon-button size="default" type="warning">
+    <icon-svg><icon-warning/></icon-svg>
+    warning
+</icon-button>
+<icon-button size="default" type="danger">
+    <icon-svg><icon-error/></icon-svg>
+    error
+</icon-button>`,
+        type: "html",
     },
-    {
-        desc: "使用自定义加载样式",
-        id: "loading-area4",
-        code: [
-            `Loading.service({
-    zIndex: 901,
-    target: '#loading-area3', 
-    show: true,
-    customClass: 'custom-class'
-})`,
-        ],
-        mode: "service"
-    }
 ]
-
-onMounted(() => {
-    Loading.service({ target: "#loading-area2", show: true, text: "加载中......", zIndex: 901, })
-    Loading.service({ target: "#loading-area3", show: true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })
-    Loading.service({ target: "#loading-area4", show: true, zIndex: 901, customClass: 'custom-class' })
-})
-
 </script>
 <style lang="scss" scoped>
-
-:deep(.custom-class) {
-    width: 200px;
-    height: 30px;
-    border: 1px solid var(--theme-gradient-color-1);
-    border-radius: 3px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 5px var(--theme-gradient-color-1);
-
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 3px;
-        background-image: repeating-linear-gradient(to right, var(--theme-gradient-color-2), var(--theme-gradient-color-1) 8%, transparent 8%, transparent 10%);
-        animation: move 4s steps(10, start) infinite;
-    }
-
-    @keyframes move {
-        0% {
-            transform: translate(-100%);
-        }
-
-        100% {
-            transform: translate(0);
-        }
+.display-area {
+    min-height: 160px !important;
+    &:nth-child(1) {
+        gap: 1rem;
     }
 }
 </style>
