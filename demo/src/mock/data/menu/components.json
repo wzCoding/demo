@@ -7,6 +7,12 @@
             "path": "/components/index"
         },
         {
+            "index": "1",
+            "title": "Svg",
+            "titleCN": "Svg 容器",
+            "path": "/components/svg"
+        },
+        {
             "index": "2",
             "title": "Loading",
             "titleCN": "Loading 等待",

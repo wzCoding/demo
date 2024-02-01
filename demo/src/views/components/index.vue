@@ -1,17 +1,17 @@
 <template>
     <div class="components-button components-page">
         <div class="item">
-            <div class="display-area">
-                <icon-button size="default" type="default" @click="handleClick">button</icon-button>
-                <icon-button size="default" type="primary" @click="handleClick">button</icon-button>
-                <icon-button size="default" type="success" @click="handleClick">button</icon-button>
-                <icon-button size="default" type="warning" @click="handleClick">button</icon-button>
-                <icon-button size="default" type="danger" @click="handleClick">button</icon-button>
+            <div class="display-area" @click="handleClick">
+                <icon-button size="default" type="default">button</icon-button>
+                <icon-button size="default" type="primary">button</icon-button>
+                <icon-button size="default" type="success">button</icon-button>
+                <icon-button size="default" type="warning">button</icon-button>
+                <icon-button size="default" type="danger">button</icon-button>
             </div>
             <code-demo :desc="examples[0].desc" :type="examples[0].type" :code="examples[0].code"></code-demo>
         </div>
         <div class="item">
-            <div class="display-area">
+            <div class="display-area" @click="handleClick">
                 <icon-button size="small" type="default">button</icon-button>
                 <icon-button size="default" type="primary">button</icon-button>
                 <icon-button size="large" type="success">button</icon-button>
@@ -21,25 +21,25 @@
             <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code"></code-demo>
         </div>
         <div class="item">
-            <div class="display-area">
+            <div class="display-area" @click="handleClick">
                 <icon-button size="default" type="default">
-                    <icon-svg><icon-comp/></icon-svg>
+                    <icon-svg><icon-comp /></icon-svg>
                     组件
                 </icon-button>
                 <icon-button size="default" type="primary">
-                    <icon-svg><icon-info/></icon-svg>
+                    <icon-svg><icon-info /></icon-svg>
                     info
                 </icon-button>
                 <icon-button size="default" type="success">
-                    <icon-svg><icon-success/></icon-svg>
+                    <icon-svg><icon-success /></icon-svg>
                     success
                 </icon-button>
                 <icon-button size="default" type="warning">
-                    <icon-svg><icon-warning/></icon-svg>
+                    <icon-svg><icon-warning /></icon-svg>
                     warning
                 </icon-button>
                 <icon-button size="default" type="danger">
-                    <icon-svg><icon-error/></icon-svg>
+                    <icon-svg><icon-error /></icon-svg>
                     error
                 </icon-button>
             </div>
@@ -48,10 +48,10 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
 import IconButton from '@/components/IconButton'
-import CodeDemo from '@/components/CodeDemo';
-import IconSvg from '@/components/IconSvg';
+import CodeDemo from '@/components/CodeDemo'
+import IconSvg from '@/components/IconSvg'
+import { Message } from '@/components/Message'
 
 import IconComp from '@/assets/images/svg/comp.vue'
 import IconInfo from '@/assets/images/svg/info.vue'
@@ -60,13 +60,19 @@ import IconWarning from '@/assets/images/svg/warning.vue'
 import IconError from '@/assets/images/svg/error.vue'
 
 const handleClick = ($event) => {
-
+    if ($event.target.nodeName == "BUTTON") {
+        Message.info({
+            text: "click Button !",
+            group: true,
+            showClose: true
+        })
+    }
 }
 const examples = [
     {
         desc: "普通按钮",
         code:
-`<icon-button size="default" type="default">button</icon-button>
+            `<icon-button size="default" type="default">button</icon-button>
 <icon-button size="default" type="primary">button</icon-button>
 <icon-button size="default" type="success">button</icon-button>
 <icon-button size="default" type="warning">button</icon-button>
@@ -76,7 +82,7 @@ const examples = [
     {
         desc: "调整尺寸",
         code:
-`<icon-button size="small" type="default">button</icon-button>
+            `<icon-button size="small" type="default">button</icon-button>
 <icon-button size="default" type="primary">button</icon-button>
 <icon-button size="large" type="success">button</icon-button>
 <icon-button size="default" type="warning">button</icon-button>
@@ -86,7 +92,7 @@ const examples = [
     {
         desc: "添加图标",
         code:
-`<icon-button size="default" type="default">
+            `<icon-button size="default" type="default">
     <icon-svg><icon-comp/></icon-svg>
     组件
 </icon-button>
@@ -113,6 +119,7 @@ const examples = [
 <style lang="scss" scoped>
 .display-area {
     min-height: 160px !important;
+
     &:nth-child(1) {
         gap: 1rem;
     }

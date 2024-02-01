@@ -1,13 +1,12 @@
 <template>
-    <div class="components-message components-page">
+    <div class="components-svg components-page">
        
     </div>
 </template>
 <script setup>
 import { onMounted } from 'vue';
-import { Message } from '@/components/Message';
 import CodeDemo from '@/components/CodeDemo';
-import IconButton from '@/components/IconButton';
+import IconSvg from '@/components/IconSvg';
 const examples = [
     {
         desc: "通过自定义指令 v-loading 使用",
@@ -57,7 +56,6 @@ const examples = [
         mode: "service"
     }
 ]
-
 </script>
 <style lang="scss" scoped>
 .message-page {

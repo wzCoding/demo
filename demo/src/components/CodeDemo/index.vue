@@ -56,7 +56,6 @@ export default {
                 const codeElement = e.currentTarget.parentNode.nextSibling
                 const [scrollElement] = findScrollElement(codeElement)
                 const [children] = [...scrollElement.children]
-                console.log(children.clientHeight, scrollElement.scrollHeight)
                 const codeDemo = scrollElement.querySelectorAll('.code-demo')
 
                 //判断是否最后一个元素
