@@ -7,9 +7,9 @@
     </svg>
 </template>
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { convertCssUnit } from '@/utils/index'
-import { useThemeStore } from '@/store/useThemeStore';
+import { useThemeStore } from '@/store/useThemeStore'
 export default {
     name: "IconSvg",
     props: {
@@ -27,24 +27,24 @@ export default {
         },
     },
     setup(props) {
-        const defaultColors = {'theme-text':'--theme-text-color','theme-gradient':'--theme-gradient-color-2'}
-        const iconName = `icon-${props.name}`;
+        const regExp = /^--\w+-?\w+/gi
+        const iconName = `icon-${props.name}`
         const iconColor = computed(() => {
-            if (defaultColors[props.color]) {
-                const themeStore = useThemeStore();
-                return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue(defaultColors[props.color])
+            if (props.color.match(regExp)) {
+                const themeStore = useThemeStore()
+                return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue(props.color)
             }
             return props.color
         })
         const styles = computed(() => {
-            const size = convertCssUnit(props.size);
+            const size = convertCssUnit(props.size)
             return {
                 width: size,
                 height: size
             }
         })
 
-        return { iconName, iconColor, styles };
+        return { iconName, iconColor, styles }
     }
 }
 </script>

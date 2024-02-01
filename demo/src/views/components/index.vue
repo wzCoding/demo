@@ -1,17 +1,16 @@
 <template>
-    <div class="loading-page" ref="page">
+    <div class="components-loading components-page">
         <div class="item" v-for="item in examples" :key="item.id">
             <div v-if="item.mode === 'direction'" class="display-area" v-loading="item.direction"></div>
             <div v-else-if="item.mode === 'service'" class="display-area" :id="item.id"></div>
-            <code-demo :desc="item.desc" :type="item.type" :code="item.code" @open-code="openCode"></code-demo>
+            <code-demo :desc="item.desc" :type="item.type" :code="item.code"></code-demo>
         </div>
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { Loading } from '@/components/Loading';
 import CodeDemo from '@/components/CodeDemo';
-const page = ref();
 const examples = [
     {
         desc: "通过自定义指令 v-loading 使用",
@@ -64,16 +63,6 @@ Loading.service({
         mode: "service"
     }
 ]
-const openCode = (param) => {
-    param.open.value = !param.open.value
-    // if(param.open.value){
-    //     page.value.scroll({
-    //         left:0,
-    //         top:param.event.codeElement.clientHeight,
-    //         behavior: "smooth",
-    //     })
-    // }
-}
 
 onMounted(() => {
     Loading.service({ target: "#loading-area2", show: true, text: "加载中......", zIndex: 901, })
@@ -83,33 +72,6 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-.loading-page {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 100%;
-    .item {
-        background-color: var(--theme-page-background);
-
-        .display-area {
-            min-height: 300px;
-        }
-
-        .info-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            color: var(--theme-text-color);
-            padding-top: .5rem;
-
-            .desc {
-                width: 100%;
-                padding: 0 1em;
-            }
-        }
-    }
-}
 
 :deep(.custom-class) {
     width: 200px;

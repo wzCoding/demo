@@ -1,5 +1,5 @@
 <template>
-    <div class="message-page">
+    <div class="components-message components-page">
        
     </div>
 </template>

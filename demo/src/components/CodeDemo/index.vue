@@ -3,7 +3,7 @@
         <div class="code-info">
             <h4 class="code-desc">{{ desc }}</h4>
             <icon-button class="code-open" @click="openCode">
-                <icon-svg size="24" color="theme-gradient">
+                <icon-svg size="24" color="--theme-gradient-color-1">
                     <icon-code></icon-code>
                 </icon-svg>
             </icon-button>
@@ -47,14 +47,14 @@ export default {
     setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {
-            
-            emit('openCode', { open: showCode, event: e })
-
+            showCode.value = !showCode.value
+            emit('openCode', { open: showCode.value, event: e })
+           
             if (showCode.value) {
 
                 const codeElement = e.currentTarget.parentNode.nextSibling
                 const [scrollElement] = findScrollElement(codeElement)
-                const containers = document.querySelectorAll('.code-demo')
+                const containers = scrollElement.querySelectorAll('.code-demo')
                 const isLast = [...containers].indexOf(codeElement.parentNode) === containers.length - 1
   
                 nextTick(() => {

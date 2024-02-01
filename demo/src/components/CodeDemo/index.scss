@@ -1,7 +1,6 @@
 .code-demo {
     width: 100%;
-    border-top: 1px solid var(--theme-gradient-color-2);
-    border-bottom: 1px solid var(--theme-gradient-color-2);
+    border-bottom: 1px solid var(--theme-gradient-color-1);
     .code-info {
         width: 100%;
         display: flex;
@@ -9,7 +8,7 @@
         align-items: center;
         padding: 1rem;
         .code-desc {
-            color: var(--theme-text-color);
+            @extend .text-gradient;
         }
     }
     pre {
