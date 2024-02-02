@@ -1,13 +1,15 @@
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" :style="styles" viewBox="0 0 1024 1024" :aria-labelledby="iconName"
-        role="presentation">
+    <svg v-if="!errorFlag" xmlns="http://www.w3.org/2000/svg" :style="styles" viewBox="0 0 1024 1024"
+        :aria-labelledby="name" role="presentation">
         <g :fill="iconColor">
-            <slot></slot>
+            <slot>
+                <component :is="icon"></component>
+            </slot>
         </g>
     </svg>
 </template>
 <script>
-import { computed } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { convertCssUnit } from '@/utils/index'
 import { useThemeStore } from '@/store/useThemeStore'
 export default {
@@ -23,12 +25,11 @@ export default {
         },
         name: {
             type: String,
-            default: 'box'
+            default: ''
         },
     },
     setup(props) {
         const regExp = /^--\w+-?\w+/gi
-        const iconName = `icon-${props.name}`
         const iconColor = computed(() => {
             if (props.color.match(regExp)) {
                 const themeStore = useThemeStore()
@@ -43,8 +44,17 @@ export default {
                 height: size
             }
         })
-
-        return { iconName, iconColor, styles }
+        
+        //根据 name 动态引入 svg 图标组件
+        const errorFlag = ref(false)
+        const icon = defineAsyncComponent({
+            loader: () => import(`@/assets/images/svg/${props.name}.vue`),
+            onError: (error) => {
+                console.error(error)
+                errorFlag.value = true
+            }
+        })
+        return { iconColor, styles, errorFlag, icon }
     }
 }
 </script>

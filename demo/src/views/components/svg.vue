@@ -1,6 +1,7 @@
 <template>
     <div class="components-svg components-page">
-       
+        <icon-svg name="about" color="red"></icon-svg>
+        <icon-svg name="123"></icon-svg>
     </div>
 </template>
 <script setup>
@@ -9,14 +10,14 @@ import CodeDemo from '@/components/CodeDemo';
 import IconSvg from '@/components/IconSvg';
 const examples = [
     {
-        desc: "通过自定义指令 v-loading 使用",
+        desc: "将 svg 图标路径复制保存在 template 模板中，并去掉路径中的 fill 属性",
         id: "loading-area1",
         direction: { show: true, zIndex: 901 },
         code: `<div v-loading="true"></div>`,
         mode: "direction"
     },
     {
-        desc: "通过服务方式使用",
+        desc: "将 svg 图标模板文件导入组件，并在 svg 容器中使用",
         id: "loading-area2",
         code: [
             `Loading.service({
