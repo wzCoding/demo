@@ -1,7 +1,7 @@
 <template>
-    <div class="components-button components-page">
+    <div class="components-button components-page" @click="handleClick">
         <div class="item">
-            <div class="display-area" @click="handleClick">
+            <div class="display-area">
                 <icon-button size="default" type="default">button</icon-button>
                 <icon-button size="default" type="primary">button</icon-button>
                 <icon-button size="default" type="success">button</icon-button>
@@ -11,7 +11,7 @@
             <code-demo :desc="examples[0].desc" :type="examples[0].type" :code="examples[0].code"></code-demo>
         </div>
         <div class="item">
-            <div class="display-area" @click="handleClick">
+            <div class="display-area">
                 <icon-button size="small" type="default">button</icon-button>
                 <icon-button size="default" type="primary">button</icon-button>
                 <icon-button size="large" type="success">button</icon-button>
@@ -21,7 +21,7 @@
             <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code"></code-demo>
         </div>
         <div class="item">
-            <div class="display-area" @click="handleClick">
+            <div class="display-area">
                 <icon-button size="default" type="default">
                     <icon-svg><icon-comp /></icon-svg>
                     组件
