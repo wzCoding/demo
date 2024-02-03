@@ -1,77 +1,114 @@
 <template>
     <div class="components-message components-page">
-       
+        <div class="item" v-for="item in examples" :key="item.desc">
+            <div class="display-area">
+                <icon-button v-for="msg in item.messages" :key="msg" size="default"
+                    :type="typeof msg == 'object' ? btns[msg.type] : btns[msg]"
+                    @click="sendMessage(msg)">Message</icon-button>
+            </div>
+            <code-demo :desc="item.desc" :type="item.type" :code="item.code" />
+        </div>
     </div>
 </template>
 <script setup>
-import { onMounted } from 'vue';
-import { Message } from '@/components/Message';
-import CodeDemo from '@/components/CodeDemo';
-import IconButton from '@/components/IconButton';
+import { Message } from '@/components/Message'
+import CodeDemo from '@/components/CodeDemo'
+import IconButton from '@/components/IconButton'
+const btns = {
+    info: "primary",
+    success: "success",
+    warning: "warning",
+    error: "danger"
+}
+const sendMessage = (options) => {
+
+    if (typeof options !== 'object') {
+        Message[options]('这是一条普通消息')
+    } else {
+        Message[options.type](options)
+    }
+}
 const examples = [
     {
-        desc: "通过自定义指令 v-loading 使用",
-        id: "loading-area1",
-        direction: { show: true, zIndex: 901 },
-        code: `<div v-loading="true"></div>`,
-        mode: "direction"
+        desc: "普通消息",
+        messages: ["info", "success", "warning", "error"],
+        code:
+            `Message.info('这是一条普通消息')
+Message.success('这是一条成功消息')
+Message.warning('这是一条警告消息')
+Message.error('这是一条危险消息')`,
+        type: "javascript"
     },
     {
-        desc: "通过服务方式使用",
-        id: "loading-area2",
-        code: [
-            `Loading.service({
-    zIndex: 901,
-    target: '#loading-area3', 
-    show: true,
-    text: "加载中......",
-})`,
+        desc: "可配置消息选项",
+        messages: [
+            {
+                type: "info",
+                text: "这是一条普通消息",
+                duration: 2000
+            },
+            {
+                type: "success",
+                text: "这是一条成功消息",
+                duration: 3000,
+                showClose: true
+            },
+            {
+                type: "warning",
+                text: "这是一条自定义消息内容",
+                duration: 4000,
+                showClose: true
+            }
         ],
-        mode: "service"
+        code:
+            `Message.info({
+    type: "info",
+    text: "这是一条普通消息",
+    duration: 2000
+})
+Message.success({
+    type: "success",
+    text: "这是一条成功消息",
+    duration: 3000,
+    showClose:true
+})
+Message.warning({
+    type: "warning",
+    text: "这是一条自定义消息内容",
+    duration: 4000,
+    showClose:true
+})`,
+        type: "javascript"
     },
     {
-        desc: "更改颜色",
-        id: "loading-area3",
-        code: [
-            `Loading.service({
-    zIndex: 901,
-    target: '#loading-area3', 
-    show: true,
-    background: 'rgba(214, 255, 255, 0.5)', 
-    color: ['green', 'yellowgreen']
-})`,
+        desc: "消息分组",
+        messages: [
+            {
+                type: "info",
+                text: "这是一条分组消息",
+                duration: 2000,
+                group: true,
+                showClose: true
+            }
         ],
-        mode: "service"
+        code:
+            `Message.info({
+    type: "info",
+    text: "这是一条分组消息",
+    duration: 2000,
+    group:true,
+    showClose: true
+})`,
+        type: "javascript"
     },
-    {
-        desc: "使用自定义加载样式",
-        id: "loading-area4",
-        code: [
-            `Loading.service({
-    zIndex: 901,
-    target: '#loading-area3', 
-    show: true,
-    customClass: 'custom-class'
-})`,
-        ],
-        mode: "service"
-    }
 ]
 
 </script>
 <style lang="scss" scoped>
-.message-page {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f5f5f5;
-    overflow-y: auto;
-    overflow-x: hidden;
-    gap: 10px;
+.display-area {
+
+    &:nth-child(1) {
+        gap: 1rem;
+    }
 }
-
-
 </style>
