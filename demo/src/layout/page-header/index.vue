@@ -13,9 +13,7 @@
                             <a v-for="item in  headerLinks " :key="item.title" class="link-item" :href="item.path"
                                 target="_blank" rel="noopener noreferrer">
                                 <icon-button :text="item.title">
-                                    <icon-svg size="24" color="#fff">
-                                        <component :is="item.icon"></component>
-                                    </icon-svg>
+                                    <icon-svg size="24" color="#fff" :name="item.icon" />
                                 </icon-button>
                             </a>
                         </div>
@@ -25,9 +23,7 @@
                             <div class="theme-btn" :class="themeClass">
                                 <icon-button v-for=" item in themeIcon " :key="item.theme" :class="item.theme" gap="0"
                                     @click="themeChange(item.toChangeTheme)">
-                                    <icon-svg size="24" :color="item.color">
-                                        <component :is="item.icon"></component>
-                                    </icon-svg>
+                                    <icon-svg size="24" :color="item.color" :name="item.theme" />
                                 </icon-button>
                             </div>
                         </div>
@@ -43,12 +39,6 @@ import { computed } from "vue"
 import { useThemeStore } from "@/store/useThemeStore"
 import IconButton from "@/components/IconButton"
 import IconSvg from "@/components/IconSvg"
-
-//引入svg图标
-import IconBlog from "@/assets/images/svg/blog.vue"
-import IconGithub from "@/assets/images/svg/github.vue"
-import IconLight from "@/assets/images/svg/light.vue"
-import IconDark from "@/assets/images/svg/dark.vue"
 
 export default {
     name: "PageHeader",
@@ -71,12 +61,12 @@ export default {
                 return [
                     {
                         title: "Blog",
-                        icon: IconBlog,
+                        icon: "blog",
                         path: "https://wzcoding.github.io/blog/",
                     },
                     {
                         title: "Github",
-                        icon: IconGithub,
+                        icon: "github",
                         path: "https://github.com/wzCoding?tab=repositories",
                     }
                 ]
@@ -94,13 +84,11 @@ export default {
             {
                 theme: "light",
                 color: "#f19b3d",
-                icon: IconLight,
                 toChangeTheme: "dark"
             },
             {
                 theme: "dark",
                 color: "#0c81e4",
-                icon: IconDark,
                 toChangeTheme: ""
             }
         ]

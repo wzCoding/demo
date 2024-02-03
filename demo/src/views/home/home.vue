@@ -8,9 +8,7 @@
                         <div class="menu-grid">
                             <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
                                 <icon-button class="menu-btn" direction="top" :text="menu.title" @click="toPage(menu.path)">
-                                    <icon-svg size="32" color="#fff">
-                                        <component :is="svgs[getSvgComponent(menu.icon)]"></component>
-                                    </icon-svg>
+                                    <icon-svg size="32" color="#fff" :name="menu.icon" />
                                 </icon-button>
                             </div>
                         </div>
@@ -30,37 +28,19 @@
                             title }}</span>
                 </h2>
                 <p class="home-info">{{ info }}</p>
-                <icon-button class="start-btn" :icon="startBtn.icon" :text="startBtn.name" @click="toPage()">
-                    <icon-svg size="28" color="#fff">
-                        <component :is="svgs[getSvgComponent(startBtn.icon)]"></component>
-                    </icon-svg>
+                <icon-button class="start-btn" :text="startBtn.name" @click="toPage()">
+                    <icon-svg size="28" color="#fff" :name="startBtn.icon" />
                 </icon-button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/useMenuStore'
 import IconButton from '@/components/IconButton'
 import IconSvg from '@/components/IconSvg'
-//svg图标引入
-import IconCss from '@/assets/images/svg/css.vue'
-import IconChart from '@/assets/images/svg/chart.vue'
-import IconCanvas from '@/assets/images/svg/canvas.vue'
-import IconComp from '@/assets/images/svg/comp.vue'
-import IconAbout from '@/assets/images/svg/about.vue'
-import IconArrow from '@/assets/images/svg/arrow.vue'
-
-const svgs = {
-    'css': IconCss,
-    'chart': IconChart,
-    'canvas': IconCanvas,
-    'comp': IconComp,
-    'about': IconAbout,
-    'right-arrow': IconArrow
-}
 
 const id = "home"
 const loading = computed(() => menuStore.loading)
@@ -72,7 +52,7 @@ const mainTitle = ['欢迎来到我的', 'Demo']
 const subTitle = ['I`m', 'wzCoding']
 const colorText = ['Demo', 'I`m']
 const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .'
-const startBtn = { name: "开始浏览", icon: "right-arrow.svg" }
+const startBtn = { name: "开始浏览", icon: "arrow" }
 
 const router = useRouter()
 const toPage = (path) => {
@@ -80,7 +60,5 @@ const toPage = (path) => {
         router.push(path)
     }
 }
-const getSvgComponent = (icon) => {
-    return icon.split(".")[0]
-}
+
 </script>

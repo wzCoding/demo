@@ -2,9 +2,7 @@
     <div class="page-menu">
         <div class="menu-button" :style="buttonStyle" :class="{ visible: visible }" @click="handleButonClick">
             <icon-button class="menu-icon" :style="iconStyle">
-                <icon-svg size="32">
-                    <component :is="IconMenu"></component>
-                </icon-svg>
+                <icon-svg size="32" name="menu" />
             </icon-button>
         </div>
         <transition name="scale">
@@ -26,8 +24,6 @@ import { computed, ref } from 'vue'
 import Card from '@/components/Card'
 import IconButton from '../IconButton'
 import IconSvg from '../IconSvg'
-//引入svg图标
-import IconMenu from '@/assets/images/svg/menu.vue'
 
 export default {
     name: "PageMneu",
@@ -117,8 +113,7 @@ export default {
             transformStyle,
             menulist,
             handleButonClick,
-            handleMenuClick,
-            IconMenu
+            handleMenuClick
         }
     }
 }

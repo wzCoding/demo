@@ -3,9 +3,7 @@
         <div class="code-info">
             <h4 class="code-desc">{{ desc }}</h4>
             <icon-button class="code-open" @click="openCode">
-                <icon-svg size="24" color="--theme-gradient-color-2">
-                    <icon-code></icon-code>
-                </icon-svg>
+                <icon-svg size="24" name="code" color="--theme-gradient-color-2" />
             </icon-button>
         </div>
         <transition name="rotate-in">
@@ -20,7 +18,6 @@ import { computed, nextTick, ref } from 'vue'
 import { findScrollElement } from '@/utils/index'
 import IconButton from '@/components/IconButton'
 import IconSvg from '@/components/IconSvg'
-import IconCode from '@/assets/images/svg/code.vue'
 
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css' //默认样式主题
@@ -43,7 +40,7 @@ export default {
         }
     },
     emits: ['openCode'],
-    components: { IconButton, IconSvg, IconCode },
+    components: { IconButton, IconSvg },
     setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {

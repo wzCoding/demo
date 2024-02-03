@@ -3,37 +3,37 @@
         {
             "index": "1",
             "title": "css",
-            "icon": "css.svg",
+            "icon": "css",
             "path": "/css"
         },
         {
             "index": "2",
             "title": "canvas",
-            "icon": "canvas.svg",
+            "icon": "canvas",
             "path": "/canvas"
         },
         {
             "index": "3",
             "title": "charts",
-            "icon": "chart.svg",
+            "icon": "chart",
             "path": "/charts"
         },
         {
             "index": "4",
             "title": "about",
-            "icon": "about.svg",
+            "icon": "about",
             "path": "/about"
         },
         {
             "index": "5",
             "title": "组件",
-            "icon": "comp.svg",
+            "icon": "comp",
             "path": "/components"
         },
         {
             "index": "6",
             "title": "start",
-            "icon": "right-arrow.svg"
+            "icon": "arrow"
         }
     ]
 }
