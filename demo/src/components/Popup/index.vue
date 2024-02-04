@@ -7,10 +7,12 @@
 import Mask from '@/components/Mask'
 export default {
     name:"Popup",
+    props:{},
     components:{
         Mask
     },
     setup(props){
+        console.log(Mask)
         return {}
     }
 }

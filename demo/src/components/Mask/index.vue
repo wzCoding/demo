@@ -8,6 +8,10 @@ import { ref, computed } from 'vue'
 export default {
     name: 'Mask',
     props: {
+        show: {
+            type: Boolean,
+            default: true
+        },
         zIndex: {
             type: [String, Number],
             default: 1000
@@ -33,24 +37,30 @@ export default {
             default: false
         }
     },
-    setup(props) {
+    emits: ['closeMask'],
+    setup(props, { emit, expose }) {
+        const maskShow = ref("flex")
+        const open = () => {
+            maskShow.value = "flex"
+        }
+        const close = () => {
+            maskShow.value = "none"
+        }
         const handleClick = ($event) => {
             if (props.clickToClose && $event.target.className === 'mask') {
+                emit('closeMask')
                 close()
                 return
             }
             return
         }
-        const close = () => {
-            maskShow.value = "none"
-        }
-        const maskShow = ref("flex")
         const maskStyles = computed(() => {
             const style = {
                 zIndex: `${props.zIndex}`,
                 opacity: props.opacity,
                 backgroundColor: props.background,
                 display: maskShow.value,
+                inset: props.show ? "0" : "100%",
                 position: props.fullScreen ? "fixed" : "absolute"
             }
             if (props.styles) {
@@ -58,6 +68,7 @@ export default {
             }
             return style
         })
+        expose({ open, close })
         return {
             maskStyles,
             handleClick

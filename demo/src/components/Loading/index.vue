@@ -11,7 +11,7 @@
 <style src="./index.scss" lang="scss"></style>
 <script>
 import { computed } from 'vue'
-import Mask from '@/components/Mask'
+import Mask from '@/components/Mask/index.vue'
 export default {
     name: "Loading",
     props: {
