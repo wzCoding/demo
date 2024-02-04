@@ -66,7 +66,7 @@ Loading.service({
 
 onMounted(() => {
     Loading.service({ target: "#loading-area2", show: true, text: "加载中......", zIndex: 901, })
-    Loading.service({ target: "#loading-area3", show: true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })
+    Loading.service({ target: "#loading-area3", show: true,fullScreen:true, zIndex: 901, background: 'rgba(214, 255, 255, 0.5)', color: ['green', 'yellowgreen'] })
     Loading.service({ target: "#loading-area4", show: true, zIndex: 901, customClass: 'custom-class' })
 })
 

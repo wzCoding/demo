@@ -11,9 +11,10 @@ function createLoading(options = {}) {
         zIndex: options.zIndex,
         customClass: options.customClass,
         background: options.background,
-        color: options.color
+        color: options.color,
+        fullScreen: options.fullScreen
     });
-    
+
     const close = function () {
         data.show = false;
         removeElLoadingChild();
@@ -42,7 +43,7 @@ function LoadingInstance(options) {
     if (resolved.fullScreen && fullScreenInstance) {
         return fullScreenInstance;
     }
-    
+
     const instance = createLoading({
         ...resolved,
     });
@@ -78,7 +79,7 @@ function resolveOptions(options) {
 //在这里设置loading容器的一些样式
 function setParentStyle(options) {
     const { position } = getComputedStyle(options.parent, "position");
-    if (options.fullScreen && options.scrollLock) {
+    if (options.scrollLock) {
         addClass(options.parent, "loading-hidden");
     } else {
         removeClass(options.parent, "loading-hidden");

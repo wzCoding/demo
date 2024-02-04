@@ -23,6 +23,12 @@
             "title": "Message",
             "titleCN": "Message 消息",
             "path": "/components/message"
+        },
+        {
+            "index": "4",
+            "title": "Popup",
+            "titleCN": "Popup 弹出框",
+            "path": "/components/popup"
         }
         
     ]

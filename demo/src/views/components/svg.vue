@@ -2,16 +2,16 @@
     <div class="components-svg components-page">
         <div class="item">
             <div class="display-area">
-                <icon-svg>
+                <icon-svg color="--theme-text-color">
                     <About />
-                </icon-svg>
-                <icon-svg>
+                </icon-svg >
+                <icon-svg color="--theme-text-color">
                     <Comp />
                 </icon-svg>
-                <icon-svg>
+                <icon-svg color="--theme-text-color">
                     <Css />
                 </icon-svg>
-                <icon-svg>
+                <icon-svg color="--theme-text-color">
                     <Chart />
                 </icon-svg>
             </div>
@@ -19,10 +19,10 @@
         </div>
         <div class="item">
             <div class="display-area">
-                <icon-svg name="about" />
-                <icon-svg name="comp" />
-                <icon-svg name="css" />
-                <icon-svg name="chart" />
+                <icon-svg name="about" color="--theme-text-color" />
+                <icon-svg name="comp" color="--theme-text-color"/>
+                <icon-svg name="css" color="--theme-text-color"/>
+                <icon-svg name="chart" color="--theme-text-color"/>
             </div>
             <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code" />
         </div>

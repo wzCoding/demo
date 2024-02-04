@@ -1,16 +1,17 @@
 <template>
     <Transition name="fade">
-        <div class="loading-mask" v-show="show" :style="styles">
+        <Mask :styles="styles" :fullScreen="fullScreen" class="loading-mask">
             <div class="loading-spinner">
                 <div :class="spinnerClass"></div>
             </div>
             <div v-if="text" class="loading-text">{{ text }}</div>
-        </div>
+        </Mask>
     </Transition>
 </template>
 <style src="./index.scss" lang="scss"></style>
 <script>
 import { computed } from 'vue'
+import Mask from '@/components/Mask'
 export default {
     name: "Loading",
     props: {
@@ -26,6 +27,10 @@ export default {
             type: [String, Number],
             default: "999"
         },
+        fullScreen:{
+            type: Boolean,
+            default: false
+        },
         background: {
             type: String,
             default: "rgba(0, 0, 0, 0.5)"
@@ -39,6 +44,7 @@ export default {
             default: ''
         }
     },
+    components: { Mask },
     setup(props) {
         const spinnerClass = computed(() => {
             return props.customClass ? props.customClass : 'loading-circle'
