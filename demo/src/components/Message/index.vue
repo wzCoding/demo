@@ -73,6 +73,7 @@ export default {
         }
         const clearTimer = () => {
             clearTimeout(timer.value)
+            timer.value = 0
         }
         const setTopValue = (id) => {
             const { current, next } = getInstance(id)

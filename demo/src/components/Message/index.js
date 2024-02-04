@@ -1,33 +1,35 @@
-import MessageTemplate from "./index.vue";
-import { instances, groupInstances, removeInstance, removeGroupInstance } from "./instance";
-import { reactive, render, createVNode } from "vue";
-import { isObject } from "@/utils";
-let instance = null;
-let instanceNum = 0;
-const Message = {};
+import MessageTemplate from "./index.vue"
+import { instances, groupInstances, removeInstance, removeGroupInstance } from "./instance"
+import { reactive, render, createVNode } from "vue"
+import { isObject } from "@/utils"
+
+let instance = null
+let instanceNum = 0
+const Message = {}
+
 const createMessage = (options) => {
-    const id = `message-${instanceNum}`;
+    const id = `message-${instanceNum}`
     const props = reactive({
         ...options,
         id: id,
         onClose: () => {
-            options.group ? removeGroupInstance(options.text) : removeInstance(id);
+            options.group ? removeGroupInstance(options.text) : removeInstance(id)
             if (options.onClose && typeof options.onClose == "function") {
-                options.onClose();
+                options.onClose()
             }
         },
         onDestory: () => {
-            render(null, container);
+            render(null, container)
         }
     })
-    const container = document.createElement("div");
-    const vnode = createVNode(MessageTemplate, props);
-    render(vnode, container);
+    const container = document.createElement("div")
+    const messageVnode = createVNode(MessageTemplate, props)
+    render(messageVnode, container)
 
-    document.body.appendChild(container.firstElementChild);
-    const vm = vnode.component;
-    vm.exposed.show.value = true;
-    const { top, close, repeatNum } = vm.exposed;
+    document.body.appendChild(container.firstElementChild)
+    const vm = messageVnode.component
+    vm.exposed.show.value = true
+    const { top, close, repeatNum } = vm.exposed
     return {
         top,
         id,
@@ -36,29 +38,20 @@ const createMessage = (options) => {
     }
 }
 const resolveOptions = (params) => {
-    const props = {
+    const options = [...params]
+    const defaultOptions = {
         text: "",
         duration: 3000,
         group: false,
         showClose: false,
-        type: "info",
+        type: "info"
     }
-    const options = [...params];
-    const updateProps = (_props, _values) => {
-        if (isObject(_props)) {
-            return Object.assign(props, _props);
-        } else {
-            for (const key in _props) {
-                props[_props[key]] = (_values[key] == null || _values[key] == undefined) ? props[_props[key]] : _values[key];
-            }
-        }
+    if (isObject(options[0])) {
+        Object.assign(defaultOptions, options[0])
+    } else {
+        defaultOptions.text = String(options[0])
     }
-    if (options.length <= 1) {
-        isObject(options[0]) ? updateProps(options[0]) : updateProps(Object.keys(props).slice(0, options.length), options);
-    } else if (options.length > 1) {
-        updateProps(Object.keys(props).slice(0, options.length), options);
-    }
-    return props;
+    return defaultOptions
 }
 const sendMessage = (options) => {
     if (options.group) {
@@ -66,16 +59,16 @@ const sendMessage = (options) => {
             instance = createMessage(options)
             groupInstances[options.text] = instance
         } else {
-            groupInstances[options.text].repeatNum.value++;
+            groupInstances[options.text].repeatNum.value++
         }
     } else {
         instance = createMessage(options)
         instances.push(instance)
-        instanceNum++;
+        instanceNum++
     }
 }
 const installMessage = (app) => {
-    app.config.globalProperties.$message = sendMessage;
+    app.config.globalProperties.$message = sendMessage
 }
 const closeMessage = () => {
     instance.close()
@@ -98,9 +91,9 @@ const defineMessage = () => {
                     return closeMessage
                 } else {
                     return function () {
-                        const options = resolveOptions(arguments);
-                        options.type = item;
-                        sendMessage(options);
+                        const options = resolveOptions(arguments)
+                        options.type = item
+                        sendMessage(options)
                     }
                 }
             },
@@ -109,7 +102,7 @@ const defineMessage = () => {
     }
 }
 
-defineMessage();
+defineMessage()
 export {
     Message
 }
