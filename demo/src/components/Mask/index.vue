@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed,getCurrentInstance } from 'vue'
 export default {
     name: 'Mask',
     props: {
@@ -39,16 +39,10 @@ export default {
     },
     emits: ['closeMask'],
     setup(props, { emit, expose }) {
+        const instance = getCurrentInstance()
+        console.log(instance)
         const showMask = ref(props.show)
         const display = computed(() => showMask.value ? "flex" : "none")
-        const handleClick = ($event) => {
-            if (props.clickToClose && $event.target.className === 'mask') {
-                showMask.value = false
-                emit('closeMask')
-                return
-            }
-            return
-        }
         const maskStyles = computed(() => {
             const style = {
                 zIndex: `${props.zIndex}`,
@@ -63,6 +57,14 @@ export default {
             }
             return style
         })
+        const handleClick = ($event) => {
+            if (props.clickToClose && $event.target.className === 'mask') {
+                showMask.value = false
+                emit('closeMask')
+                return
+            }
+            return
+        }
         expose({ showMask })
         return {
             maskStyles,

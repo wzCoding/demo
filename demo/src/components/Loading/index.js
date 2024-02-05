@@ -1,5 +1,5 @@
 import LoadingTemplate from "./index.vue"
-import { createApp, createVNode, h, reactive, ref, toRefs, isRef, nextTick } from "vue"
+import { createApp, createVNode, reactive, ref, toRefs, isRef, nextTick } from "vue"
 import { isObject, addClass, removeClass } from "../../utils/index"
 
 //全屏loading使用同一个实例
@@ -109,7 +109,7 @@ const setDirective = function (el, binding) {
                     result = binding.value
                     break
                 case "fullScreen":
-                    result = el == document.body && binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false) 
+                    result = el == document.body && binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false)
                     break;
                 case "scrollLock":
                     result = binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false)
@@ -178,7 +178,7 @@ const Loading = {
         app.config.globalProperties.$loading = LoadingInstance
     },
     service: LoadingInstance,
-    
+
 }
 export {
     Loading

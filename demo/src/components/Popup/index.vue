@@ -12,10 +12,10 @@ export default {
     components: { IconButton },
     setup(props) {
         const handleClick = () => {
-            Mask.open({
-                clickToClose: true,
+            const mask = Mask.open({
                 target:".popup"
             })
+            console.log(mask)
         }
         return {
             handleClick
