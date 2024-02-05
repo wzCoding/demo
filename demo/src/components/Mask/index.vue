@@ -39,10 +39,11 @@ export default {
     },
     emits: ['closeMask'],
     setup(props, { emit, expose }) {
-        const display = ref("flex")
+        const showMask = ref(props.show)
+        const display = computed(() => showMask.value ? "flex" : "none")
         const handleClick = ($event) => {
             if (props.clickToClose && $event.target.className === 'mask') {
-                display.value = "none"
+                showMask.value = false
                 emit('closeMask')
                 return
             }
@@ -54,7 +55,7 @@ export default {
                 opacity: props.opacity,
                 backgroundColor: props.background,
                 display: display.value,
-                inset: props.show ? "0" : "100%",
+                inset: display.value == "none" ? "unset" : "0",
                 position: props.fullScreen ? "fixed" : "absolute"
             }
             if (props.styles) {
@@ -62,7 +63,7 @@ export default {
             }
             return style
         })
-        expose({ display })
+        expose({ showMask })
         return {
             maskStyles,
             handleClick

@@ -1,6 +1,6 @@
 import MaskTemplate from "./index.vue"
-import { ref, createVNode, render, reactive } from 'vue'
-import { isObject } from "@/utils/index"
+import { nextTick, createVNode, render, reactive, Transition } from 'vue'
+import { isObject, addClass, removeClass } from "@/utils/index"
 
 //全屏遮罩实例
 let fullScreenInstance
@@ -8,6 +8,7 @@ let fullScreenInstance
 function createMask(options) {
     if (!options) return
     const data = reactive({
+        show: options.show,
         zIndex: options.zIndex,
         opacity: options.opacity,
         background: options.background,
@@ -15,23 +16,45 @@ function createMask(options) {
         clickToClose: options.clickToClose,
         fullScreen: options.fullScreen
     })
-    const container = document.createElement("div");
-    const maskVnode = createVNode(MaskTemplate, data);
-    render(maskVnode, container);
+    const container = document.createElement("div") 
 
-    options.target.appendChild(container.firstElementChild);
-    const vm = maskVnode.component;
+    //创建mask虚拟dom
+    const maskVnode = createVNode(MaskTemplate, data)
+
+    //创建mask应用组件
+    const appVnode = createVNode(
+        Transition,
+        {
+            name: "fade",
+        },
+        {
+            default: () => maskVnode
+        }
+    )
+    render(appVnode, container)
+
+    options.target.appendChild(container.firstElementChild)
+
+    const vm = maskVnode.component
+
+    function open() {
+        vm.exposed.showMask.value = true
+    }
 
     function close() {
-        vm.exposed.display.value = "none"
-        destroy()
+        vm.exposed.showMask.value = false
     }
 
     function destroy() {
+        options.parent.mask = null
         render(null, container)
     }
 
     return {
+        get $vm() {
+            return vm
+        },
+        open,
         close,
         destroy
     }
@@ -41,34 +64,64 @@ function resolveOptions(options) {
     //默认配置
     const defaultOptions = {
         target: document.body,
+        show: true,
         zIndex: 1000,
         opacity: 1,
         background: 'rgba(0,0,0,0.5)',
         styles: {},
         clickToClose: false,
-        fullScreen: false
+        fullScreen: true
     }
     if (isObject(options)) {
+        Object.assign(defaultOptions, options)
         if (options.target) {
             defaultOptions.target = isObject(options.target) ? options.target : document.querySelector(options.target)
+            defaultOptions.parent = defaultOptions.target == document.body ? document.body : defaultOptions.target
+            defaultOptions.fullScreen = defaultOptions.target == document.body
         }
-        Object.assign(defaultOptions, options)
     }
     return defaultOptions
 }
+// 设置容器的一些样式
+function setParentStyle(options) {
+    const { position } = getComputedStyle(options.parent, "position")
+    if (options.scrollLock) {
+        addClass(options.parent, "mask-scrollLock")
+    } else {
+        removeClass(options.parent, "mask-scrollLock")
+    }
+    if (!["absolute", "fixed", "sticky"].includes(position)) {
+        addClass(options.parent, "mask-position")
+    } else {
+        removeClass(options.parent, "mask-position")
+    }
+}
 
 function maskInstance(options) {
-    // 创建遮罩层实例
+
     const resolved = resolveOptions(options)
+
+    //判断是否存在全屏遮罩层
     if (resolved.fullScreen && fullScreenInstance) {
         return fullScreenInstance
     }
 
+    // 判断是否已经存在遮罩层，此处避免频繁操作dom
+    if (resolved.parent.mask) {
+        const { mask } = resolved.parent
+        mask.open()
+        return
+    }
+
     const instance = createMask(resolved)
+
+    setParentStyle(resolved)
 
     if (resolved.fullScreen) {
         fullScreenInstance = instance
     }
+
+    resolved.parent.mask = instance
 
     return instance
 }

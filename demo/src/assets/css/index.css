@@ -53,11 +53,11 @@
 }
 
 /* loading组件样式 */
-.loading-position {
+.mask-position {
     position: relative !important;
 }
 
-.loaidng-hidden {
+.mask-scrollLock {
     overflow: hidden !important;
 }
 
