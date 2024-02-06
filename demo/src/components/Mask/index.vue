@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import { ref, computed,getCurrentInstance } from 'vue'
+import { ref, computed, onMounted, getCurrentInstance } from 'vue'
 export default {
     name: 'Mask',
     props: {
@@ -53,7 +53,7 @@ export default {
                 position: props.fullScreen ? "fixed" : "absolute"
             }
             if (props.styles) {
-                return Object.assign(style, props.styles)
+                Object.assign(style, props.styles)
             }
             return style
         })
