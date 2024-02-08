@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import { ref, computed, onMounted, getCurrentInstance } from 'vue'
+import { ref, computed } from 'vue'
 export default {
     name: 'Mask',
     props: {
@@ -39,8 +39,6 @@ export default {
     },
     emits: ['closeMask'],
     setup(props, { emit, expose }) {
-        const instance = getCurrentInstance()
-        console.log(instance)
         const showMask = ref(props.show)
         const display = computed(() => showMask.value ? "flex" : "none")
         const maskStyles = computed(() => {
