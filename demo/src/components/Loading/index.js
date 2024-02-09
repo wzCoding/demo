@@ -1,6 +1,7 @@
 import LoadingTemplate from "./index.vue"
-import { createApp, createVNode, reactive, ref, toRefs, isRef, nextTick } from "vue"
-import { isObject, addClass, removeClass } from "../../utils/index"
+import { Mask } from "../Mask/mask"
+import { createVNode, reactive, ref, isRef } from "vue"
+import { isObject } from "../../utils/index"
 
 //全屏loading使用同一个实例
 let fullScreenInstance
@@ -9,37 +10,45 @@ const INSTANCE_KEY = Symbol("Loading")
 
 //使用LoadingTemplate组件模板创建loading应用
 function createLoading(options = {}) {
-    const data = reactive({
+    const loadingData = reactive({
         show: options.show,
         text: options.text,
         zIndex: options.zIndex,
         customClass: options.customClass,
-        background: options.background,
-        color: options.color,
-        fullScreen: options.fullScreen
+        color: options.color
     })
 
-    const close = function () {
-        data.show = false
-        removeElLoadingChild()
-        loadingApp.unmount()
-    }
-    const removeElLoadingChild = function () {
-        vm.$el.parentNode.removeChild(vm.$el)
-    }
+    const loadingVnode = createVNode(LoadingTemplate, loadingData)
 
-    const loadingVnode = createVNode(LoadingTemplate, data)
-    const loadingApp = createApp(loadingVnode)
-    const vm = loadingApp.mount(document.createElement("div"))
+    const maskData = reactive({
+        show: options.show,
+        background: options.background,
+        zIndex: options.zIndex,
+        opacity: options.opacity,
+        clickToClose: options.clickToClose,
+        scrollLock: options.scrollLock,
+        fullScreen: options.fullScreen,
+        target: options.target,
+        children: [loadingVnode]
+    })
+    
+    const loadingApp = Mask.open(maskData)
 
-    return {
-        vm,
-        ...toRefs(data),
-        close,
-        get $el() {
-            return vm.$el
-        },
-    }
+    // const close = function () {
+    //     loadingData.show = false
+    //     removeElLoadingChild()
+    //     loadingApp.unmount()
+    // }
+
+    // const loadingVnode = createVNode(LoadingTemplate, loadingData)
+    // const removeElLoadingChild = function () {
+    //     vm.$el.parentNode.removeChild(vm.$el)
+    // }
+
+    // const loadingApp = createApp(loadingVnode)
+    // const vm = loadingApp.mount(document.createElement("div"))
+
+    return loadingApp
 }
 
 //获取loading实例并将之添加到页面容器中
@@ -52,14 +61,12 @@ function LoadingInstance(options) {
     const instance = createLoading({
         ...resolved,
     })
-    setParentStyle(resolved)
-    resolved.parent.appendChild(instance.$el)
-    nextTick(() => (instance.show = resolved.show))
     if (resolved.fullScreen) {
         fullScreenInstance = instance
     }
     return instance
 }
+
 //解析loading传入的options选项
 function resolveOptions(options) {
     let target = null
@@ -81,20 +88,6 @@ function resolveOptions(options) {
         target
     }
 }
-//在这里设置loading容器的一些样式
-function setParentStyle(options) {
-    const { position } = getComputedStyle(options.parent, "position")
-    if (options.scrollLock) {
-        addClass(options.parent, "loading-hidden")
-    } else {
-        removeClass(options.parent, "loading-hidden")
-    }
-    if (!["absolute", "fixed", "sticky"].includes(position)) {
-        addClass(options.parent, "loading-position")
-    } else {
-        removeClass(options.parent, "loading-position")
-    }
-}
 
 //注册loading指令
 const setDirective = function (el, binding) {
@@ -110,7 +103,7 @@ const setDirective = function (el, binding) {
                     break
                 case "fullScreen":
                     result = el == document.body && binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false)
-                    break;
+                    break
                 case "scrollLock":
                     result = binding.arg && binding.arg == key ? true : (binding.modifiers[key] ? true : false)
                     break
