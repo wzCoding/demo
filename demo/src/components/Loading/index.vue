@@ -63,7 +63,7 @@ export default {
             }
             return style
         })
-        console.log(styles.value)
+    
         return { spinnerClass, styles }
     }
 }

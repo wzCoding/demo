@@ -14,7 +14,8 @@ function createMask(options) {
         background: options.background,
         styles: options.styles,
         clickToClose: options.clickToClose,
-        fullScreen: options.fullScreen
+        fullScreen: options.fullScreen,
+        scrollLock:options.scrollLock,
     })
     const container = document.createElement("div")
 
@@ -133,7 +134,7 @@ function maskInstance(options) {
     if (resolved.parent && resolved.parent.mask) {
         const { mask } = resolved.parent
         mask.open()
-        return
+        return mask
     }
 
     const instance = createMask(resolved)

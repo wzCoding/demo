@@ -20,6 +20,10 @@ export default {
             type: Boolean,
             default: false
         },
+        scrollLock: {
+            type: Boolean,
+            default: false
+        },
         opacity: {
             type: [String, Number],
             default: 1
@@ -48,7 +52,8 @@ export default {
                 backgroundColor: props.background,
                 display: display.value,
                 inset: display.value == "none" ? "unset" : "0",
-                position: props.fullScreen ? "fixed" : "absolute"
+                position: props.fullScreen ? "fixed" : "absolute",
+                overflow: props.scrollLock ? "hidden" : "auto",
             }
             if (props.styles) {
                 Object.assign(style, props.styles)
