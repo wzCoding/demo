@@ -7,7 +7,7 @@ let fullScreenInstance
 
 function createMask(options) {
     if (!options) return
-    const data = reactive({
+    const props = reactive({
         show: options.show,
         zIndex: options.zIndex,
         opacity: options.opacity,
@@ -15,14 +15,18 @@ function createMask(options) {
         styles: options.styles,
         clickToClose: options.clickToClose,
         fullScreen: options.fullScreen,
-        scrollLock:options.scrollLock,
+        scrollLock: options.scrollLock,
+        destoryOnClose: options.destoryOnClose,
+        onDestory: () => {
+            destory()
+        }
     })
     const container = document.createElement("div")
 
     //创建mask虚拟dom
     const maskVnode = createVNode(
         MaskTemplate,
-        data,
+        props,
         {
             default: () => {
                 if (options.children && options.children.length > 0) {
@@ -35,7 +39,6 @@ function createMask(options) {
             }
         }
     )
-    
     //创建mask应用组件
     const appVnode = createVNode(
         Transition,
@@ -60,10 +63,9 @@ function createMask(options) {
 
     function close() {
         vm.exposed.showMask.value = false
-        destroy()
     }
 
-    function destroy() {
+    function destory() {
         options.parent.mask = null
 
         removeClass(options.parent, "mask-position")
@@ -75,7 +77,7 @@ function createMask(options) {
         vm,
         open,
         close,
-        destroy
+        destory
     }
 }
 
@@ -91,6 +93,7 @@ function resolveOptions(options) {
         clickToClose: false,
         fullScreen: false,
         scrollLock: false,
+        destroyOnClose: true,
         //此参数用来创建子节点
         children: []
     })

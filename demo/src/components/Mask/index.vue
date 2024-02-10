@@ -39,9 +39,13 @@ export default {
         clickToClose: {
             type: Boolean,
             default: false
+        },
+        destoryOnClose:{
+            type: Boolean,
+            default: true
         }
     },
-    emits: ['closeMask'],
+    emits: ['closeMask','destory'],
     setup(props, { emit, expose }) {
         const showMask = ref(props.show)
         const display = computed(() => showMask.value ? "flex" : "none")
@@ -64,6 +68,9 @@ export default {
             if (props.clickToClose && $event.target.className === 'mask') {
                 showMask.value = false
                 emit('closeMask')
+                if (props.destoryOnClose) {
+                    emit('destory')
+                }
                 return
             }
             return
