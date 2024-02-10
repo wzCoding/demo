@@ -1,18 +1,21 @@
 <template>
-    <div class="loading-box" v-show="show" :style="styles">
-        <div class="loading-spinner">
-            <div :class="spinnerClass"></div>
-        </div>
-        <div v-if="text" class="loading-text">{{ text }}</div>
-    </div>
+    <Transition name="fade">
+        <Mask class="loading-mask" :fullScreen="fullScreen" :style="styles">
+            <div class="loading-spinner">
+                <div :class="spinnerClass"></div>
+            </div>
+            <div v-if="text" class="loading-text">{{ text }}</div>
+        </Mask>
+    </Transition>
 </template>
 <style src="./index.scss" lang="scss"></style>
 <script>
 import { computed } from 'vue'
+import Mask from '../Mask'
 export default {
     name: "Loading",
     props: {
-        show:{
+        show: {
             type: Boolean,
             default: false
         },
@@ -24,15 +27,24 @@ export default {
             type: [String, Number],
             default: "999"
         },
+        fullScreen: {
+            type: Boolean,
+            default: false
+        },
+        background: {
+            type: String,
+            default: "rgba(0, 0, 0, 0.5)"
+        },
+        color:{
+            type: [String, Array],
+            default: ''
+        },
         customClass: {
             type: String,
             default: ""
-        },
-        color: {
-            type: [String, Array],
-            default: ''
         }
     },
+    components: { Mask },
     setup(props) {
         const spinnerClass = computed(() => {
             return props.customClass ? props.customClass : 'loading-circle'
@@ -40,6 +52,7 @@ export default {
         const styles = computed(() => {
             const style = {
                 zIndex: props.zIndex,
+                backgroundColor: props.background
             }
             if (typeof props.color === 'object') {
                 for (let i = 0; i < props.color.length; i++) {
@@ -50,6 +63,7 @@ export default {
             }
             return style
         })
+        console.log(styles.value)
         return { spinnerClass, styles }
     }
 }

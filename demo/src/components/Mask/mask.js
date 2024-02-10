@@ -1,5 +1,5 @@
 import MaskTemplate from "./index.vue"
-import { createVNode, render, reactive, Transition } from 'vue'
+import { createVNode, render, reactive, Transition, defineComponentomponent } from 'vue'
 import { isObject, addClass, removeClass } from "@/utils/index"
 
 //全屏遮罩实例
