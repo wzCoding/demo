@@ -1,5 +1,5 @@
 import MaskTemplate from "./index.vue"
-import { createVNode, render, reactive, Transition, defineComponentomponent } from 'vue'
+import { createVNode, render, reactive, Transition } from 'vue'
 import { isObject, addClass, removeClass } from "@/utils/index"
 
 //全屏遮罩实例
@@ -17,6 +17,11 @@ function createMask(options) {
         fullScreen: options.fullScreen,
         scrollLock: options.scrollLock,
         destoryOnClose: options.destoryOnClose,
+        onClose: () => { 
+            if(options.onClose && typeof options.onClose === 'function'){
+                options.onClose()
+            }
+        },
         onDestory: () => {
             destory()
         }
@@ -39,6 +44,7 @@ function createMask(options) {
             }
         }
     )
+
     //创建mask应用组件
     const appVnode = createVNode(
         Transition,
@@ -94,6 +100,7 @@ function resolveOptions(options) {
         fullScreen: false,
         scrollLock: false,
         destroyOnClose: true,
+        onClose: () => { },
         //此参数用来创建子节点
         children: []
     })
@@ -105,7 +112,7 @@ function resolveOptions(options) {
             defaultOptions.fullScreen = defaultOptions.target == document.body
         }
     }
-
+    console.log(defaultOptions)
     return defaultOptions
 }
 

@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 export default {
     name: 'Mask',
     props: {
@@ -40,12 +40,12 @@ export default {
             type: Boolean,
             default: false
         },
-        destoryOnClose:{
+        destoryOnClose: {
             type: Boolean,
             default: true
         }
     },
-    emits: ['closeMask','destory'],
+    emits: ['close', 'destory'],
     setup(props, { emit, expose }) {
         const showMask = ref(props.show)
         const display = computed(() => showMask.value ? "flex" : "none")
@@ -67,15 +67,26 @@ export default {
         const handleClick = ($event) => {
             if (props.clickToClose && $event.target.className === 'mask') {
                 showMask.value = false
-                emit('closeMask')
-                if (props.destoryOnClose) {
-                    emit('destory')
-                }
+
+                if (props.onClose && typeof props.onClose === 'function') emit('close')
+                if (props.destoryOnClose) emit('destory')
+                
                 return
+            }
+            if (props.onClose && typeof props.onClose === 'function') {
+                emit('close')
+            }
+            if (props.destoryOnClose) {
+                emit('destory')
             }
             return
         }
+
         expose({ showMask })
+
+        watch(display, (newVal) => {
+            console.log(newVal)
+        })
         return {
             maskStyles,
             handleClick

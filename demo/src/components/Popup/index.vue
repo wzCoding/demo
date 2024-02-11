@@ -16,6 +16,9 @@ export default {
             const mask = Mask.open({
                 target: ".popup",
                 clickToClose: true,
+                onClose:()=>{
+                    console.log("close")
+                }
             })
             console.log(mask)
         }
