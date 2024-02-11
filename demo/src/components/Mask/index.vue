@@ -43,6 +43,10 @@ export default {
         destoryOnClose: {
             type: Boolean,
             default: true
+        },
+        onClose: {
+            type: Function,
+            default: () => { }
         }
     },
     emits: ['close', 'destory'],
@@ -67,26 +71,22 @@ export default {
         const handleClick = ($event) => {
             if (props.clickToClose && $event.target.className === 'mask') {
                 showMask.value = false
-
-                if (props.onClose && typeof props.onClose === 'function') emit('close')
-                if (props.destoryOnClose) emit('destory')
-                
-                return
-            }
-            if (props.onClose && typeof props.onClose === 'function') {
                 emit('close')
-            }
-            if (props.destoryOnClose) {
-                emit('destory')
+                if (props.destoryOnClose) emit('destory')
+                return
             }
             return
         }
 
+
+        watch(showMask, (newVal) => {
+            if (!newVal && props.onClose && typeof props.onClose === 'function') {
+                emit('close')
+            }
+        })
+
         expose({ showMask })
 
-        watch(display, (newVal) => {
-            console.log(newVal)
-        })
         return {
             maskStyles,
             handleClick

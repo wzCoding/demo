@@ -16,11 +16,14 @@ export default {
             const mask = Mask.open({
                 target: ".popup",
                 clickToClose: true,
+                destoryOnClose: true,
                 onClose:()=>{
                     console.log("close")
                 }
             })
-            console.log(mask)
+            // setTimeout(() => {
+            //     mask.close()
+            // },300)
         }
         
         return {

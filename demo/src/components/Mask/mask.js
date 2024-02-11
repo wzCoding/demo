@@ -17,7 +17,7 @@ function createMask(options) {
         fullScreen: options.fullScreen,
         scrollLock: options.scrollLock,
         destoryOnClose: options.destoryOnClose,
-        onClose: () => { 
+        onClose:()=>{
             if(options.onClose && typeof options.onClose === 'function'){
                 options.onClose()
             }
@@ -112,7 +112,7 @@ function resolveOptions(options) {
             defaultOptions.fullScreen = defaultOptions.target == document.body
         }
     }
-    console.log(defaultOptions)
+    
     return defaultOptions
 }
 
