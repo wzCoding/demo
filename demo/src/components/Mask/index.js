@@ -1,4 +1,4 @@
-import MaskTemplate from "./index.vue"
+import MaskTemplate from "./template.vue"
 import { createVNode, render, reactive, Transition } from 'vue'
 import { isObject, addClass, removeClass } from "@/utils/index"
 

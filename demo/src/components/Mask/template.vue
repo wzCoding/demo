@@ -78,7 +78,6 @@ export default {
             return
         }
 
-
         watch(showMask, (newVal) => {
             if (!newVal && props.onClose && typeof props.onClose === 'function') {
                 emit('close')
