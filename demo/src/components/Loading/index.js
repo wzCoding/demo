@@ -1,4 +1,4 @@
-import LoadingTemplate from "./template.vue"
+import LoadingTemplate from "./template"
 import { createVNode,createApp, reactive, ref, isRef ,nextTick,toRefs} from "vue"
 import { isObject,addClass,removeClass } from "../../utils/index"
 

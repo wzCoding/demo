@@ -1,4 +1,4 @@
-import MessageTemplate from "./index.vue"
+import MessageTemplate from "./template"
 import { instances, groupInstances, removeInstance, removeGroupInstance } from "./instance"
 import { reactive, render, createVNode } from "vue"
 import { isObject } from "@/utils"
