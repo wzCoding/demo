@@ -1,10 +1,10 @@
 <template>
     <div class="components-popup components-page">
         <div class="item">
-            <div class="display-area">
+            <div class="display-area" :style="{display:'flex'}">
                 <icon-button class="popup-btn" size=default type="primary" text="Popup" @click="handleClick"/>
-                <Popup target="popup-btn">
-                    <span>123</span>
+                <Popup direction="bottom" target="popup-btn" width="300" height="180">
+                    <span>113156465416165849161651</span>
                 </Popup>
             </div>
         </div>
