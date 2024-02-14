@@ -1,17 +1,15 @@
 <template>
-    <teleport :to='container'>
-        <div class="popup-container">
-            <transition name="fade">
-                <div class="popup" :class="popupClass" :style="popupStyle" ref="popup" v-show="visible">
-                    <slot></slot>
-                </div>
-            </transition>
-        </div>
+    <teleport to='body'>
+        <transition name="fade">
+            <div class="popup" :class="popupClass" :style="popupStyle" ref="popup" v-show="visible">
+                <slot></slot>
+            </div>
+        </transition>
     </teleport>
 </template>
 <script>
 import { ref, onMounted, computed } from 'vue'
-import { directions, setDirection } from './direction'
+import { triggerEvents,directions, setDirection } from './direction'
 import IconButton from '@/components/IconButton'
 
 export default {
@@ -25,13 +23,15 @@ export default {
             type: String,
             default: 'bottom',
             validator(value) {
-                // The value must match one of these strings
                 return directions.includes(value)
             }
         },
         trigger: {
             type: String,
-            default: 'click'
+            default: 'click',
+            validator(value) {
+                return Object.keys(triggerEvents).includes(value)
+            }
         },
         needArrow: {
             type: Boolean,
@@ -74,9 +74,6 @@ export default {
         const popupClass = computed(() => {
             return props.needArrow ? 'has-arrow' : ''
         })
-        const container = computed(() => {
-            return document.body.querySelector('.popup-container') ? '.popup-container' : 'body'
-        })
         onMounted(() => {
             //set target
             if (typeof target.value === 'string') {
@@ -92,32 +89,19 @@ export default {
                 h: props.height
             })
 
-            // trigger click
-            if (props.trigger === 'click') {
-                target.value.addEventListener('click', () => {
-                    console.log('click')
+            const events = triggerEvents[props.trigger]
+            for(const e of events){
+                target.value.addEventListener(e, () => {
                     visible.value = !visible.value
                 })
             }
-
-            // trigger hover
-            if (props.trigger === 'hover') {
-                target.value.addEventListener('mouseenter', () => {
-                    console.log('hover-enter')
-                })
-                target.value.addEventListener('mouseleave', () => {
-                    console.log('hover-leave')
-                })
-            }
-
         })
 
         return {
             popupStyle,
             popupClass,
             popup,
-            visible,
-            container
+            visible
         }
     }
 }

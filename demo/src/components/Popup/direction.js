@@ -2,6 +2,10 @@ import { convertCssUnit, getElementSize } from "@/utils/index"
 
 const arrowSize = 10  //箭头尺寸
 const directions = ['top', 'right', 'left', 'bottom'] //popup位置选项
+const triggerEvents = {   //触发事件选项
+    'click': ['click'],
+    'hover': ['mouseenter', 'mouseleave']
+}
 
 function setDirection(options = {}) {
     const { target, popup, direction, w, h } = options
@@ -43,11 +47,11 @@ function setDirection(options = {}) {
         styles.left = `${(left + width / 2) - popupWidth / 2}px`
         styles['--arrow-top'] = `${(popupHeight / 2 - arrowLength / 2).toFixed(2)}px`
     }
-    console.log(styles)
     return styles
 }
 
 export {
+    triggerEvents,
     directions,
     setDirection
 }
