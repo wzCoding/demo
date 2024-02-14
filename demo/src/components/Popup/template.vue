@@ -1,22 +1,26 @@
 <template>
     <teleport :to='container'>
         <div class="popup-container">
-            <div class="popup" v-show="visible" :style="styles" ref="popup">
-                <slot></slot>
-            </div>
+            <transition name="fade">
+                <div class="popup" :style="styles" ref="popup" v-show="visible">
+                    <slot></slot>
+                </div>
+            </transition>
         </div>
     </teleport>
 </template>
 <script>
-import { ref, onMounted, reactive, computed } from 'vue'
+import { ref, onMounted, reactive, computed, nextTick } from 'vue'
 import { convertCssUnit } from '@/utils/index'
+import { setPopupStyle } from './util'
 import IconButton from '@/components/IconButton'
+
 export default {
     name: "Popup",
     props: {
         show: {
             type: Boolean,
-            default: false
+            default: true
         },
         direction: {
             type: String,
@@ -29,6 +33,10 @@ export default {
         trigger: {
             type: String,
             default: 'click'
+        },
+        needArrow:{
+            type:Boolean,
+            default:true
         },
         width: {
             type: [String, Number],
@@ -59,7 +67,6 @@ export default {
             default: () => { }
         }
     },
-
     setup(props) {
         const popup = ref(null)
         const visible = ref(props.show)
@@ -78,9 +85,7 @@ export default {
             const popupWidth = popup.value.getBoundingClientRect().width
             const popupHeight = popup.value.getBoundingClientRect().height
             const arrowLength = Math.sqrt(Math.pow(arrowSize, 2) * 2)
-            console.log('arrowLength;', arrowLength)
-            console.log(`left:${left}, top:${top}, width:${width}, height:${height}`)
-            console.log(`popupWidth:${popupWidth}, popupHeight:${popupHeight}`)
+
             if (['top', 'bottom'].includes(props.direction)) {
                 styles.left = `${(left + width / 2) - popupWidth / 2}px`
                 styles['--arrow-left'] = `${(popupWidth / 2 - arrowSize / 2).toFixed(2)}px`
@@ -101,7 +106,7 @@ export default {
 
             }
 
-
+            setPopupStyle(target.value, popup.value, styles)
             if (props.trigger === 'click') {
                 target.value.addEventListener('click', () => {
                     console.log('click')
