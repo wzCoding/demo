@@ -2,7 +2,7 @@
     <teleport :to='container'>
         <div class="popup-container">
             <transition name="fade">
-                <div class="popup" :style="styles" ref="popup" v-show="visible">
+                <div class="popup" :class="popupClass" :style="popupStyle" ref="popup" v-show="visible">
                     <slot></slot>
                 </div>
             </transition>
@@ -10,9 +10,8 @@
     </teleport>
 </template>
 <script>
-import { ref, onMounted, reactive, computed, nextTick } from 'vue'
-import { convertCssUnit } from '@/utils/index'
-import { setPopupStyle } from './util'
+import { ref, onMounted, computed } from 'vue'
+import { directions, setDirection } from './direction'
 import IconButton from '@/components/IconButton'
 
 export default {
@@ -20,23 +19,23 @@ export default {
     props: {
         show: {
             type: Boolean,
-            default: true
+            default: false
         },
         direction: {
             type: String,
             default: 'bottom',
             validator(value) {
                 // The value must match one of these strings
-                return ['top', 'right', 'left', 'bottom'].includes(value)
+                return directions.includes(value)
             }
         },
         trigger: {
             type: String,
             default: 'click'
         },
-        needArrow:{
-            type:Boolean,
-            default:true
+        needArrow: {
+            type: Boolean,
+            default: true
         },
         width: {
             type: [String, Number],
@@ -69,50 +68,39 @@ export default {
     },
     setup(props) {
         const popup = ref(null)
+        const popupStyle = ref({})
         const visible = ref(props.show)
         const target = ref(props.target)
-        const arrowSize = 10
-        const styles = reactive({
-            width: convertCssUnit(props.width),
-            height: convertCssUnit(props.height),
+        const popupClass = computed(() => {
+            return props.needArrow ? 'has-arrow' : ''
         })
         const container = computed(() => {
             return document.body.querySelector('.popup-container') ? '.popup-container' : 'body'
         })
         onMounted(() => {
-            if (typeof target.value === 'string') target.value = document.getElementsByClassName(target.value)[0] || document.getElementById(target.value)
-            const { left, top, width, height } = target.value.getBoundingClientRect()
-            const popupWidth = popup.value.getBoundingClientRect().width
-            const popupHeight = popup.value.getBoundingClientRect().height
-            const arrowLength = Math.sqrt(Math.pow(arrowSize, 2) * 2)
-
-            if (['top', 'bottom'].includes(props.direction)) {
-                styles.left = `${(left + width / 2) - popupWidth / 2}px`
-                styles['--arrow-left'] = `${(popupWidth / 2 - arrowSize / 2).toFixed(2)}px`
-                if (props.direction === 'top') {
-                    styles['top'] = `${top - (popupHeight + arrowLength)}px`
-                    styles['--arrow-top'] = `${popupHeight - arrowSize / 2}px`
-                    styles['--arrow-rotate'] = '-45deg'
-                }
-                if (props.direction === 'bottom') {
-                    styles['top'] = `${top + (height + arrowLength)}px`
-                    styles['--arrow-top'] = `-${arrowSize / 2}px`
-                    styles['--arrow-rotate'] = '135deg'
-                }
-            } else if (['left', 'right'].includes(props.direction)) {
-                styles.top = `${top + height / 2}px`
-                styles.left = `${(left + width / 2) - popupWidth / 2}px`
-                styles['--arrow-top'] = `${(popupHeight / 2 - arrowLength / 2).toFixed(2)}px`
-
+            //set target
+            if (typeof target.value === 'string') {
+                target.value = document.getElementsByClassName(target.value)[0] || document.getElementById(target.value)
             }
 
-            setPopupStyle(target.value, popup.value, styles)
+            // set direction
+            popupStyle.value = setDirection({
+                target: target.value,
+                popup: popup.value,
+                direction: props.direction,
+                w: props.width,
+                h: props.height
+            })
+
+            // trigger click
             if (props.trigger === 'click') {
                 target.value.addEventListener('click', () => {
                     console.log('click')
                     visible.value = !visible.value
                 })
             }
+
+            // trigger hover
             if (props.trigger === 'hover') {
                 target.value.addEventListener('mouseenter', () => {
                     console.log('hover-enter')
@@ -121,10 +109,12 @@ export default {
                     console.log('hover-leave')
                 })
             }
+
         })
 
         return {
-            styles,
+            popupStyle,
+            popupClass,
             popup,
             visible,
             container

@@ -199,6 +199,38 @@ function findScrollElement(el, dir = "parent", result = []) {
     return result;
 }
 
+function getCssValue(el, property) {
+    return getComputedStyle(el).getPropertyValue(property)
+}
+
+function getElementSize(el) {
+    const display = getComputedStyle(el).getPropertyValue("display")
+    if (display === "none") {
+        const styles = [
+            { key: "display", value: "block", cache: getCssValue(el, "display") },
+            { key: "pointer-events", value: "none", cache: getCssValue(el, "pointer-events") },
+            { key: "visibility", value: "hidden", cache: getCssValue(el, "visibility") },
+            { key: "z-index", value: -999, cache: getCssValue(el, "z-index") },
+        ]
+
+        // 利用visibility、z-index、pointer-events属性模拟display：none效果
+        for (const item of styles) {
+            el.style[item.key] = item.value
+        }
+
+        // 获取元素尺寸信息
+        const rect = el.getBoundingClientRect()
+
+        // 将元素样式恢复
+        for (const item of styles) {
+            el.style[item.key] = item.cache
+        }
+
+        return rect
+    }else{
+        return el.getBoundingClientRect()
+    }
+}
 export {
     throttle,
     debounce,
@@ -215,5 +247,7 @@ export {
     setStorageCache,
     getStorageCache,
     convertCssUnit,
-    findScrollElement
+    findScrollElement,
+    getCssValue,
+    getElementSize
 }
