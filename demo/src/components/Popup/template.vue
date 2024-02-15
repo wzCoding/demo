@@ -8,9 +8,9 @@
     </teleport>
 </template>
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { directions, setDirection } from './direction'
-import { triggerEvents,clickOutSide } from './event'
+import { triggerEvents } from './event'
 import IconButton from '@/components/IconButton'
 
 export default {
@@ -68,7 +68,6 @@ export default {
         }
     },
     setup(props) {
-        const index = ref(0)
         const popup = ref(null)
         const popupStyle = ref({})
         const visible = ref(props.show)
@@ -79,7 +78,18 @@ export default {
             const popupIndex = `popup-${document.body.querySelectorAll('.popup').length}`
             return `${arrowClass} ${popupIndex}`
         })
+
+        const targetClick = () => {
+            visible.value = !visible.value
+        }
+
+        const clickOutSide = (e) => {
+            if (!popup.value.contains(e.target) && !target.value.contains(e.target)) {
+                if (visible.value) visible.value = false
+            }
+        }
         onMounted(() => {
+
             //set target
             if (typeof target.value === 'string') {
                 target.value = document.getElementsByClassName(target.value)[0] || document.getElementById(target.value)
@@ -95,22 +105,27 @@ export default {
             })
 
             // set events
-            // const events = triggerEvents[props.trigger]
-            // for (const e of events) {
-            //     target.value.addEventListener(e, () => {
-            //         visible.value = !visible.value
-            //     })
-            // }
-            
-            clickOutSide(popup.value)
-            // document.body.addEventListener('click', (e) => {
-            //     console.log(e.target)
-            //     if(!target.value.contains(e.target) || e.target !== target.value){
-            //         visible.value = false
-            //     }
-            // })
+            const events = triggerEvents[props.trigger]
+            for (const e of events) {
+                target.value.addEventListener(e, targetClick)
+            }
+
+            if (props.trigger === 'click') {
+                document.body.addEventListener('click', clickOutSide, true)
+            }
+
         })
 
+        //组件卸载时移除事件监听
+        onUnmounted(() => {
+            const events = triggerEvents[props.trigger]
+            for (const e of events) {
+                target.value.removeEventListener(e, targetClick)
+            }
+            if (props.trigger === 'click') {
+                document.body.removeEventListener('click', clickOutSide, true)
+            }
+        })
         return {
             popupStyle,
             popupClass,
