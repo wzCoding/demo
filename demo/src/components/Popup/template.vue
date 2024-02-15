@@ -9,7 +9,8 @@
 </template>
 <script>
 import { ref, onMounted, computed } from 'vue'
-import { triggerEvents,directions, setDirection } from './direction'
+import { directions, setDirection } from './direction'
+import { triggerEvents,clickOutSide } from './event'
 import IconButton from '@/components/IconButton'
 
 export default {
@@ -67,12 +68,16 @@ export default {
         }
     },
     setup(props) {
+        const index = ref(0)
         const popup = ref(null)
         const popupStyle = ref({})
         const visible = ref(props.show)
         const target = ref(props.target)
         const popupClass = computed(() => {
-            return props.needArrow ? 'has-arrow' : ''
+            //根据props.needArrow判断是否需要箭头
+            const arrowClass = props.needArrow ? 'arrow-popup' : ''
+            const popupIndex = `popup-${document.body.querySelectorAll('.popup').length}`
+            return `${arrowClass} ${popupIndex}`
         })
         onMounted(() => {
             //set target
@@ -89,12 +94,21 @@ export default {
                 h: props.height
             })
 
-            const events = triggerEvents[props.trigger]
-            for(const e of events){
-                target.value.addEventListener(e, () => {
-                    visible.value = !visible.value
-                })
-            }
+            // set events
+            // const events = triggerEvents[props.trigger]
+            // for (const e of events) {
+            //     target.value.addEventListener(e, () => {
+            //         visible.value = !visible.value
+            //     })
+            // }
+            
+            clickOutSide(popup.value)
+            // document.body.addEventListener('click', (e) => {
+            //     console.log(e.target)
+            //     if(!target.value.contains(e.target) || e.target !== target.value){
+            //         visible.value = false
+            //     }
+            // })
         })
 
         return {

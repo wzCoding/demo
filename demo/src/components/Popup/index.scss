@@ -21,7 +21,7 @@
     z-index: 2;
     padding: 0.5rem;
     
-    &.has-arrow::after {
+    &.arrow-popup::after {
         content: "";
         display: block;
         position: absolute;

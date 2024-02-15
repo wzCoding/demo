@@ -2,10 +2,6 @@ import { convertCssUnit, getElementSize } from "@/utils/index"
 
 const arrowSize = 10  //箭头尺寸
 const directions = ['top', 'right', 'left', 'bottom'] //popup位置选项
-const triggerEvents = {   //触发事件选项
-    'click': ['click'],
-    'hover': ['mouseenter', 'mouseleave']
-}
 
 function setDirection(options = {}) {
     const { target, popup, direction, w, h } = options
@@ -51,7 +47,6 @@ function setDirection(options = {}) {
 }
 
 export {
-    triggerEvents,
     directions,
     setDirection
 }
