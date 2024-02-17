@@ -3,18 +3,24 @@ import { convertCssUnit, getElementSize } from "@/utils/index"
 const arrowSize = 10  //箭头尺寸
 const directions = ['top', 'right', 'left', 'bottom'] //popup位置选项
 
-function setDirection(options = {}) {
-    const { target, popup, direction, w, h } = options
+function setDirection(options = {
+    target: null,
+    popup: null,
+    direction: 'top',
+    maxWidth: 'auto',
+    maxHeight: 'auto'
+}) {
+    const { target, popup, direction, maxWidth, maxHeight } = options
     if (!target) return
     const styles = {
-        "width": convertCssUnit(w),
-        "height": convertCssUnit(h)
+        "max-width": convertCssUnit(maxWidth),
+        "max-height": convertCssUnit(maxHeight)
     }
 
     const { left, top, width, height } = getElementSize(target)
 
-    const popupWidth = getElementSize(popup).width
-    const popupHeight = getElementSize(popup).height
+    const popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : getElementSize(popup).width
+    const popupHeight = maxHeight && maxHeight !== 'auto' ? maxHeight : getElementSize(popup).height
     const arrowLength = Math.sqrt(Math.pow(arrowSize, 2) * 2)
 
     if (['top', 'bottom'].includes(direction)) {

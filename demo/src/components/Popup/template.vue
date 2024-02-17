@@ -38,11 +38,11 @@ export default {
             type: Boolean,
             default: true
         },
-        width: {
+        maxWidth: {
             type: [String, Number],
             default: 'auto'
         },
-        height: {
+        maxHeight: {
             type: [String, Number],
             default: 'auto'
         },
@@ -100,8 +100,8 @@ export default {
                 target: target.value,
                 popup: popup.value,
                 direction: props.direction,
-                w: props.width,
-                h: props.height
+                maxWidth: props.maxWidth,
+                maxHeight: props.maxHeight
             })
 
             // set events
