@@ -3,7 +3,7 @@ const triggerEvents = {   //触发事件选项
     'hover': ['mouseenter', 'mouseleave']
 }
 
-function setEventListener(options = {
+function EventListener(options = {
     trigger: 'click',
     element: null,
     handler: null,
@@ -17,8 +17,18 @@ function setEventListener(options = {
         element[listener](e, handler, capture)
     }
 }
-
+function addListener(trigger, element, handler, capture) {
+    return EventListener({
+        trigger, element, handler, capture
+    })
+}
+function removeListener(trigger, element, handler, capture) {
+    return EventListener({
+        trigger, element, handler, capture, removeFlag: true
+    })
+}
 export {
     triggerEvents,
-    setEventListener,
+    addListener,
+    removeListener
 }

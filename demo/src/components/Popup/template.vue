@@ -10,7 +10,7 @@
 <script>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { directions, setDirection } from './direction'
-import { triggerEvents, setEventListener } from './event'
+import { triggerEvents, addListener, removeListener } from './event'
 import IconButton from '@/components/IconButton'
 
 export default {
@@ -105,19 +105,10 @@ export default {
             })
 
             // set events
-            setEventListener({
-                trigger: props.trigger,
-                element: target.value,
-                handler: targetClick,
-            })
+            addListener(props.trigger, target.value, targetClick)
 
             if (props.trigger === 'click') {
-                setEventListener({
-                    trigger: props.trigger,
-                    element: document.body,
-                    handler: clickOutSide,
-                    capture: true
-                })
+                addListener(props.trigger, document.body, clickOutSide, true)
             }
 
         })
@@ -125,21 +116,10 @@ export default {
         //组件卸载时移除事件监听
         onUnmounted(() => {
             // remove events
-            setEventListener({
-                trigger: props.trigger,
-                element: target.value,
-                handler: targetClick,
-                removeFlag: true
-            })
+            removeListener(props.trigger, target.value, targetClick)
 
             if (props.trigger === 'click') {
-                setEventListener({
-                    trigger: props.trigger,
-                    element: document.body,
-                    handler: clickOutSide,
-                    capture: true,
-                    removeFlag: true
-                })
+                removeListener(props.trigger, document.body, clickOutSide, true)
             }
         })
         return {
