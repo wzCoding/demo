@@ -1,5 +1,4 @@
 import service from '@/axios'
-import { nextTick } from 'vue'
 /**
  * 
  * @param {function} func - 需要降低触发频率的函数
@@ -204,7 +203,7 @@ function getCssValue(el, property) {
     return getComputedStyle(el).getPropertyValue(property)
 }
 
-async function getElementSize(el) {
+function getElementSize(el) {
     const display = getComputedStyle(el).getPropertyValue("display")
     if (display === "none") {
         const styles = [
@@ -218,7 +217,6 @@ async function getElementSize(el) {
         for (const item of styles) {
             el.style[item.key] = item.value
         }
-        await nextTick()
 
         // 获取元素尺寸信息
         const rect = el.getBoundingClientRect()
@@ -227,7 +225,7 @@ async function getElementSize(el) {
         for (const item of styles) {
             el.style[item.key] = item.cache
         }
-        console.log(rect)
+
         return rect
     }else{
         return el.getBoundingClientRect()

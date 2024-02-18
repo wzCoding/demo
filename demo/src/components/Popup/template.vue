@@ -11,6 +11,8 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { directions, setDirection } from './direction'
 import { triggerEvents, addListener, removeListener } from './event'
+
+
 import IconButton from '@/components/IconButton'
 
 export default {
@@ -80,6 +82,16 @@ export default {
         })
 
         const targetClick = () => {
+            setDirection({
+                target: target.value,
+                popup: popup.value,
+                direction: props.direction,
+                maxWidth: props.maxWidth,
+                maxHeight: props.maxHeight
+            }).then(res => {
+                popupStyle.value = res
+            })
+
             visible.value = !visible.value
         }
 
@@ -96,12 +108,14 @@ export default {
             }
 
             // set direction
-            popupStyle.value = setDirection({
+            setDirection({
                 target: target.value,
                 popup: popup.value,
                 direction: props.direction,
                 maxWidth: props.maxWidth,
                 maxHeight: props.maxHeight
+            }).then(res => {
+                popupStyle.value = res
             })
 
             // set events
