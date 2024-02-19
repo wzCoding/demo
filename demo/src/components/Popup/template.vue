@@ -81,7 +81,7 @@ export default {
             return `${arrowClass} ${popupIndex}`
         })
 
-        const targetClick = () => {
+        const triggerPopup = () => {
             setDirection({
                 target: target.value,
                 popup: popup.value,
@@ -90,9 +90,8 @@ export default {
                 maxHeight: props.maxHeight
             }).then(res => {
                 popupStyle.value = res
+                visible.value = !visible.value
             })
-
-            visible.value = !visible.value
         }
 
         const clickOutSide = (e) => {
@@ -119,7 +118,7 @@ export default {
             })
 
             // set events
-            addListener(props.trigger, target.value, targetClick)
+            addListener(props.trigger, target.value, triggerPopup)
 
             if (props.trigger === 'click') {
                 addListener(props.trigger, document.body, clickOutSide, true)
@@ -130,7 +129,7 @@ export default {
         //组件卸载时移除事件监听
         onUnmounted(() => {
             // remove events
-            removeListener(props.trigger, target.value, targetClick)
+            removeListener(props.trigger, target.value, triggerPopup)
 
             if (props.trigger === 'click') {
                 removeListener(props.trigger, document.body, clickOutSide, true)
