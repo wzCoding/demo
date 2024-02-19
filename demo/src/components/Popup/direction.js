@@ -4,45 +4,40 @@ import { nextTick } from "vue"
 const edgeGap = 20 //边缘间距
 const arrowSize = 10  //箭头尺寸
 const arrowLength = Math.sqrt(Math.pow(arrowSize, 2) * 2) //箭头长度
-const directions = ['top', 'right', 'left', 'bottom'] //popup位置选项
 const bodyWidth = document.body.clientWidth
 const bodyHeight = document.body.clientHeight
+const directions = {
+    'top': 'vertical',
+    'borrom': 'vertical',
+    'left': 'horizontal',
+    'right': 'horizontal'
+} //popup位置选项
 
 async function setDirection(options = {
     target: null,
     popup: null,
     direction: 'top',
-    maxWidth: 'auto',
-    maxHeight: 'auto'
+    maxWidth: 'auto'
 }) {
-    
-    const { target, popup, direction, maxWidth, maxHeight } = options
+
+    const { target, popup, direction, maxWidth } = options
     if (!target) return
 
     await nextTick()
 
+    const targetRect = getElementSize(target)
+    const popupRect = getElementSize(popup)
+
     // 计算弹出框的位置
-    if (['top', 'bottom'].includes(direction)) {
-        const verticalStyle = verticalStyles(
+    const styles = eval(
+        `${directions[direction]}Styles(
             direction,
             maxWidth,
-            getElementSize(target),
-            getElementSize(popup),
-        )
-
-        return verticalStyle
-    }
-
-    if (['left', 'right'].includes(direction)) {
-        const horizontalStyle = horizontalStyles(
-            direction,
-            maxWidth,
-            getElementSize(target),
-            getElementSize(popup),
-        )
-
-        return horizontalStyle
-    }
+            targetRect,
+            popupRect,
+        )`
+    )
+    return styles
 }
 
 // 纵向位置样式
@@ -50,7 +45,7 @@ function verticalStyles(direction, maxWidth, targetRect, popupRect) {
 
     const { top, left, height, width } = targetRect
     let { width: popupWidth, height: popupHeight } = popupRect
-    
+
     // 设置popup宽度
     popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : (popupWidth > bodyWidth ? bodyWidth - edgeGap * 2 : popupWidth)
 
@@ -81,14 +76,31 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
     const { top, left, height, width } = targetRect
     let { width: popupWidth, height: popupHeight } = popupRect
 
-    const styles = {
-        'top': `${top + height / 2 - popupHeight / 2}px`,
-        '--arrow-top': `${(popupHeight / 2 - arrowSize / 2).toFixed(2)}px`
+    // 额外间距，防止内容超出body
+    let extraGap = 0
+    let arrowTop = popupHeight / 2 - arrowSize / 2
+
+    if (top + height / 2 - popupHeight / 2 < 0) {
+        extraGap = edgeGap - (top + height / 2 - popupHeight / 2)
+        arrowTop = arrowTop - extraGap < 0 ? arrowLength / 2 : arrowTop - extraGap
     }
+
+    if (bodyHeight - top - height / 2 - popupHeight / 2 < 0) {
+        extraGap = -(edgeGap - (bodyHeight - top - height / 2 - popupHeight / 2))
+        arrowTop = arrowTop - extraGap + arrowLength > popupHeight ? popupHeight - arrowLength : arrowTop - extraGap
+        
+    }
+    
+    const styles = {
+        'top': `${top + height / 2 - popupHeight / 2 + extraGap}px`,
+        '--arrow-top': `${arrowTop}px`
+    }
+
+    popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : popupWidth
 
     if (direction === 'left') {
 
-        popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : (left < popupWidth ? left - edgeGap : popupWidth)
+        popupWidth = left < popupWidth ? left - edgeGap : popupWidth
 
         styles['left'] = `${left - popupWidth - arrowLength / 2 - arrowSize / 2}px`
         styles['max-width'] = `${popupWidth}px`
@@ -99,7 +111,7 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
     if (direction === 'right') {
 
         const right = bodyWidth - left - width
-        popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : (right - popupWidth < edgeGap ? right - edgeGap : popupWidth)
+        popupWidth = right - popupWidth < edgeGap ? right - edgeGap : popupWidth
 
         styles['left'] = `${left + width + arrowLength / 2 + arrowSize / 2}px`
         styles['max-width'] = `${popupWidth}px`

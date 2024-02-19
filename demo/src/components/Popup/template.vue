@@ -26,7 +26,7 @@ export default {
             type: String,
             default: 'bottom',
             validator(value) {
-                return directions.includes(value)
+                return Object.keys(directions).includes(value)
             }
         },
         trigger: {
@@ -41,10 +41,6 @@ export default {
             default: true
         },
         maxWidth: {
-            type: [String, Number],
-            default: 'auto'
-        },
-        maxHeight: {
             type: [String, Number],
             default: 'auto'
         },
@@ -87,7 +83,6 @@ export default {
                 popup: popup.value,
                 direction: props.direction,
                 maxWidth: props.maxWidth,
-                maxHeight: props.maxHeight
             }).then(res => {
                 popupStyle.value = res
                 visible.value = !visible.value
@@ -111,8 +106,7 @@ export default {
                 target: target.value,
                 popup: popup.value,
                 direction: props.direction,
-                maxWidth: props.maxWidth,
-                maxHeight: props.maxHeight
+                maxWidth: props.maxWidth
             }).then(res => {
                 popupStyle.value = res
             })
