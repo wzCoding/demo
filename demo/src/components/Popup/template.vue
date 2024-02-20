@@ -25,6 +25,13 @@ export default {
             type: Boolean,
             default: false
         },
+        theme: {
+            type: String,
+            default: 'light',
+            validator(value) {
+                return ['light', 'dark'].includes(value)
+            }
+        },
         direction: {
             type: String,
             default: 'bottom',
@@ -70,7 +77,6 @@ export default {
     },
     setup(props) {
         const popup = ref(null)
-        const popupStyle = ref({})
         const visible = ref(props.show)
         const target = ref(props.target)
         const popupClass = computed(() => {
@@ -79,7 +85,22 @@ export default {
             const popupIndex = `popup-${document.body.querySelectorAll('.popup').length}`
             return `${arrowClass} ${popupIndex}`
         })
+
+        const updateColor = () => {
+            const defaultThemes = {
+                'light': { '--popup-background': '#fff', '--popup-text': '#333' },
+                'dark': { '--popup-background': '#333', '--popup-text': '#fff' },
+            }
+            return defaultThemes[props.theme]
+        }
         
+        const popupStyle = ref(updateColor())
+
+        //popup的样式
+        const updateStyle = (style) => {
+            popupStyle.value = Object.assign({}, popupStyle.value, style)
+        }
+
         //popup的显示和隐藏
         const triggerPopup = () => {
             setDirection({
@@ -88,7 +109,7 @@ export default {
                 direction: props.direction,
                 maxWidth: props.maxWidth,
             }).then(res => {
-                popupStyle.value = res
+                updateStyle(res)
                 visible.value = !visible.value
             })
         }
@@ -109,17 +130,17 @@ export default {
                     direction: props.direction,
                     maxWidth: props.maxWidth
                 }).then(res => {
-                    popupStyle.value = res
+                    updateStyle(res)
                 })
             },
             30
         )
-        
+
         const unScrollWatch = watch(visible, (newVal) => {
             const [scrollEl] = findScrollElement(target.value)
             if (newVal) {
                 scrollEl && addListener('scroll', scrollEl, handleScroll)
-            }else{
+            } else {
                 scrollEl && removeListener('scroll', scrollEl, handleScroll)
             }
         })
@@ -138,7 +159,7 @@ export default {
                 direction: props.direction,
                 maxWidth: props.maxWidth
             }).then(res => {
-                popupStyle.value = res
+                updateStyle(res)
             })
 
             // set events

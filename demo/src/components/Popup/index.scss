@@ -14,7 +14,8 @@
 
 .popup {
     display: flex;
-    background-color: #fff;
+    background-color: var(--popup-background);
+    color:var(--popup-text);
     border-radius: 5px;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
     position: absolute;
@@ -25,9 +26,9 @@
         content: "";
         display: block;
         position: absolute;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
+        background-color: var(--popup-background);
+        width: var(--arrow-size);
+        height: var(--arrow-size);
         left: var(--arrow-left);
         top: var(--arrow-top);
         transform: rotate(var(--arrow-rotate));

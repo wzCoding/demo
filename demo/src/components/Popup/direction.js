@@ -8,7 +8,7 @@ const bodyWidth = document.body.clientWidth
 const bodyHeight = document.body.clientHeight
 const directions = {
     'top': 'vertical',
-    'borrom': 'vertical',
+    'bottom': 'vertical',
     'left': 'horizontal',
     'right': 'horizontal'
 } //popup位置选项
@@ -37,6 +37,7 @@ async function setDirection(options = {
             popupRect,
         )`
     )
+    
     return styles
 }
 
@@ -67,7 +68,7 @@ function verticalStyles(direction, maxWidth, targetRect, popupRect) {
         styles['--arrow-top'] = `-${arrowSize / 2}px`
         styles['--arrow-rotate'] = '135deg'
     }
-
+    
     return styles
 }
 
@@ -93,6 +94,7 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
     
     const styles = {
         'top': `${top + height / 2 - popupHeight / 2 + extraGap}px`,
+        '--arrow-size': `${arrowSize}px`,
         '--arrow-top': `${arrowTop}px`
     }
 
@@ -104,7 +106,7 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
 
         styles['left'] = `${left - popupWidth - arrowLength / 2 - arrowSize / 2}px`
         styles['max-width'] = `${popupWidth}px`
-        styles['--arrow-left'] = `${popupWidth - arrowLength / 2}px`
+        styles['--arrow-left'] = `${popupWidth - arrowSize / 2}px`
         styles['--arrow-rotate'] = '225deg'
     }
 
