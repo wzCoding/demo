@@ -3,7 +3,7 @@
         <div class="item">
             <div class="display-area" :style="{display:'flex'}">
                 <icon-button class="popup-btn" size=default type="primary" text="Popup"/>
-                <Popup direction="right" target="popup-btn" theme="dark">
+                <Popup direction="right" target="popup-btn" theme="dark" @confirm="handleConfirm">
                     <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit alias rem ipsam quo quod tempora inventore cumque aliquam! Pariatur expedita, dolorum nemo tenetur at illo debitis sequi hic ut quas.</span>
                 </Popup>
                 <!-- <icon-button class="popup-btn1" size=default type="primary" text="Popup"/>
@@ -18,9 +18,9 @@
 import Popup from '@/components/Popup/template'
 import IconButton from '@/components/IconButton'
 import CodeDemo from '@/components/CodeDemo'
-// const handleClick = () => {
-//     console.log('click11')
-// }
+const handleConfirm = () => {
+    console.log('click11')
+}
 </script>
 <style lang="scss" scoped>
 .display-area {

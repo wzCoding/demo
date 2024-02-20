@@ -2,7 +2,17 @@
     <teleport to='body'>
         <transition name="fade">
             <div class="popup" :class="popupClass" :style="popupStyle" ref="popup" v-show="visible">
-                <slot></slot>
+                <div class="popup-box">
+                    <div class="popup-content">
+                        <slot></slot>
+                    </div>
+                    <div class="popup-footer" v-if="confirm || cancel">
+                        <icon-button v-if="confirm" type="primary" size="small" @click="handleConfirm">{{ confirmText
+                        }}</icon-button>
+                        <icon-button v-if="cancel" type="default" size="small" @click="handleCancel">{{ cancelText
+                        }}</icon-button>
+                    </div>
+                </div>
             </div>
         </transition>
     </teleport>
@@ -58,6 +68,14 @@ export default {
             type: [String, Object],
             default: ''
         },
+        confirm: {
+            type: Boolean,
+            default: false
+        },
+        cancel: {
+            type: Boolean,
+            default: false
+        },
         confirmText: {
             type: String,
             default: '确定'
@@ -75,7 +93,9 @@ export default {
             default: () => { }
         }
     },
-    setup(props) {
+    components: { IconButton },
+    emits: ['confirm', 'cancel'],
+    setup(props, { emit }) {
         const popup = ref(null)
         const visible = ref(props.show)
         const target = ref(props.target)
@@ -86,6 +106,16 @@ export default {
             return `${arrowClass} ${popupIndex}`
         })
 
+        const handleConfirm = () => {
+            visible.value = !visible.value
+            emit('confirm')
+        }
+
+        const handleCancel = () => {
+            visible.value = !visible.value
+            emit('cancel')
+        }
+
         const updateColor = () => {
             const defaultThemes = {
                 'light': { '--popup-background': '#fff', '--popup-text': '#333' },
@@ -93,7 +123,7 @@ export default {
             }
             return defaultThemes[props.theme]
         }
-        
+
         const popupStyle = ref(updateColor())
 
         //popup的样式
@@ -186,7 +216,9 @@ export default {
             popupStyle,
             popupClass,
             popup,
-            visible
+            visible,
+            handleConfirm,
+            handleCancel
         }
     }
 }
