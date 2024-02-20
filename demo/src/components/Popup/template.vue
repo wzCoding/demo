@@ -8,12 +8,15 @@
     </teleport>
 </template>
 <script>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { directions, setDirection } from './direction'
 import { triggerEvents, addListener, removeListener } from './event'
-
+import { findScrollElement, debounce } from "@/utils/index"
 
 import IconButton from '@/components/IconButton'
+
+const tirggers = Object.keys(triggerEvents)
+const dirs = Object.keys(directions)
 
 export default {
     name: "Popup",
@@ -26,14 +29,14 @@ export default {
             type: String,
             default: 'bottom',
             validator(value) {
-                return Object.keys(directions).includes(value)
+                return dirs.includes(value)
             }
         },
         trigger: {
             type: String,
             default: 'click',
             validator(value) {
-                return Object.keys(triggerEvents).includes(value)
+                return tirggers.includes(value)
             }
         },
         needArrow: {
@@ -76,7 +79,8 @@ export default {
             const popupIndex = `popup-${document.body.querySelectorAll('.popup').length}`
             return `${arrowClass} ${popupIndex}`
         })
-
+        
+        //popup的显示和隐藏
         const triggerPopup = () => {
             setDirection({
                 target: target.value,
@@ -89,11 +93,37 @@ export default {
             })
         }
 
+        // 处理外部点击事件，关闭popup
         const clickOutSide = (e) => {
             if (!popup.value.contains(e.target) && !target.value.contains(e.target)) {
                 if (visible.value) visible.value = false
             }
         }
+
+        // 处理滚动事件，重新计算popup位置
+        const handleScroll = debounce(
+            () => {
+                setDirection({
+                    target: target.value,
+                    popup: popup.value,
+                    direction: props.direction,
+                    maxWidth: props.maxWidth
+                }).then(res => {
+                    popupStyle.value = res
+                })
+            },
+            30
+        )
+        
+        const unScrollWatch = watch(visible, (newVal) => {
+            const [scrollEl] = findScrollElement(target.value)
+            if (newVal) {
+                scrollEl && addListener('scroll', scrollEl, handleScroll)
+            }else{
+                scrollEl && removeListener('scroll', scrollEl, handleScroll)
+            }
+        })
+
         onMounted(() => {
 
             //set target
@@ -128,6 +158,8 @@ export default {
             if (props.trigger === 'click') {
                 removeListener(props.trigger, document.body, clickOutSide, true)
             }
+
+            unScrollWatch()
         })
         return {
             popupStyle,

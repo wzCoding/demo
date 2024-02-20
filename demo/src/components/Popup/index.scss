@@ -20,6 +20,7 @@
     position: absolute;
     z-index: 2;
     padding: 0.5rem;
+    transform: all var(--transition-time);
     &.arrow-popup::after {
         content: "";
         display: block;
@@ -32,5 +33,6 @@
         transform: rotate(var(--arrow-rotate));
         z-index: -1;
         box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.1);
+        //transform: all var(--transition-time);
     }
 }
