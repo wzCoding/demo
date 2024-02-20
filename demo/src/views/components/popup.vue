@@ -23,7 +23,7 @@
             </div>
             <div class="display-area" :style="{display:'flex',justifyContent:'flex-end',alignItems:'flex-end'}">
                 <icon-button class="popup-btn5" size=default type="primary" text="Popup"/>
-                <Popup direction="left" target="popup-btn5" max-width="400">
+                <Popup direction="left" target="popup-btn5">
                     <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit alias rem ipsam quo quod tempora inventore cumque aliquam! Pariatur expedita, dolorum nemo tenetur at illo debitis sequi hic ut quas.</span>
                 </Popup>
                 <!-- <icon-button class="popup-btn1" size=default type="primary" text="Popup"/>
