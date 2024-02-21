@@ -1,9 +1,9 @@
 <template>
     <div class="components-popup components-page">
         <div class="item">
-            <div class="display-area" :style="{display:'flex'}">
+            <div class="display-area" :style="{display:'flex',justifyContent:'flex-end'}">
                 <icon-button class="popup-btn" size=default type="primary" text="Popup"/>
-                <Popup direction="right" target="popup-btn" theme="dark" @confirm="handleConfirm">
+                <Popup direction="top" target="popup-btn">
                     <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit alias rem ipsam quo quod tempora inventore cumque aliquam! Pariatur expedita, dolorum nemo tenetur at illo debitis sequi hic ut quas.</span>
                 </Popup>
                 <!-- <icon-button class="popup-btn1" size=default type="primary" text="Popup"/>

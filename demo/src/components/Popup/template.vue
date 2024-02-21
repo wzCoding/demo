@@ -160,10 +160,11 @@ export default {
                     direction: props.direction,
                     maxWidth: props.maxWidth
                 }).then(res => {
+                    
                     updateStyle(res)
                 })
             },
-            30
+            50
         )
 
         const unScrollWatch = watch(visible, (newVal) => {

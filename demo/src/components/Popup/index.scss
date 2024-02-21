@@ -21,7 +21,6 @@
     position: absolute;
     z-index: 2;
     padding: 0.5rem;
-    transform: all var(--transition-time);
     &.arrow-popup::after {
         content: "";
         display: block;

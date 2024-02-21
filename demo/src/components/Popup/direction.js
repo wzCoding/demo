@@ -43,13 +43,13 @@ async function setDirection(options = {
 
 // 纵向位置样式
 function verticalStyles(direction, maxWidth, targetRect, popupRect) {
-
+    isBoundary(targetRect)
     const { top, left, height, width } = targetRect
     let { width: popupWidth, height: popupHeight } = popupRect
 
     // 设置popup宽度
     popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : (popupWidth > bodyWidth ? bodyWidth - edgeGap * 2 : popupWidth)
-
+    console.log(popupWidth)
     const styles = {
         'left': `${left + width / 2 - popupWidth / 2}px`,
         'max-width': `${popupWidth}px`,
@@ -121,6 +121,11 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
         styles['--arrow-rotate'] = '45deg'
     }
     return styles
+}
+// 检测是否边界
+function isBoundary(targetRect){
+    const {left, top, width, height} = targetRect
+    console.log(left,top,width,height)
 }
 
 export {
