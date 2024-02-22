@@ -13,6 +13,8 @@ const directions = {
     'right': 'horizontal'
 } //popup位置选项
 
+const cachePopup = {} //缓存popup
+
 async function setDirection(options = {
     target: null,
     popup: null,
@@ -37,7 +39,7 @@ async function setDirection(options = {
             popupRect,
         )`
     )
-    
+
     return styles
 }
 
@@ -45,11 +47,12 @@ async function setDirection(options = {
 function verticalStyles(direction, maxWidth, targetRect, popupRect) {
     isBoundary(targetRect)
     const { top, left, height, width } = targetRect
-    let { width: popupWidth, height: popupHeight } = popupRect
+    let { width: popupWidth, height: popupHeight } = resolvePopup(popupRect, maxWidth)
 
     // 设置popup宽度
-    popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : (popupWidth > bodyWidth ? bodyWidth - edgeGap * 2 : popupWidth)
+    //popupWidth = maxWidth && maxWidth !== 'auto' ? maxWidth : (popupWidth > bodyWidth ? bodyWidth - edgeGap * 2 : popupWidth)
     console.log(popupWidth)
+    const dir = resolveDirection(targetRect,direction)
     const styles = {
         'left': `${left + width / 2 - popupWidth / 2}px`,
         'max-width': `${popupWidth}px`,
@@ -68,14 +71,14 @@ function verticalStyles(direction, maxWidth, targetRect, popupRect) {
         styles['--arrow-top'] = `-${arrowSize / 2}px`
         styles['--arrow-rotate'] = '135deg'
     }
-    
+
     return styles
 }
 
 // 横向位置样式
-function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
+function horizontalStyles(direction, maxWidth, targetRect, resolvePopup) {
     const { top, left, height, width } = targetRect
-    let { width: popupWidth, height: popupHeight } = popupRect
+    let { width: popupWidth, height: popupHeight } = resolvePopup
 
     // 额外间距，防止内容超出body
     let extraGap = 0
@@ -89,9 +92,9 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
     if (bodyHeight - top - height / 2 - popupHeight / 2 < 0) {
         extraGap = -(edgeGap - (bodyHeight - top - height / 2 - popupHeight / 2))
         arrowTop = arrowTop - extraGap + arrowLength > popupHeight ? popupHeight - arrowLength : arrowTop - extraGap
-        
+
     }
-    
+
     const styles = {
         'top': `${top + height / 2 - popupHeight / 2 + extraGap}px`,
         '--arrow-size': `${arrowSize}px`,
@@ -122,12 +125,47 @@ function horizontalStyles(direction, maxWidth, targetRect, popupRect) {
     }
     return styles
 }
+
 // 检测是否边界
-function isBoundary(targetRect){
-    const {left, top, width, height} = targetRect
-    console.log(left,top,width,height)
+function isBoundary(targetRect) {
+    const { left, top, right, bottom } = getPosition(targetRect)
+    console.log('targetLeft',left)
+    console.log('targetRight',right)
+    console.log('targetTop',top)
+    console.log('targetBottom',bottom)
+    return 
+}
+// 计算popup位置
+function resolveDirection(targetRect, direction) {
+    
+    const { left, top, right, bottom } = getPosition(targetRect)
+    
+    if(direction === 'top'){
+        console.log(left > right)
+        //distance = left > right ? right : left
+    }
+}
+// 计算popup宽度
+function resolvePopup(popupRect, maxWidth) {
+    const { width, height } = popupRect
+    const autoWidth = bodyWidth - width > edgeGap * 2 ? width : bodyWidth - edgeGap * 2
+    cachePopup.width = maxWidth && maxWidth !== 'auto' ? maxWidth : autoWidth
+    cachePopup.height = height
+    return cachePopup
 }
 
+// 根据元素rect数据重新计算位置信息
+function getPosition(rect) {
+    const { left, top, right, bottom, width, height } = rect
+    return {
+        left,
+        right: bodyWidth - right,
+        top,
+        bottom: bodyHeight - bottom,
+        width,
+        height
+    }
+}
 export {
     directions,
     setDirection
