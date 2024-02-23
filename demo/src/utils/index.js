@@ -77,7 +77,7 @@ function isEmpty(value) {
     if (!value) return result;
     switch (getType(value)) {
         case "object":
-            result = Object.keys(value).length === 0;
+            result = Object.keys(value).length === 0 && JSON.stringify(value) === "{}";
             break;
         case "array":
             result = value.length === 0;
@@ -85,8 +85,9 @@ function isEmpty(value) {
         case "string":
             result = value === "" && value.trim().length === 0;
             break;
-        default: return result;
+        default: result = true;
     }
+    return result
 }
 
 function addClass(target, className) {
@@ -166,7 +167,7 @@ function convertCssUnit(value, unit = null) {
             const defaultUnit = 'px';
             value = num;
             unit = str && units.includes(str) ? str : defaultUnit;
-        }else{
+        } else {
             return value
         }
     }
@@ -227,7 +228,7 @@ function getElementSize(el) {
         }
 
         return rect
-    }else{
+    } else {
         return el.getBoundingClientRect()
     }
 }
