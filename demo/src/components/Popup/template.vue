@@ -164,7 +164,7 @@ export default {
                     updateStyle(res)
                 })
             },
-            50
+            0
         )
 
         const unScrollWatch = watch(visible, (newVal) => {
