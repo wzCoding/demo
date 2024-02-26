@@ -105,7 +105,15 @@ export default {
             const popupIndex = `popup-${document.body.querySelectorAll('.popup').length}`
             return `${arrowClass} ${popupIndex}`
         })
-
+        const popupOptions = computed(() => {
+            return {
+                target: target.value,
+                popup: popup.value,
+                direction: props.direction,
+                maxWidth: props.maxWidth,
+                needArrow: props.needArrow
+            }
+        })
         const handleConfirm = () => {
             visible.value = !visible.value
             emit('confirm')
@@ -133,12 +141,7 @@ export default {
 
         //popup的显示和隐藏
         const triggerPopup = () => {
-            setDirection({
-                target: target.value,
-                popup: popup.value,
-                direction: props.direction,
-                maxWidth: props.maxWidth,
-            }).then(res => {
+            setDirection(popupOptions.value).then(res => {
                 updateStyle(res)
                 visible.value = !visible.value
             })
@@ -154,13 +157,7 @@ export default {
         // 处理滚动事件，重新计算popup位置
         const handleScroll = debounce(
             () => {
-                setDirection({
-                    target: target.value,
-                    popup: popup.value,
-                    direction: props.direction,
-                    maxWidth: props.maxWidth
-                }).then(res => {
-                    
+                setDirection(popupOptions.value).then(res => {
                     updateStyle(res)
                 })
             },
@@ -184,12 +181,7 @@ export default {
             }
 
             // set direction
-            setDirection({
-                target: target.value,
-                popup: popup.value,
-                direction: props.direction,
-                maxWidth: props.maxWidth
-            }).then(res => {
+            setDirection(popupOptions.value).then(res => {
                 updateStyle(res)
             })
 

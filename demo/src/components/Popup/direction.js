@@ -16,51 +16,51 @@ const directions = {
 async function setDirection(options = {
     target: null,
     popup: null,
-    direction: 'top',
-    maxWidth: 'auto'
+    direction: 'bottom',
+    maxWidth: 'auto',
+    needArrow: true
 }) {
 
-    const { target, popup, direction, maxWidth } = options
-    if (!target) return
+    const { target, popup } = options
+    if (!target || !popup) return
 
     await nextTick()
 
-    const targetRect = getElementSize(target)
-    const popupRect = getElementSize(popup)
+    // const targetRect = getElementSize(target)
+    // const popupRect = getElementSize(popup)
 
     // 计算弹出框的位置
-    const styles = popupStyles(
-        direction,
-        maxWidth,
-        targetRect,
-        popupRect,
-    )
+    const styles = popupStyles(options)
 
     return styles
 }
 
 // popup位置样式
-function popupStyles(direction, maxWidth, target, popup) {
+function popupStyles(options) {
+    console.log(options)
+    const { target, popup, direction, maxWidth, needArrow } = options
 
-    const getPopup = resolvePopup(popup, maxWidth)
-    const popupRect = getPopup()
+    const popupRect = resolvePopup(popup, maxWidth)
 
-    const getTarget = resolveTarget(direction, target, popupRect)
-    const targetRect = getTarget()
+    const targetRect = resolveTarget(target, popup, direction)
 
-    const getArrow = resolveArrow(direction, targetRect, popupRect)
-    const arrowRect = getArrow()
+    let arrowRect =  { size: arrowSize / 2, length: arrowLength / 2 }
 
     const styles = {
         [targetRect.trend]: `${targetRect.distance}px`,
         'max-width': `${popupRect.width}px`,
-        '--arrow-size': `${arrowSize}px`,
-        '--arrow-left': `${arrowRect.left}px`,
-        '--arrow-top': `${arrowRect.top}px`,
-        '--arrow-rotate': `${arrowRect.rotate}deg`
     }
 
-    if(['top', 'bottom'].includes(direction)){
+    // 设置箭头样式
+    if (needArrow) {
+        arrowRect = resolveArrow(target, popup, direction)
+        styles['--arrow-size'] = `${arrowRect.size}px`
+        styles['--arrow-left'] = `${arrowRect.left}px`
+        styles['--arrow-top'] = `${arrowRect.top}px`
+        styles['--arrow-rotate'] = `${arrowRect.rotate}deg`
+    }
+
+    if (['top', 'bottom'].includes(direction)) {
         const tempGap = direction === 'top' ? -(popupRect.height + arrowRect.length) : (targetRect.height + arrowRect.length)
         styles['top'] = `${targetRect.top + tempGap}px`
     }
@@ -129,102 +129,96 @@ function horizontalStyles(direction, maxWidth, targetRect, resolvePopup) {
 }
 
 // 计算target位置
-function resolveTarget(direction, targetRect, popupRect) {
+function resolveTarget(target, popup, direction, needArrow) {
 
-    const cacheTarget = {} //缓存target位置尺寸信息
+    if (target.rect) {
+        console.log('use cache target.rect')
+        return target.rect
+    } else {
+        target.rect = {}
 
-    return function () {
-        if (!cacheTarget.trend && !cacheTarget.distance) {
-            console.log('没有缓存target位置尺寸信息')
-            const { top, left, right, bottom, width, height } = getPosition(targetRect)
-            const halfTargetWidth = width / 2
-            const halfTargetHeight = height / 2
-            const halfPopupWidth = popupRect.width / 2
-            const halfPopupHeight = popupRect.height / 2
+        const targetSize = getElementSize(target)
+        const { top, left, right, bottom, width, height } = getPosition(targetSize)
+        const halfTargetWidth = width / 2
+        const halfTargetHeight = height / 2
+        const halfPopupWidth = popup.rect.width / 2
+        const halfPopupHeight = popup.rect.height / 2
 
-            cacheTarget.top = top
-            cacheTarget.left = left
-            cacheTarget.right = right
-            cacheTarget.bottom = bottom
-            cacheTarget.width = width
-            cacheTarget.height = height
+        target.rect.top = top
+        target.rect.left = left
+        target.rect.right = right
+        target.rect.bottom = bottom
+        target.rect.width = width
+        target.rect.height = height
 
-            let distance
+        let distance
 
-            if (['top', 'bottom'].includes(direction)) {
+        if (['top', 'bottom'].includes(direction)) {
 
-                distance = left > right ? right : left
-                cacheTarget.trend = left > right ? 'right' : 'left'
-                cacheTarget.distance = distance - halfPopupWidth < edgeGap ? edgeGap : (left + halfTargetWidth - halfPopupWidth)
-            }
-
-            if (['left', 'right'].includes(direction)) {
-                distance = top > bottom ? bottom : top
-                cacheTarget.trend = top > bottom ? 'bottom' : 'top'
-                cacheTarget.distance = distance - halfPopupHeight < edgeGap ? edgeGap : (top + halfTargetHeight - halfPopupHeight)
-            }
+            distance = left > right ? right : left
+            target.rect.trend = left > right ? 'right' : 'left'
+            target.rect.distance = distance - halfPopupWidth < edgeGap ? edgeGap : (left + halfTargetWidth - halfPopupWidth)
         }
-        console.log(cacheTarget)
-        return cacheTarget
+
+        if (['left', 'right'].includes(direction)) {
+            distance = top > bottom ? bottom : top
+            target.rect.trend = top > bottom ? 'bottom' : 'top'
+            target.rect.distance = distance - halfPopupHeight < edgeGap ? edgeGap : (top + halfTargetHeight - halfPopupHeight)
+        }
+
+        return target.rect
     }
 }
 
 // 计算popup宽度
-function resolvePopup(popupRect, maxWidth) {
+function resolvePopup(popup, maxWidth) {
 
-    const cachePopup = { state: 0 } //缓存popup位置尺寸信息
+    if (popup.rect && popup.rect.state >= 2) {
+        console.log('use cache popup.rect')
+        return popup.rect
+    } else {
+        popup.rect = popup.rect ? popup.rect : { state: 0 }
+        popup.rect.state++
 
-    return function () {
+        const popupSize = getElementSize(popup)
+        const { left, top, right, bottom, width, height } = getPosition(popupSize)
+        const autoWidth = bodyWidth - width > edgeGap * 2 ? width : bodyWidth - edgeGap * 2
+        popup.rect.width = maxWidth && maxWidth !== 'auto' ? Number(maxWidth) : autoWidth
+        popup.rect.height = height
+        popup.rect.left = left
+        popup.rect.top = top
+        popup.rect.right = right
+        popup.rect.bottom = bottom
 
-        if (cachePopup.state < 2) {
-
-            cachePopup.state++
-
-            const { left, top, right, bottom, width, height } = getPosition(popupRect)
-            const autoWidth = bodyWidth - width > edgeGap * 2 ? width : bodyWidth - edgeGap * 2
-            cachePopup.width = maxWidth && maxWidth !== 'auto' ? Number(maxWidth) : autoWidth
-            cachePopup.height = height
-            cachePopup.left = left
-            cachePopup.top = top
-            cachePopup.right = right
-            cachePopup.bottom = bottom
-
-        }
-
-        return cachePopup
+        return popup.rect
     }
-
 }
 
 // 计算arrow位置
-function resolveArrow(direction, targetRect, popupRect) {
+function resolveArrow(target, popup, direction) {
+    if (popup.arrow && popup.arrow.state >= 2) {
+        console.log('use cache popup.arrow')
+        return popup.arrow
 
-    const cacheArrow = { state: 0 } //缓存arrow位置尺寸信息
+    } else {
+        popup.arrow = popup.arrow ? popup.arrow : { state: 0, size: arrowSize, length: arrowLength }
+        popup.arrow.state++
 
-    return function () {
-
-        if (cacheArrow.state < 2) {
-
-            cacheArrow.state++
-            cacheArrow.size = arrowSize
-            cacheArrow.length = arrowLength
-            // 计算箭头位置
-            if (['top', 'bottom'].includes(direction)) {
-                const temp = direction === 'top' ? popupRect.height : 0
-                cacheArrow.rotate = temp ? -45 : 135
-                cacheArrow.top = temp - cacheArrow.size / 2
-                cacheArrow.left = targetRect.left - popupRect.left + targetRect.width / 2 - cacheArrow.size / 2
-            }
-
-            if (['left', 'right'].includes(direction)) {
-                const temp = direction === 'left' ? popupRect.width : 0
-                cacheArrow.rotate = temp ? 225 : 45
-                cacheArrow.left = temp - cacheArrow.size / 2
-                cacheArrow.top = popupRect.height / 2 - cacheArrow.size / 2
-            }
+        if (['top', 'bottom'].includes(direction)) {
+            const temp = direction === 'top' ? popup.rect.height : 0
+            popup.arrow.rotate = temp ? -45 : 135
+            popup.arrow.top = temp - popup.arrow.size / 2
+            popup.arrow.left = target.rect.left - popup.rect.left + target.rect.width / 2 - popup.arrow.size / 2
         }
 
-        return cacheArrow
+        if (['left', 'right'].includes(direction)) {
+            const temp = direction === 'left' ? popup.rect.width : 0
+            popup.arrow.rotate = temp ? 225 : 45
+            popup.arrow.left = temp - popup.arrow.size / 2
+            popup.arrow.top = popup.rect.height / 2 - popup.arrow.size / 2
+        }
+        
+        return popup.arrow
     }
 }
 
