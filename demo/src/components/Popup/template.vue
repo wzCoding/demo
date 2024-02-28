@@ -1,7 +1,7 @@
 <template>
     <teleport to='body'>
         <transition name="fade">
-            <div class="popup" :class="popupClass" :style="popupStyle" ref="popup" v-show="visible">
+            <div class="popup" :class="popupClass" ref="popup" v-show="visible">
                 <div class="popup-box">
                     <div class="popup-content">
                         <slot></slot>
@@ -19,14 +19,13 @@
 </template>
 <script>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
-import { directions, setDirection } from './direction'
 import { triggerEvents, addListener, removeListener } from './event'
 import { findScrollElement, debounce } from "@/utils/index"
-
+import { verticals, horizontals, Popup } from './popup'
 import IconButton from '@/components/IconButton'
 
 const tirggers = Object.keys(triggerEvents)
-const dirs = Object.keys(directions)
+const dirs = verticals.concat(horizontals)
 
 export default {
     name: "Popup",
@@ -132,19 +131,16 @@ export default {
             return defaultThemes[props.theme]
         }
 
-        const popupStyle = ref(updateColor())
+        const popupColor = ref(updateColor())
 
-        //popup的样式
-        const updateStyle = (style) => {
-            popupStyle.value = Object.assign({}, popupStyle.value, style)
-        }
-
+        let instance
         //popup的显示和隐藏
         const triggerPopup = () => {
-            setDirection(popupOptions.value).then(res => {
-                updateStyle(res)
-                visible.value = !visible.value
-            })
+
+            console.log(instance)
+            instance.updateStyles(popupColor.value)
+            visible.value = !visible.value
+
         }
 
         // 处理外部点击事件，关闭popup
@@ -155,23 +151,23 @@ export default {
         }
 
         // 处理滚动事件，重新计算popup位置
-        const handleScroll = debounce(
-            () => {
-                setDirection(popupOptions.value).then(res => {
-                    updateStyle(res)
-                })
-            },
-            0
-        )
+        // const handleScroll = debounce(
+        //     () => {
+        //         setDirection(popupOptions.value).then(res => {
+        //             updateStyle(res)
+        //         })
+        //     },
+        //     0
+        // )
 
-        const unScrollWatch = watch(visible, (newVal) => {
-            const [scrollEl] = findScrollElement(target.value)
-            if (newVal) {
-                scrollEl && addListener('scroll', scrollEl, handleScroll)
-            } else {
-                scrollEl && removeListener('scroll', scrollEl, handleScroll)
-            }
-        })
+        // const unScrollWatch = watch(visible, (newVal) => {
+        //     const [scrollEl] = findScrollElement(target.value)
+        //     if (newVal) {
+        //         scrollEl && addListener('scroll', scrollEl, handleScroll)
+        //     } else {
+        //         scrollEl && removeListener('scroll', scrollEl, handleScroll)
+        //     }
+        // })
 
         onMounted(() => {
 
@@ -180,33 +176,29 @@ export default {
                 target.value = document.getElementsByClassName(target.value)[0] || document.getElementById(target.value)
             }
 
-            // set direction
-            setDirection(popupOptions.value).then(res => {
-                updateStyle(res)
-            })
 
-            // set events
+            instance = new Popup(target.value, popup.value, { direction: props.direction, maxWidth: props.maxWidth, needArrow: props.needArrow })
+            //set events
             addListener(props.trigger, target.value, triggerPopup)
 
-            if (props.trigger === 'click') {
-                addListener(props.trigger, document.body, clickOutSide, true)
-            }
+            // if (props.trigger === 'click') {
+            //     addListener(props.trigger, document.body, clickOutSide, true)
+            // }
 
         })
 
         //组件卸载时移除事件监听
         onUnmounted(() => {
             // remove events
-            removeListener(props.trigger, target.value, triggerPopup)
+            // removeListener(props.trigger, target.value, triggerPopup)
 
-            if (props.trigger === 'click') {
-                removeListener(props.trigger, document.body, clickOutSide, true)
-            }
+            // if (props.trigger === 'click') {
+            //     removeListener(props.trigger, document.body, clickOutSide, true)
+            // }
 
-            unScrollWatch()
+            // unScrollWatch()
         })
         return {
-            popupStyle,
             popupClass,
             popup,
             visible,

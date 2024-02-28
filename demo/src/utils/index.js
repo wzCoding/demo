@@ -203,7 +203,12 @@ function findScrollElement(el, dir = "parent", result = []) {
 function getCssValue(el, property) {
     return getComputedStyle(el).getPropertyValue(property)
 }
-
+function getElement(el) {
+    if(!isObject(el)){
+        return document.getElementById(el) || document.getElementsByClassName(el)[0]
+    } 
+    return el
+}
 function getElementSize(el) {
     const display = getComputedStyle(el).getPropertyValue("display")
     if (display === "none") {
@@ -250,5 +255,6 @@ export {
     convertCssUnit,
     findScrollElement,
     getCssValue,
+    getElement,
     getElementSize
 }
