@@ -177,7 +177,15 @@ export default {
             }
 
 
-            instance = new Popup(target.value, popup.value, { direction: props.direction, maxWidth: props.maxWidth, needArrow: props.needArrow })
+            instance = new Popup(
+                target.value,
+                popup.value,
+                {
+                    direction: props.direction,
+                    maxWidth: props.maxWidth,
+                    needArrow: props.needArrow
+                }
+            )
             //set events
             addListener(props.trigger, target.value, triggerPopup)
 
