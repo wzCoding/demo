@@ -3,7 +3,7 @@
         <div class="item">
             <div class="display-area" :style="{display:'flex',justifyContent:'center',alignItems:'flex-start'}">
                 <icon-button class="popup-btn" size=default type="primary" text="Popup"/>
-                <Popup direction="left-end" target="popup-btn" max-width="400">
+                <Popup direction="bottom-end" target="popup-btn" max-width="400">
                     <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus sint rerum magni, nam ullam quibusdam, voluptate dicta, officiis odio voluptates animi facere reiciendis at quisquam magnam autem consequuntur quae quasi!</span>
                 </Popup>
                 <!-- <icon-button class="popup-btn1" size=default type="primary" text="Popup"/>
@@ -16,7 +16,6 @@
 </template>
 <script setup>
 import Popup from '@/components/Popup/template'
-// import Popup from '@/components/Popper/template'
 import IconButton from '@/components/IconButton'
 import CodeDemo from '@/components/CodeDemo'
 const handleConfirm = () => {

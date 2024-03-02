@@ -21,7 +21,8 @@
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { triggerEvents, addListener, removeListener } from './event'
 import { findScrollElement, debounce } from "@/utils/index"
-import { verticals, horizontals, Popup } from './popup'
+import { Popup } from './popup'
+import { verticals, horizontals } from './direction'
 import IconButton from '@/components/IconButton'
 
 const tirggers = Object.keys(triggerEvents)

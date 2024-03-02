@@ -1,14 +1,6 @@
 import { getElement, getElementSize } from "@/utils/index"
+import { rootWidth, rootHeight, verticals, horizontals, getxAxis, getyAxis, resolveDirection } from "./direction"
 import { popupOption } from "./option"
-
-const targetGap = 5 //目标元素与popup间距
-const arrowSize = 10  //箭头尺寸
-
-const rootWidth = document.documentElement.clientWidth
-const rootheight = document.documentElement.clientHeight
-
-const verticals = ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end']
-const horizontals = ['left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']
 
 function resolveRect(el) {
     el = getElement(el)
@@ -17,7 +9,7 @@ function resolveRect(el) {
         left,
         right: rootWidth - right,
         top,
-        bottom: rootheight - bottom,
+        bottom: rootHeight - bottom,
         width,
         height
     }
@@ -31,15 +23,12 @@ function resolvePopup(popup, maxWidth, offSetX) {
     return popupRect
 }
 
-function arrowRotate(direction) {
-
+function resolveArrow(direction) {
     let rotate = 0
-    // 方向
 
     if (verticals.includes(direction)) {
         rotate = direction.includes('top') ? -45 : 135
     }
-
     if (horizontals.includes(direction)) {
         rotate = direction.includes('left') ? 225 : 45
     }
@@ -47,189 +36,10 @@ function arrowRotate(direction) {
     return rotate
 }
 
-function getDirection(direction, index) {
-    const result = direction.split('-')[index]
-    return result ? result : ''
+function resolveOption(options) {
+    return Object.assign({}, popupOption, options)
 }
 
-function getSpace(targetRect, popupRectProp, direction, trends, offset) {
-
-    const sameDir = trends.filter(item => getDirection(direction, 0) === item)[0]  //计算当前方向
-    const reserveDir = trends.filter(item => getDirection(direction, 0) !== item)[0]  //计算当前方向反向
-    const sameSpace = targetRect[sameDir]  //计算target所在位置的空间
-    const reserveSpace = targetRect[reserveDir]  //计算target所在位置的反向空间
-    const popupSpace = popupRectProp + targetGap + arrowSize + offset  //计算popup占用的空间
-    console.log(popupRectProp, offset)
-
-    return { sameDir, reserveDir, sameSpace, reserveSpace, popupSpace }
-}
-
-function computeDirection(target, popup, direction, offsets, state = 0) {
-
-    if (state >= 4) {  //计数不小于4时则说明横向与纵向空间不足
-
-        throw new Error('not enough space!')
-
-    }
-
-    const directionOptions = {
-        vertical: {
-            trends: ['top', 'bottom'],
-            popupRectProp: popup.height,
-            backup: 'left' + getDirection(direction, 1),
-            offset: offsets[1]
-        },
-        horizontal: {
-            trends: ['left', 'right'],
-            popupRectProp: popup.width,
-            backup: 'top' + getDirection(direction, 1),
-            offset: offsets[0]
-        }
-    }
-    
-    state++  //增加一次计数
-
-    let result = direction
-
-    const dir = verticals.includes(direction) ? 'vertical' : 'horizontal'
-    const { trends, popupRectProp, backup, offset } = directionOptions[dir]
-    const { sameDir, reserveDir, sameSpace, reserveSpace, popupSpace } = getSpace(target, popupRectProp, direction, trends, offset)
-    console.log('sameDir', sameDir)
-    console.log('reserveDir', reserveDir)
-    console.log('sameSpace', sameSpace)
-    console.log('reserveSpace', reserveSpace)
-    console.log('popupSpace', popupSpace)
-    console.log(state)
-
-    if (sameSpace < popupSpace) { //如果同向空间不足，则改变方向
-
-        state++  //增加一次计数
-
-        if (reserveSpace > popupSpace) {
-
-            result = direction.replace(sameDir, reserveDir) // 如果反向空间满足，方向替换为反向
-
-        } else {
-
-            state++  //增加一次计数
-
-            result = computeDirection(target, popup, backup, offsets, state)  // 如果反向空间不满足，则进行横纵方向替换
-
-        }
-
-    }
-
-    return result
-}
-
-function getxAxis(target, popup, direction, offsetX) {
-
-    let result = { x: 0, width: popup.width, arrowX: 0 }
-
-
-
-    console.log('dir ==>', direction)
-
-    if (verticals.includes(direction)) {  //计算垂直方向（上下）的x坐标
-
-        const blankSpace = offsetX * 2 //计算空白
-        //const halfTargetWidth = target.width / 2
-        //const trendSpace = target[trend] + halfTargetWidth //计算target所在侧的空间
-        //const leftSpace = left + halfTargetWidth
-        result.width = rootWidth - popup.width >= blankSpace ? popup.width : rootWidth - blankSpace //计算popup宽度
-
-        //const halfPopupWidth = result.width / 2
-        // const offsetSpace = trendSpace - halfPopupWidth > offsetX ? 0 : offsetX  //计算间隔
-        // result.x = trendSpace - halfPopupWidth > offsetX ? leftSpace - halfPopupWidth - offsetSpace : offsetSpace
-        // result.arrowX = leftSpace - result.x - targetGap
-
-        if (direction.includes('start')) {
-            result.x = target.left
-            result.arrowX = target.width / 2
-        }
-
-        else if (direction.includes('end')) {
-            result.x = target.left + target.width - result.width
-            result.arrowX = result.width - target.width / 2
-        }
-
-        else {
-            result.x = target.left + target.width / 2 - result.width / 2
-            result.arrowX = result.width / 2 - arrowSize / 2
-        }
-
-    }
-
-    if (horizontals.includes(direction)) { //计算水平方向（左右）的x坐标
-
-        const trend = getDirection(direction, 0)
-        const blankSpace = targetGap + offsetX  //计算间隔
-        const arrowSpace = targetGap + arrowSize
-        result.width = target[trend] - blankSpace >= popup.width ? popup.width : target[trend] - blankSpace //计算popup宽度
-
-        if (direction.includes('left')) {
-            result.x = target.left - result.width - arrowSpace
-            result.arrowX = result.width - arrowSize / 2
-        }
-
-        else if (direction.includes('right')) {
-            result.x = target.left + target.width + arrowSpace
-            result.arrowX = - arrowSize / 2
-        }
-
-    }
-
-    return result
-
-}
-
-function getyAxis(target, popup, direction, offsetY) {
-
-    let result = { y: 0, height: popup.height, arrowY: 0 }
-
-    let top = target.top
-
-    if (target.top < offsetY) {
-        top = offsetY
-    }
-    if (target.bottom < offsetY) {
-        top = rootheight - offsetY - popup.height
-    }
-
-    if (verticals.includes(direction)) {  //计算垂直方向（上下）的y坐标
-
-        if(direction.includes('top')){
-            result.y = top - result.height - targetGap - arrowSize
-            result.arrowY = result.height - arrowSize / 2
-        }
-
-        else if(direction.includes('bottom')){
-            result.y = top + target.height + targetGap + arrowSize
-            result.arrowY = - arrowSize / 2
-        }
-
-    }
-
-    if (horizontals.includes(direction)) { //计算水平方向（左右）的y坐标
-
-        if (direction.includes('start')) {
-            result.y = target.top
-            result.arrowY = target.height / 2
-        }
-
-        else if (direction.includes('end')) {
-            result.y = target.top + target.height - result.height
-            result.arrowY = result.height - target.height / 2 - arrowSize / 2
-        }
-
-        else {
-            result.y = target.top + target.width / 2 - result.width / 2
-            result.arrowY = target.height / 2 - arrowSize / 2
-        }
-    }
-
-    return result
-}
 
 class Popup {
     constructor(target, popup, options = popupOption) {
@@ -266,19 +76,19 @@ class Popup {
 
         }
 
-        const { maxWidth, needArrow, offset } = this.options
-
-        const [offsetX, offsetY] = offset ? offset : popupOption.offset
+        const { direction, maxWidth, needArrow, offset, gap, arrowSize } = resolveOption(this.options)
 
         const targetRect = resolveRect(this.target)
 
-        const popupRect = resolvePopup(this.popup, maxWidth, offsetX)
+        const popupRect = resolvePopup(this.popup, maxWidth, offset.offsetX)
 
-        const direction = computeDirection(targetRect, popupRect, this.options.direction, [offsetX, offsetY])
-        console.log(direction)
-        const { x, width, arrowX } = getxAxis(targetRect, popupRect, direction, offsetX)
+        const offsetOptions = { offset, gap, arrowSize }
 
-        const { y, arrowY } = getyAxis(targetRect, popupRect, direction, offsetY)
+        const resolvedDir = resolveDirection(targetRect, popupRect, direction, offsetOptions)
+        
+        const { x, width, arrowX } = getxAxis(targetRect, popupRect, resolvedDir, offsetOptions)
+
+        const { y, arrowY } = getyAxis(targetRect, popupRect, resolvedDir, offsetOptions)
 
         const styles = {
             'position': 'absolute',
@@ -293,9 +103,9 @@ class Popup {
             styles['--arrow-size'] = `${arrowSize}px`
             styles['--arrow-left'] = `${arrowX}px`
             styles['--arrow-top'] = `${arrowY}px`
-            styles['--arrow-rotate'] = `${arrowRotate(direction)}deg`
+            styles['--arrow-rotate'] = `${resolveArrow(resolvedDir)}deg`
         }
-
+        console.log(styles)
         return styles
     }
 
@@ -317,9 +127,6 @@ class Popup {
 
 }
 
-
 export {
-    verticals,
-    horizontals,
     Popup
 }
