@@ -111,7 +111,8 @@ export default {
                 popup: popup.value,
                 direction: props.direction,
                 maxWidth: props.maxWidth,
-                needArrow: props.needArrow
+                needArrow: false,
+                offset: [5, 5]
             }
         })
         const handleConfirm = () => {
@@ -184,7 +185,7 @@ export default {
                 {
                     direction: props.direction,
                     maxWidth: props.maxWidth,
-                    needArrow: props.needArrow
+                    needArrow: true,
                 }
             )
             //set events

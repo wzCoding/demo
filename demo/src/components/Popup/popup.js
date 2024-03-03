@@ -37,7 +37,13 @@ function resolveArrow(direction) {
 }
 
 function resolveOption(options) {
-    return Object.assign({}, popupOption, options)
+    const resolved = Object.assign({}, popupOption, options)
+
+    if (!resolved.needArrow) {
+        resolved.arrowSize = 0
+    }
+    
+    return resolved
 }
 
 
@@ -77,7 +83,7 @@ class Popup {
         }
 
         const { direction, maxWidth, needArrow, offset, gap, arrowSize } = resolveOption(this.options)
-
+    
         const targetRect = resolveRect(this.target)
 
         const popupRect = resolvePopup(this.popup, maxWidth, offset.offsetX)
@@ -85,7 +91,7 @@ class Popup {
         const offsetOptions = { offset, gap, arrowSize }
 
         const resolvedDir = resolveDirection(targetRect, popupRect, direction, offsetOptions)
-        
+
         const { x, width, arrowX } = getxAxis(targetRect, popupRect, resolvedDir, offsetOptions)
 
         const { y, arrowY } = getyAxis(targetRect, popupRect, resolvedDir, offsetOptions)
@@ -105,7 +111,7 @@ class Popup {
             styles['--arrow-top'] = `${arrowY}px`
             styles['--arrow-rotate'] = `${resolveArrow(resolvedDir)}deg`
         }
-        console.log(styles)
+        
         return styles
     }
 

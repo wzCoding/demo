@@ -12,7 +12,7 @@ function getDirection(direction, index) {
     return result ? result : ''
 }
 
-function getTargetSpace(targetRect, direction, trends) {
+function getSpace(targetRect, direction, trends) {
 
     const sameDir = trends.filter(item => getDirection(direction, 0) === item)[0]  //计算当前方向
     const reserveDir = trends.filter(item => getDirection(direction, 0) !== item)[0]  //计算当前方向反向
@@ -25,23 +25,33 @@ function getTargetSpace(targetRect, direction, trends) {
 function getxAxis(target, popup, direction, offsetOptions) {
     const { gap, arrowSize, offset } = offsetOptions
     const result = { x: 0, width: popup.width, arrowX: 0 }
-
+console.log(direction)
     if (verticals.includes(direction)) {  //计算垂直方向（上下）的x坐标
         const blankSpace = offset[0] * 2 //计算空白
         result.width = rootWidth - popup.width >= blankSpace ? popup.width : rootWidth - blankSpace //计算popup宽度
 
+        result.x = target.left + target.width / 2 - result.width / 2
+        result.arrowX = result.width / 2 - arrowSize / 2
+
         if (direction.includes('start')) {
             result.x = target.left
-            result.arrowX = target.width / 2
+            result.arrowX = target.width / 2 - arrowSize / 2
         }
         else if (direction.includes('end')) {
             result.x = target.left + target.width - result.width
-            result.arrowX = result.width - target.width / 2
+            result.arrowX = result.width - target.width / 2 - arrowSize / 2
         }
-        else {
-            result.x = target.left + target.width / 2 - result.width / 2
-            result.arrowX = result.width / 2 - arrowSize / 2
+
+        if(result.x < offset[0]){
+            result.x = offset[0]
+            result.arrowX = target.left - offset[0] + target.width / 2 - arrowSize / 2
         }
+
+        if(result.x + result.width > rootWidth - offset[0]){
+            result.x = rootWidth - result.width - offset[0]
+            result.arrowX = target.left - result.x + target.width / 2 - arrowSize / 2
+        }
+
     }
 
     if (horizontals.includes(direction)) { //计算水平方向（左右）的x坐标
@@ -59,7 +69,7 @@ function getxAxis(target, popup, direction, offsetOptions) {
             result.arrowX = - arrowSize / 2
         }
     }
-    
+    console.log(result)
     return result
 }
 
@@ -76,6 +86,7 @@ function getyAxis(target, popup, direction, offsetOptions) {
     }
 
     if (verticals.includes(direction)) {  //计算垂直方向（上下）的y坐标
+
         if (direction.includes('top')) {
             result.y = top - result.height - gap - arrowSize
             result.arrowY = result.height - arrowSize / 2
@@ -87,6 +98,10 @@ function getyAxis(target, popup, direction, offsetOptions) {
     }
 
     if (horizontals.includes(direction)) { //计算水平方向（左右）的y坐标
+
+        result.y = target.top + target.height / 2 - result.height / 2
+        result.arrowY = target.top - result.y + target.height / 2 - arrowSize / 2
+
         if (direction.includes('start')) {
             result.y = target.top
             result.arrowY = target.height / 2
@@ -95,9 +110,15 @@ function getyAxis(target, popup, direction, offsetOptions) {
             result.y = target.top + target.height - result.height
             result.arrowY = result.height - target.height / 2 - arrowSize / 2
         }
-        else {
-            result.y = target.top + target.height / 2 - result.height / 2
-            result.arrowY = result.height / 2 - arrowSize / 2
+
+        if (result.y < offset[1]) {
+            result.y = offset[1]
+            result.arrowY = target.top - offset[1] + arrowSize
+        }
+
+        if (result.y + result.height > rootHeight - offset[1]) {
+            result.y = rootHeight - offset[1] - result.height
+            result.arrowY = target.top - result.y + arrowSize
         }
     }
     console.log(result)
@@ -110,6 +131,7 @@ function resolveDirection(target, popup, direction, offsetOptions, state = 0) {
     }
 
     const { gap, arrowSize, offset } = offsetOptions
+
     const directionOptions = {
         vertical: {
             trends: ['top', 'bottom'],
@@ -129,7 +151,7 @@ function resolveDirection(target, popup, direction, offsetOptions, state = 0) {
 
     const dir = verticals.includes(direction) ? 'vertical' : 'horizontal'
     const { trends, backup, popupSpace } = directionOptions[dir]
-    const { sameDir, reserveDir, sameSpace, reserveSpace } = getTargetSpace(target, direction, trends)
+    const { sameDir, reserveDir, sameSpace, reserveSpace } = getSpace(target, direction, trends)
 
     console.log('sameDir', sameDir)
     console.log('reserveDir', reserveDir)
@@ -145,7 +167,7 @@ function resolveDirection(target, popup, direction, offsetOptions, state = 0) {
             result = direction.replace(sameDir, reserveDir) // 如果反向空间满足，方向替换为反向
         } else {
             state++  //增加一次计数
-            result = resolveDirection(target, popup, backup, offsetOptions, state)  // 如果反向空间不满足，则进行横纵方向替换
+            result = resolveDirection(target, popup, backup, offsetOptions, state)  // 如果反向空间不满足，则进行横纵方位替换
         }
     }
 
