@@ -1,61 +1,53 @@
-import { getElement, getElementSize } from "@/utils/index"
-import { rootWidth, rootHeight, verticals, horizontals, getxAxis, getyAxis, resolveDirection } from "./direction"
-import { popupOption } from "./option"
+import { getxAxis, getyAxis, getDirection } from "./direction"
+import { resolveEl, resolveRect, resolvePopup, resolveArrow, resolveOption, addStylesheetRules } from "./resolve"
 
-function resolveRect(el) {
-    el = getElement(el)
-    const { left, top, right, bottom, width, height } = getElementSize(el)
-    return {
-        left,
-        right: rootWidth - right,
-        top,
-        bottom: rootHeight - bottom,
-        width,
-        height
-    }
-}
-
-function resolvePopup(popup, maxWidth, offSetX) {
-    const popupRect = resolveRect(popup)
-    const autoWidth = rootWidth - popupRect.width > offSetX * 2 ? popupRect.width : rootWidth - offSetX * 2
-    popupRect.width = maxWidth && maxWidth !== 'auto' ? Number(maxWidth) : autoWidth
-
-    return popupRect
-}
-
-function resolveArrow(direction) {
-    let rotate = 0
-
-    if (verticals.includes(direction)) {
-        rotate = direction.includes('top') ? -45 : 135
-    }
-    if (horizontals.includes(direction)) {
-        rotate = direction.includes('left') ? 225 : 45
-    }
-
-    return rotate
-}
-
-function resolveOption(options) {
-    const resolved = Object.assign({}, popupOption, options)
-
-    if (!resolved.needArrow) {
-        resolved.arrowSize = 0
-    }
-    
-    return resolved
+const defaultStyles = {
+    popup: [
+        ".popup",
+        ["position", "absolute"],
+        ["z-index", "2"],
+        ["inset", "0 0 auto"],
+        ["box-shadow", "0px 0px 6px rgba(0, 0, 0, 0.2)"],
+        ["border-radius", "4px"],
+        ["padding", "8px"],
+        ["background-color", "var(--popup-background)"],
+        ["color", "var(--popup-text)"],
+        ["transform", "translate(var(--popup-x), var(--popup-y))"],
+        ["max-width", "var(--popup-width)"]
+    ],
+    arrow: [
+        ".popup.arrow-popup::after",
+        ["content", "''"],
+        ["display", "block"],
+        ["position", "absolute"],
+        ["inset", "0 0 auto"],
+        ["background-color", "var(--popup-background)"],
+        ["width", "var(--arrow-size)"],
+        ["height", "var(--arrow-size)"],
+        ["left", "var(--arrow-x)"],
+        ["top", "var(--arrow-y)"],
+        ["transform", " rotate(var(--arrow-rotate))"],
+        ["z-index", "-1"],
+        ["box-shadow", "-1px 1px 1px rgba(0, 0, 0, 0.1)"]
+    ]
 }
 
 
 class Popup {
-    constructor(target, popup, options = popupOption) {
+    constructor(target, popup, options = {}) {
         if (!target || !popup) {
             return
         }
-
-        this.popup = getElement(popup)
-        this.target = getElement(target)
+        
+        this.popup = resolveEl(popup)
+        this.target = resolveEl(target)
         this.options = options
+
+        addStylesheetRules([defaultStyles.popup],'popup-style')
+
+        if(this.options.needArrow){
+            addStylesheetRules([defaultStyles.arrow],'popup-arrow-style')
+        }
 
         if (this.options.useCache) {
             this.state = 0
@@ -83,40 +75,39 @@ class Popup {
         }
 
         const { direction, maxWidth, needArrow, offset, gap, arrowSize } = resolveOption(this.options)
-    
+
         const targetRect = resolveRect(this.target)
 
         const popupRect = resolvePopup(this.popup, maxWidth, offset.offsetX)
 
         const offsetOptions = { offset, gap, arrowSize }
 
-        const resolvedDir = resolveDirection(targetRect, popupRect, direction, offsetOptions)
+        const resolvedDir = getDirection(targetRect, popupRect, direction, offsetOptions)
 
         const { x, width, arrowX } = getxAxis(targetRect, popupRect, resolvedDir, offsetOptions)
 
         const { y, arrowY } = getyAxis(targetRect, popupRect, resolvedDir, offsetOptions)
 
         const styles = {
-            'position': 'absolute',
-            'top': '0',
-            'left': '0',
-            'transform': `translate(${x}px, ${y}px)`,
-            'max-width': `${width}px`
+            '--popup-x': `${x}px`,
+            '--popup-y': `${y}px`,
+            '--popup-width': `${width}px`
         }
 
-        // 设置箭头样式
         if (needArrow) {
+            styles['--arrow-x'] = `${arrowX}px`
+            styles['--arrow-y'] = `${arrowY}px`
             styles['--arrow-size'] = `${arrowSize}px`
-            styles['--arrow-left'] = `${arrowX}px`
-            styles['--arrow-top'] = `${arrowY}px`
             styles['--arrow-rotate'] = `${resolveArrow(resolvedDir)}deg`
         }
-        
+
+        this.options.direction = resolvedDir
+
         return styles
     }
 
     applyStyles(styles) {
-        if (this.options.useCache) this.styles = styles
+        if (this.styles) this.styles = styles
         for (let key in styles) {
             this.popup.style.setProperty(key, styles[key])
         }

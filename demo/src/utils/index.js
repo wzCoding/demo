@@ -237,6 +237,43 @@ function getElementSize(el) {
         return el.getBoundingClientRect()
     }
 }
+function addStylesheetRules(rules) {
+
+    const style = document.createElement("style")
+    document.getElementsByTagName("head")[0].appendChild(style)
+
+    if (!window.createPopup) {
+        /* For Safari */
+        style.appendChild(document.createTextNode(""))
+    }
+
+    const sheet = document.styleSheets[document.styleSheets.length - 1]
+
+    for (let index = 0; index < rules.length; index++) {
+
+        let rule = rules[index]
+        let selector = rule[0]
+        let rulesText = ""
+
+        let childIndex = 1
+        if (Object.prototype.toString.call(rule[1][0]) === "[object Array]") {
+            rule = rule[1]
+            childIndex = 0
+        }
+
+        for (; childIndex < rule.length; childIndex++) {
+            let childRule = rule[childIndex]
+            rulesText += `${childRule[0]}:${childRule[1]}${childRule[2] ? " !important" : ""};\n`
+        }
+
+        if (sheet.insertRule) {
+            sheet.insertRule(selector + "{" + rulesText + "}", sheet.cssRules.length);
+        } else {
+            /* IE */
+            sheet.addRule(selector, rulesText, -1);
+        }
+    }
+}
 export {
     throttle,
     debounce,
@@ -256,5 +293,6 @@ export {
     findScrollElement,
     getCssValue,
     getElement,
-    getElementSize
+    getElementSize,
+    addStylesheetRules
 }

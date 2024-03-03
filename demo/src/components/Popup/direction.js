@@ -7,15 +7,15 @@ const verticals = ['top', 'top-start', 'top-end', 'center', 'bottom', 'bottom-st
 //横向方向
 const horizontals = ['left', 'left-start', 'left-end', 'center', 'right', 'right-start', 'right-end']
 
-function getDirection(direction, index) {
+function getDirByIndex(direction, index) {
     const result = direction.split('-')[index]
     return result ? result : ''
 }
 
 function getSpace(targetRect, direction, trends) {
 
-    const sameDir = trends.filter(item => getDirection(direction, 0) === item)[0]  //计算当前方向
-    const reserveDir = trends.filter(item => getDirection(direction, 0) !== item)[0]  //计算当前方向反向
+    const sameDir = trends.filter(item => getDirByIndex(direction, 0) === item)[0]  //计算当前方向
+    const reserveDir = trends.filter(item => getDirByIndex(direction, 0) !== item)[0]  //计算当前方向反向
     const sameSpace = targetRect[sameDir]  //计算target所在位置的空间
     const reserveSpace = targetRect[reserveDir]  //计算target所在位置的反向空间
 
@@ -25,7 +25,7 @@ function getSpace(targetRect, direction, trends) {
 function getxAxis(target, popup, direction, offsetOptions) {
     const { gap, arrowSize, offset } = offsetOptions
     const result = { x: 0, width: popup.width, arrowX: 0 }
-console.log(direction)
+
     if (verticals.includes(direction)) {  //计算垂直方向（上下）的x坐标
         const blankSpace = offset[0] * 2 //计算空白
         result.width = rootWidth - popup.width >= blankSpace ? popup.width : rootWidth - blankSpace //计算popup宽度
@@ -55,7 +55,7 @@ console.log(direction)
     }
 
     if (horizontals.includes(direction)) { //计算水平方向（左右）的x坐标
-        const trend = getDirection(direction, 0)
+        const trend = getDirByIndex(direction, 0)
         const blankSpace = gap + offset[0]  //计算间隔
         const arrowSpace = gap + arrowSize
         result.width = target[trend] - blankSpace >= popup.width ? popup.width : target[trend] - blankSpace //计算popup宽度
@@ -125,7 +125,7 @@ function getyAxis(target, popup, direction, offsetOptions) {
     return result
 }
 
-function resolveDirection(target, popup, direction, offsetOptions, state = 0) {
+function getDirection(target, popup, direction, offsetOptions, state = 0) {
     if (state >= 4) {  //计数不小于4时则说明横向与纵向空间不足
         throw new Error('not enough space!')
     }
@@ -135,12 +135,12 @@ function resolveDirection(target, popup, direction, offsetOptions, state = 0) {
     const directionOptions = {
         vertical: {
             trends: ['top', 'bottom'],
-            backup: 'left' + getDirection(direction, 1),
+            backup: 'left' + getDirByIndex(direction, 1),
             popupSpace: popup.height + gap + arrowSize + offset[1]
         },
         horizontal: {
             trends: ['left', 'right'],
-            backup: 'top' + getDirection(direction, 1),
+            backup: 'top' + getDirByIndex(direction, 1),
             popupSpace: popup.width + gap + arrowSize + offset[0]
         }
     }
@@ -167,7 +167,7 @@ function resolveDirection(target, popup, direction, offsetOptions, state = 0) {
             result = direction.replace(sameDir, reserveDir) // 如果反向空间满足，方向替换为反向
         } else {
             state++  //增加一次计数
-            result = resolveDirection(target, popup, backup, offsetOptions, state)  // 如果反向空间不满足，则进行横纵方位替换
+            result = getDirection(target, popup, backup, offsetOptions, state)  // 如果反向空间不满足，则进行横纵方位替换
         }
     }
 
@@ -182,5 +182,5 @@ export {
     horizontals,
     getxAxis,
     getyAxis,
-    resolveDirection,
+    getDirection,
 }
