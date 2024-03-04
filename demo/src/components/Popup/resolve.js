@@ -1,5 +1,4 @@
-import { rootWidth, rootHeight, verticals, horizontals } from "./direction"
-import { popupOption } from "./option"
+import { rootWidth, rootHeight, verticals, horizontals, popupOption, popupTheme } from "./option"
 
 function resolveEl(el) {
     if (typeof el === "string") {
@@ -7,6 +6,7 @@ function resolveEl(el) {
     }
     return el
 }
+
 function resolveElSize(el) {
     const display = getComputedStyle(el).getPropertyValue("display")
     if (display === "none") {
@@ -35,9 +35,16 @@ function resolveElSize(el) {
         return el.getBoundingClientRect()
     }
 }
-function resolveRect(el) {
+
+function resolveRect(el, maxWidth, offsetX) {
     el = resolveEl(el)
-    const { left, top, right, bottom, width, height } = resolveElSize(el)
+    let { left, top, right, bottom, width, height } = resolveElSize(el)
+
+    if (maxWidth) {
+        const autoWidth = rootWidth - width >= offsetX * 2 ? width : rootWidth - offsetX * 2
+        width = maxWidth == 'auto' ? autoWidth : Number(maxWidth)
+    }
+
     return {
         left,
         right: rootWidth - right,
@@ -46,14 +53,6 @@ function resolveRect(el) {
         width,
         height
     }
-}
-
-function resolvePopup(popup, maxWidth, offSetX) {
-    const popupRect = resolveRect(popup)
-    const autoWidth = rootWidth - popupRect.width > offSetX * 2 ? popupRect.width : rootWidth - offSetX * 2
-    popupRect.width = maxWidth && maxWidth !== 'auto' ? Number(maxWidth) : autoWidth
-
-    return popupRect
 }
 
 function resolveArrow(direction) {
@@ -71,15 +70,27 @@ function resolveArrow(direction) {
 
 function resolveOption(options) {
     const resolved = Object.assign({}, popupOption, options)
-
+    console.log(resolved)
     if (!resolved.needArrow) {
         resolved.arrowSize = 0
+    }
+
+    if (resolved.theme) {
+
+        if (popupTheme[resolved.theme]) {
+            resolved.background = popupTheme[resolved.theme].background
+            resolved.color = popupTheme[resolved.theme].color
+        }
+        else if (typeof resolved.theme === 'object') {
+            resolved.background = resolved.theme.background
+            resolved.color = resolved.theme.color
+        }
     }
 
     return resolved
 }
 
-function addStylesheetRules(rules,id) {
+function addStylesheetRules(rules, id) {
     if (!document.getElementById(id)) {
         const style = document.createElement("style")
         style.id = id
@@ -122,7 +133,6 @@ function addStylesheetRules(rules,id) {
 export {
     resolveEl,
     resolveRect,
-    resolvePopup,
     resolveArrow,
     resolveOption,
     addStylesheetRules

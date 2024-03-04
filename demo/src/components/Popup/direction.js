@@ -1,11 +1,4 @@
-//根元素html宽度
-const rootWidth = document.documentElement.clientWidth
-//根元素html高度
-const rootHeight = document.documentElement.clientHeight
-//纵向方向
-const verticals = ['top', 'top-start', 'top-end', 'center', 'bottom', 'bottom-start', 'bottom-end']
-//横向方向
-const horizontals = ['left', 'left-start', 'left-end', 'center', 'right', 'right-start', 'right-end']
+import { rootWidth, rootHeight, verticals, horizontals } from "./option"
 
 function getDirByIndex(direction, index) {
     const result = direction.split('-')[index]
@@ -14,8 +7,9 @@ function getDirByIndex(direction, index) {
 
 function getSpace(targetRect, direction, trends) {
 
-    const sameDir = trends.filter(item => getDirByIndex(direction, 0) === item)[0]  //计算当前方向
-    const reserveDir = trends.filter(item => getDirByIndex(direction, 0) !== item)[0]  //计算当前方向反向
+    const dir = getDirByIndex(direction, 0)
+    const sameDir = trends.filter(item => dir === item)[0]  //计算当前方向
+    const reserveDir = trends.filter(item => dir !== item)[0]  //计算当前方向反向
     const sameSpace = targetRect[sameDir]  //计算target所在位置的空间
     const reserveSpace = targetRect[reserveDir]  //计算target所在位置的反向空间
 
@@ -23,33 +17,34 @@ function getSpace(targetRect, direction, trends) {
 }
 
 function getxAxis(target, popup, direction, offsetOptions) {
+    console.log(target,popup,direction,offsetOptions)
     const { gap, arrowSize, offset } = offsetOptions
-    const result = { x: 0, width: popup.width, arrowX: 0 }
+    const result = { popupX: 0, width: popup.width, arrowX: 0 }
 
     if (verticals.includes(direction)) {  //计算垂直方向（上下）的x坐标
         const blankSpace = offset[0] * 2 //计算空白
         result.width = rootWidth - popup.width >= blankSpace ? popup.width : rootWidth - blankSpace //计算popup宽度
 
-        result.x = target.left + target.width / 2 - result.width / 2
+        result.popupX = target.left + target.width / 2 - result.width / 2
         result.arrowX = result.width / 2 - arrowSize / 2
 
         if (direction.includes('start')) {
-            result.x = target.left
+            result.popupX = target.left
             result.arrowX = target.width / 2 - arrowSize / 2
         }
         else if (direction.includes('end')) {
-            result.x = target.left + target.width - result.width
+            result.popupX = target.left + target.width - result.width
             result.arrowX = result.width - target.width / 2 - arrowSize / 2
         }
 
-        if(result.x < offset[0]){
-            result.x = offset[0]
+        if (result.popupX < offset[0]) {
+            result.popupX = offset[0]
             result.arrowX = target.left - offset[0] + target.width / 2 - arrowSize / 2
         }
 
-        if(result.x + result.width > rootWidth - offset[0]){
-            result.x = rootWidth - result.width - offset[0]
-            result.arrowX = target.left - result.x + target.width / 2 - arrowSize / 2
+        if (result.popupX + result.width > rootWidth - offset[0]) {
+            result.popupX = rootWidth - result.width - offset[0]
+            result.arrowX = target.left - result.popupX + target.width / 2 - arrowSize / 2
         }
 
     }
@@ -61,21 +56,21 @@ function getxAxis(target, popup, direction, offsetOptions) {
         result.width = target[trend] - blankSpace >= popup.width ? popup.width : target[trend] - blankSpace //计算popup宽度
 
         if (direction.includes('left')) {
-            result.x = target.left - result.width - arrowSpace
+            result.popupX = target.left - result.width - arrowSpace
             result.arrowX = result.width - arrowSize / 2
         }
         else if (direction.includes('right')) {
-            result.x = target.left + target.width + arrowSpace
+            result.popupX = target.left + target.width + arrowSpace
             result.arrowX = - arrowSize / 2
         }
     }
-    console.log(result)
+
     return result
 }
 
 function getyAxis(target, popup, direction, offsetOptions) {
     const { gap, arrowSize, offset } = offsetOptions
-    const result = { y: 0, height: popup.height, arrowY: 0 }
+    const result = { popupY: 0, height: popup.height, arrowY: 0 }
     let top = target.top
 
     if (target.top < offset[1]) {
@@ -88,40 +83,40 @@ function getyAxis(target, popup, direction, offsetOptions) {
     if (verticals.includes(direction)) {  //计算垂直方向（上下）的y坐标
 
         if (direction.includes('top')) {
-            result.y = top - result.height - gap - arrowSize
+            result.popupY = top - result.height - gap - arrowSize
             result.arrowY = result.height - arrowSize / 2
         }
         else if (direction.includes('bottom')) {
-            result.y = top + target.height + gap + arrowSize
+            result.popupY = top + target.height + gap + arrowSize
             result.arrowY = - arrowSize / 2
         }
     }
 
     if (horizontals.includes(direction)) { //计算水平方向（左右）的y坐标
 
-        result.y = target.top + target.height / 2 - result.height / 2
-        result.arrowY = target.top - result.y + target.height / 2 - arrowSize / 2
+        result.popupY = target.top + target.height / 2 - result.height / 2
+        result.arrowY = target.top - result.popupY + target.height / 2 - arrowSize / 2
 
         if (direction.includes('start')) {
-            result.y = target.top
+            result.popupY = target.top
             result.arrowY = target.height / 2
         }
         else if (direction.includes('end')) {
-            result.y = target.top + target.height - result.height
+            result.popupY = target.top + target.height - result.height
             result.arrowY = result.height - target.height / 2 - arrowSize / 2
         }
 
-        if (result.y < offset[1]) {
-            result.y = offset[1]
+        if (result.popupY < offset[1]) {
+            result.popupY = offset[1]
             result.arrowY = target.top - offset[1] + arrowSize
         }
 
-        if (result.y + result.height > rootHeight - offset[1]) {
-            result.y = rootHeight - offset[1] - result.height
-            result.arrowY = target.top - result.y + arrowSize
+        if (result.popupY + result.height > rootHeight - offset[1]) {
+            result.popupY = rootHeight - offset[1] - result.height
+            result.arrowY = target.top - result.popupY + arrowSize
         }
     }
-    console.log(result)
+
     return result
 }
 
@@ -131,16 +126,16 @@ function getDirection(target, popup, direction, offsetOptions, state = 0) {
     }
 
     const { gap, arrowSize, offset } = offsetOptions
-
+    const position = getDirByIndex(direction, 1)
     const directionOptions = {
         vertical: {
             trends: ['top', 'bottom'],
-            backup: 'left' + getDirByIndex(direction, 1),
+            backup: 'left' + position,
             popupSpace: popup.height + gap + arrowSize + offset[1]
         },
         horizontal: {
             trends: ['left', 'right'],
-            backup: 'top' + getDirByIndex(direction, 1),
+            backup: 'top' + position,
             popupSpace: popup.width + gap + arrowSize + offset[0]
         }
     }

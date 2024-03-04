@@ -1,7 +1,6 @@
 <template>
     <teleport to='body'>
-        <transition name="fade">
-            <div class="popup" :class="popupClass" ref="popup" v-show="visible">
+        <div class="popup" :class="popupClass" ref="popup" v-show="visible">
                 <div class="popup-box">
                     <div class="popup-content">
                         <slot></slot>
@@ -14,7 +13,6 @@
                     </div>
                 </div>
             </div>
-        </transition>
     </teleport>
 </template>
 <script>
@@ -22,7 +20,7 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { triggerEvents, addListener, removeListener } from './event'
 import { findScrollElement, debounce } from "@/utils/index"
 import { Popup } from './popup'
-import { verticals, horizontals } from './direction'
+import { verticals, horizontals } from './option'
 import IconButton from '@/components/IconButton'
 
 const tirggers = Object.keys(triggerEvents)
@@ -140,7 +138,7 @@ export default {
         const triggerPopup = () => {
 
             console.log(instance)
-            instance.updateStyles(popupColor.value)
+            instance.update()
             visible.value = !visible.value
 
         }
