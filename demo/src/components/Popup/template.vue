@@ -1,66 +1,66 @@
 <template>
     <teleport to='body'>
-        <div class="popup" :class="popupClass" ref="popup" v-show="visible">
+        <transition name="fade">
+            <dialog class="ease-popup" v-show="visible" ref="popup">
                 <div class="popup-box">
                     <div class="popup-content">
                         <slot></slot>
                     </div>
                     <div class="popup-footer" v-if="confirm || cancel">
                         <icon-button v-if="confirm" type="primary" size="small" @click="handleConfirm">{{ confirmText
-                        }}</icon-button>
+                            }}</icon-button>
                         <icon-button v-if="cancel" type="default" size="small" @click="handleCancel">{{ cancelText
-                        }}</icon-button>
+                            }}</icon-button>
                     </div>
                 </div>
-            </div>
+            </dialog>
+        </transition>
     </teleport>
 </template>
 <script>
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
-import { triggerEvents, addListener, removeListener } from './event'
-import { findScrollElement, debounce } from "@/utils/index"
-import { Popup } from './popup'
-import { verticals, horizontals } from './option'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { triggerEvents, handleEvent } from './event'
+import { getElement } from '@/utils/index'
 import IconButton from '@/components/IconButton'
-
-const tirggers = Object.keys(triggerEvents)
-const dirs = verticals.concat(horizontals)
+import EasePopup from 'ease-popup'
 
 export default {
     name: "Popup",
     props: {
-        show: {
-            type: Boolean,
-            default: false
-        },
         theme: {
             type: String,
             default: 'light',
-            validator(value) {
-                return ['light', 'dark'].includes(value)
-            }
         },
         direction: {
             type: String,
-            default: 'bottom',
-            validator(value) {
-                return dirs.includes(value)
-            }
+            default: 'bottom'
         },
         trigger: {
             type: String,
             default: 'click',
             validator(value) {
-                return tirggers.includes(value)
+                return triggerEvents.includes(value)
             }
+        },
+        modal: {
+            type: Boolean,
+            default: false
         },
         needArrow: {
             type: Boolean,
             default: true
         },
-        maxWidth: {
+        width: {
             type: [String, Number],
             default: 'auto'
+        },
+        placement: {
+            type: String,
+            default: 'outside'
+        },
+        fullScreen: {
+            type: Boolean,
+            default: false
         },
         target: {
             type: [String, Object],
@@ -81,133 +81,77 @@ export default {
         cancelText: {
             type: String,
             default: '取消'
-        },
-        onConfirm: {
-            type: Function,
-            default: () => { }
-        },
-        onCancel: {
-            type: Function,
-            default: () => { }
         }
     },
     components: { IconButton },
-    emits: ['confirm', 'cancel'],
+    emits: ['show', 'close', 'confirm', 'cancel'],
     setup(props, { emit }) {
         const popup = ref(null)
-        const visible = ref(props.show)
-        const target = ref(props.target)
-        const popupClass = computed(() => {
-            //根据props.needArrow判断是否需要箭头
-            const arrowClass = props.needArrow ? 'arrow-popup' : ''
-            const popupIndex = `popup-${document.body.querySelectorAll('.popup').length}`
-            return `${arrowClass} ${popupIndex}`
-        })
+        const visible = ref(false)
         const popupOptions = computed(() => {
             return {
-                target: target.value,
-                popup: popup.value,
                 direction: props.direction,
-                maxWidth: props.maxWidth,
-                needArrow: false,
-                offset: [5, 5]
+                width: props.width,
+                needArrow: props.needArrow,
+                placement: props.placement,
+                fullScreen: props.fullScreen,
+                theme: props.theme,
+                onHide: () => {
+                    visible.value = false
+                },
             }
         })
+        let instance = new EasePopup(popupOptions.value)
         const handleConfirm = () => {
-            visible.value = !visible.value
+            visibleChange()
             emit('confirm')
         }
 
         const handleCancel = () => {
-            visible.value = !visible.value
+            visibleChange()
             emit('cancel')
         }
-
-        const updateColor = () => {
-            const defaultThemes = {
-                'light': { '--popup-background': '#fff', '--popup-text': '#333' },
-                'dark': { '--popup-background': '#333', '--popup-text': '#fff' },
-            }
-            return defaultThemes[props.theme]
-        }
-
-        const popupColor = ref(updateColor())
-
-        let instance
-        //popup的显示和隐藏
-        const triggerPopup = () => {
-
-            console.log(instance)
-            instance.update()
+        const visibleChange = () => {
             visible.value = !visible.value
-
+            Promise.resolve(visible.value).then((res) => {
+                if (res) {
+                    instance[props.modal ? 'showModal' : 'show']()
+                    emit('show')
+                } else {
+                    instance.hide()
+                    emit('close')
+                }
+            })
         }
-
-        // 处理外部点击事件，关闭popup
-        const clickOutSide = (e) => {
-            if (!popup.value.contains(e.target) && !target.value.contains(e.target)) {
-                if (visible.value) visible.value = false
-            }
-        }
-
-        // 处理滚动事件，重新计算popup位置
-        // const handleScroll = debounce(
-        //     () => {
-        //         setDirection(popupOptions.value).then(res => {
-        //             updateStyle(res)
-        //         })
-        //     },
-        //     0
-        // )
-
-        // const unScrollWatch = watch(visible, (newVal) => {
-        //     const [scrollEl] = findScrollElement(target.value)
-        //     if (newVal) {
-        //         scrollEl && addListener('scroll', scrollEl, handleScroll)
-        //     } else {
-        //         scrollEl && removeListener('scroll', scrollEl, handleScroll)
-        //     }
-        // })
 
         onMounted(() => {
+            const target = getElement(props.target)
+            instance.update({ target: props.fullScreen ? document.body : target, popup: popup.value })
 
-            //set target
-            if (typeof target.value === 'string') {
-                target.value = document.getElementsByClassName(target.value)[0] || document.getElementById(target.value)
-            }
-
-
-            instance = new Popup(
-                target.value,
-                popup.value,
-                {
-                    direction: props.direction,
-                    maxWidth: props.maxWidth,
-                    needArrow: true,
-                }
-            )
-            //set events
-            addListener(props.trigger, target.value, triggerPopup)
-
-            // if (props.trigger === 'click') {
-            //     addListener(props.trigger, document.body, clickOutSide, true)
-            // }
-
+            handleEvent({
+                target,
+                trigger: props.trigger,
+                popup: popup.value,
+                handler: visibleChange,
+                once: false
+            })
         })
 
         //组件卸载时移除事件监听
-        onUnmounted(() => {
-            // remove events
-            // removeListener(props.trigger, target.value, triggerPopup)
+        onBeforeUnmount(() => {
 
-            // if (props.trigger === 'click') {
-            //     removeListener(props.trigger, document.body, clickOutSide, true)
-            // }
-
-            // unScrollWatch()
+            const target = getElement(props.target)
+            handleEvent({
+                target,
+                trigger: props.trigger,
+                popup: popup.value,
+                handler: visibleChange,
+                remove: true
+            })
+            instance.destroy()
+            instance = null
         })
         return {
-            popupClass,
             popup,
             visible,
             handleConfirm,

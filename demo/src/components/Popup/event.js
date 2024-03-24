@@ -1,40 +1,38 @@
-const triggerEvents = {   //触发事件选项
-    'click': ['click'],
-    'hover': ['mouseenter', 'mouseleave']
-    
-}
+const triggerEvents = ['hover', 'click']   //触发事件选项
 
-const allEvents = {
-    'scroll': ['scroll']
-}
-
-function EventListener(options = {
-    trigger: 'click',
-    element: null,
-    handler: null,
-    capture: false,
-    removeFlag: false
+function handleEvent(options = {
+    trigger: 'click', target: null, handler: null, popup: null, capture: false, remove: false
 }) {
-    const { trigger, element, handler, capture, removeFlag } = options
-    const events = triggerEvents[trigger] ? triggerEvents[trigger] : allEvents[trigger]
-    const listener = removeFlag ? 'removeEventListener' : 'addEventListener'
-    for (const e of events) {
-        element[listener](e, handler, capture)
+    const { trigger, target, handler, popup, capture = false, remove } = options
+    const action = remove ? 'removeEventListener' : 'addEventListener'
+    if (trigger === 'hover') {
+        let delay = 300
+        let timer = null
+        const handleLeave = (e) => {
+            timer = setTimeout(() => {
+                handler && handler(e)
+                clearTimeout(timer)
+                timer = null
+            }, delay)
+        }
+        const handleEnter = (e) => {
+            if (timer) {
+                clearTimeout(timer)
+                timer = null
+            } else {
+                handler && handler(e)
+            }
+        }
+        target[action]('mouseenter', handleEnter, capture)
+        target[action]('mouseleave', handleLeave, capture)
+        popup[action]('mouseenter', handleEnter, capture)
+        popup[action]('mouseleave', handleLeave, capture)
+    } else {
+        target[action](trigger, handler, capture)
     }
-}
-function addListener(trigger, element, handler, capture = false) {
-    return EventListener({
-        trigger, element, handler, capture
-    })
-}
-function removeListener(trigger, element, handler, capture = false) {
-    return EventListener({
-        trigger, element, handler, capture, removeFlag: true
-    })
 }
 
 export {
     triggerEvents,
-    addListener,
-    removeListener
+    handleEvent,
 }

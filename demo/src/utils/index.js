@@ -204,9 +204,9 @@ function getCssValue(el, property) {
     return getComputedStyle(el).getPropertyValue(property)
 }
 function getElement(el) {
-    if(!isObject(el)){
-        return document.getElementById(el) || document.getElementsByClassName(el)[0]
-    } 
+    if (!isObject(el)) {
+        return document.getElementById(el) || document.getElementsByClassName(el)[0] || document.getElementsByTagName(el)[0] || document.querySelector(el)
+    }
     return el
 }
 function getElementSize(el) {

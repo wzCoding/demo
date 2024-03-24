@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "ease-popup": "^1.2.1",
     "highlight.js": "^11.9.0",
     "mockjs": "^1.1.0",
     "pinia": "^2.1.6",
