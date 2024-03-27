@@ -3,55 +3,55 @@
         {
             "index": "1",
             "title": "2d waves",
-            "titleCN": "2d波浪",
+            "titleCN": "waves 2d波浪",
             "path": "/canvas/index"
         },
         {
             "index": "2",
             "title": "code rain",
-            "titleCN": "代码雨",
+            "titleCN": "code rain 代码雨",
             "path": "/canvas/rain"
         },
         {
             "index": "3",
             "title": "birds",
-            "titleCN": "飞鸟",
+            "titleCN": "birds 飞鸟",
             "path": "/canvas/birds"
         },
         {
             "index": "4",
             "title": "3d sea",
-            "titleCN": "海面",
+            "titleCN": "sea 海面",
             "path": "/canvas/sea"
         },
         {
             "index": "5",
             "title": "ferrari",
-            "titleCN": "法拉利",
+            "titleCN": "ferrari 法拉利",
             "path": "/canvas/ferrari"
         },
         {
             "index": "6",
             "title": "suv",
-            "titleCN": "suv",
+            "titleCN": "suv 越野车",
             "path": "/canvas/suv"
         },
         {
             "index": "7",
             "title": "tank",
-            "titleCN": "坦克",
+            "titleCN": "tank 坦克",
             "path": "/canvas/tank"
         },
         {
             "index": "8",
             "title": "fighter",
-            "titleCN": "战斗机",
+            "titleCN": "fighter 战斗机",
             "path": "/canvas/fighter"
         },
         {
             "index": "9",
             "title": "robot",
-            "titleCN": "机器人",
+            "titleCN": "robot 机器人",
             "path": "/canvas/robot"
         }
     ]

@@ -77,10 +77,3 @@ const examples = [
     },
 ]
 </script>
-<style lang="scss" scoped>
-.display-area {
-    &:nth-child(1) {
-        gap: 1rem;
-    }
-}
-</style>

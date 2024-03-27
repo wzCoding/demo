@@ -7,7 +7,7 @@
                     <div class="menu-wrap">
                         <div class="menu-grid">
                             <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
-                                <icon-button class="menu-btn" direction="top" :text="menu.title" @click="toPage(menu.path)">
+                                <icon-button class="menu-btn" direction="top" :text="menu.title" @click="toPage(menu)">
                                     <icon-svg size="32" color="#fff" :name="menu.icon" />
                                 </icon-button>
                             </div>
@@ -20,12 +20,12 @@
                 <h1 class="home-main-title">
                     <span v-for=" title  in  mainTitle " :key="title"
                         :class="colorText.includes(title) ? 'color-text' : ''">{{
-                            title }}</span>
+        title }}</span>
                 </h1>
                 <h2 class="home-sub-title">
                     <span v-for=" title  in  subTitle " :key="title"
                         :class="colorText.includes(title) ? 'color-text' : ''">{{
-                            title }}</span>
+        title }}</span>
                 </h2>
                 <p class="home-info">{{ info }}</p>
                 <icon-button class="start-btn" :text="startBtn.name" @click="toPage()">
@@ -55,9 +55,10 @@ const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS �
 const startBtn = { name: "开始浏览", icon: "arrow" }
 
 const router = useRouter()
-const toPage = (path) => {
-    if (path) {
-        router.push(path)
+const toPage = (menu) => {
+    if (menu.path) {
+        const params = { path: menu.path, icon: menu.icon }
+        router.push(params)
     }
 }
 

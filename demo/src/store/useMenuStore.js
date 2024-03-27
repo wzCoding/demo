@@ -1,12 +1,13 @@
-import { ref,reactive } from "vue"
+import { ref, reactive } from "vue"
 import { defineStore } from "pinia"
-import { getData } from "@/utils"
+import { getData, setStorageCache, getStorageCache } from "@/utils/index"
 
 export const useMenuStore = defineStore("menu", () => {
     const type = "menu"
     const loading = ref(false)
     const menu = reactive({})
-    // 获取数据
+
+    // 获取页面所有menu数据
     async function getPageMenu(id) {
         if (!id) return []
 

@@ -1,18 +1,17 @@
 <template>
     <div class="page-menu">
-        <div class="menu-button" :style="buttonStyle" :class="{ visible: visible }" @click="handleButonClick">
+        <div class="menu-button" :style="buttonStyle" :class="{ active: visible }" @click="handleButonClick">
             <icon-button class="menu-icon" :style="iconStyle">
-                <icon-svg size="32" name="menu" />
+                <icon-svg size="32" :name="title" />
             </icon-button>
         </div>
         <transition name="scale">
             <div class="menu" v-show="visible" :style="transformStyle">
-                <div v-if="title" class="menu-header">
-                    <h1>{{ title }}</h1>
-                </div>
                 <div class="menu-content">
-                    <Card v-for="menu in menulist" :key="menu.title" width="100%" :title="menu.titleCN"
-                        :class="{ active: menu.active }" @click="handleMenuClick(menu)" />
+                    <div class="menu-box">
+                        <Card v-for="menu in menulist" :key="menu.title" width="fit-content" backgroundAnimation
+                            :title="menu.titleCN" :class="{ active: menu.active }" @click="handleMenuClick(menu)" />
+                    </div>
                 </div>
             </div>
         </transition>
@@ -104,6 +103,7 @@ export default {
         const handleMenuClick = (menu) => {
             setActive(menu)
             emit("menuClick", menu, visible)
+            console.log(props.title)
         }
 
         return {

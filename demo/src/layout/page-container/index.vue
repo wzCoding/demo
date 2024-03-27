@@ -24,8 +24,13 @@ export default {
         const router = useRouter()
         const menus = ref([])
         const id = computed(() => {
-            return router.currentRoute.value.name
+            let name = router.currentRoute.value.name
+            if (!name) {
+                name = router.currentRoute.value.fullPath.split("/")[1]
+            }
+            return name
         })
+        
         const showMenu = computed(() => {
             return id.value !== "about"
         })
@@ -42,8 +47,10 @@ export default {
             visible.value = false
         }
         if (showMenu.value) {
+            
             menuStore.getPageMenu(id.value).then(res => {
                 menus.value = res
+                console.log(res)
             })
         }
         return {

@@ -23,7 +23,7 @@
         <div class="item">
             <div class="display-area">
                 <icon-button size="default" type="default">
-                    <icon-svg name="comp"></icon-svg>
+                    <icon-svg name="components"></icon-svg>
                     组件
                 </icon-button>
                 <icon-button size="default" type="primary">
@@ -87,7 +87,7 @@ const examples = [
         desc: "添加图标",
         code:
             `<icon-button size="default" type="default">
-    <icon-svg><icon-comp/></icon-svg>
+    <icon-svg><icon-components/></icon-svg>
     组件
 </icon-button>
 <icon-button size="default" type="primary">

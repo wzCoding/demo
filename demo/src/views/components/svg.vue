@@ -6,13 +6,13 @@
                     <About />
                 </icon-svg >
                 <icon-svg color="--theme-text-color">
-                    <Comp />
+                    <components />
                 </icon-svg>
                 <icon-svg color="--theme-text-color">
                     <Css />
                 </icon-svg>
                 <icon-svg color="--theme-text-color">
-                    <Chart />
+                    <Charts />
                 </icon-svg>
             </div>
             <code-demo :desc="examples[0].desc" :type="examples[0].type" :code="examples[0].code" />
@@ -20,18 +20,18 @@
         <div class="item">
             <div class="display-area">
                 <icon-svg name="about" color="--theme-text-color" />
-                <icon-svg name="comp" color="--theme-text-color"/>
+                <icon-svg name="components" color="--theme-text-color"/>
                 <icon-svg name="css" color="--theme-text-color"/>
-                <icon-svg name="chart" color="--theme-text-color"/>
+                <icon-svg name="charts" color="--theme-text-color"/>
             </div>
             <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code" />
         </div>
         <div class="item">
             <div class="display-area">
                 <icon-svg name="about" color=yellowgreen size=24 />
-                <icon-svg name="comp" color=#db7093 size=36 />
+                <icon-svg name="components" color=#db7093 size=36 />
                 <icon-svg name="css" color=#add8e6 size=48 />
-                <icon-svg name="chart" color=#daa520 size=56 />
+                <icon-svg name="charts" color=#daa520 size=56 />
             </div>
             <code-demo :desc="examples[2].desc" :type="examples[2].type" :code="examples[2].code" />
         </div>
@@ -41,9 +41,9 @@
 import CodeDemo from '@/components/CodeDemo'
 import IconSvg from '@/components/IconSvg'
 import About from '@/assets/images/svg/about.vue'
-import Comp from '@/assets/images/svg/comp.vue'
+import components from '@/assets/images/svg/components.vue'
 import Css from '@/assets/images/svg/css.vue'
-import Chart from '@/assets/images/svg/chart.vue'
+import Charts from '@/assets/images/svg/charts.vue'
 const examples = [
     {
         desc: "将 svg 图标路径 path 保存在 .vue 模板中",
@@ -54,14 +54,14 @@ const examples = [
 </template>`,
             `// 引入 .vue 图标文件并使用
 import About from '@/assets/images/svg/about.vue'
-import Comp from '@/assets/images/svg/comp.vue'
+import components from '@/assets/images/svg/components.vue'
 import Css from '@/assets/images/svg/css.vue'
-import Chart from '@/assets/images/svg/chart.vue'
+import Charts from '@/assets/images/svg/chart.vue'
 
 <icon-svg><About /></icon-svg>
-<icon-svg><Comp /></icon-svg>
+<icon-svg><components /></icon-svg>
 <icon-svg><Css /></icon-svg>
-<icon-svg><Chart /></icon-svg>`
+<icon-svg><Charts /></icon-svg>`
         ],
         type: 'html'
     },
@@ -69,7 +69,7 @@ import Chart from '@/assets/images/svg/chart.vue'
         desc: "通过 name 属性引用图标",
         code:
             `<icon-svg name="about" />
-<icon-svg name="comp"/>
+<icon-svg name="components"/>
 <icon-svg name="css"/>
 <icon-svg name="canvas"/>`,
         type: 'html'
@@ -78,9 +78,9 @@ import Chart from '@/assets/images/svg/chart.vue'
         desc: "调整尺寸和颜色",
         code:
 `<icon-svg name="about" color=yellowgreen size=24 />
-<icon-svg name="comp" color=#db7093 size=36 />
+<icon-svg name="components" color=#db7093 size=36 />
 <icon-svg name="css" color=#add8e6 size=48 />
-<icon-svg name="chart" color=#daa520 size=56 />`,
+<icon-svg name="charts" color=#daa520 size=56 />`,
         type: 'html'
     }
 ]
