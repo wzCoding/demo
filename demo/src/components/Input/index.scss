@@ -1,0 +1,49 @@
+.input-container {
+    --border-color:#d0d2d8;
+    display: flex;
+    box-shadow: 0 0 0 1px var(--border-color) inset;
+    border-radius: 4px;
+    height: var(--height);
+    padding: var(--padding);
+    font-size: var(--fontSize);
+    color: var(--theme-text-color);
+    cursor: text;
+    transition: box-shadow var(--transition-time) ease;
+    input {
+        outline: none;
+        border: none;
+        flex: 1;
+        line-height: var(--height);
+        font-size: inherit;
+        color: inherit;
+        background-color: transparent;
+        &::placeholder {
+            color: var(--border-color);
+            font-size: var(--placeholderFontSize);
+        }
+    }
+    &.focus {
+        box-shadow: 0 0 1px 1px var(--theme-gradient-color-2) inset;
+    }
+    &.size-small {
+        --fontSize: 12px;
+        --iconSize: 16px;
+        --height: 24px;
+        --padding: 4px 10px;
+        --placeholderFontSize: 12px;
+    }
+    &.size-default {
+        --fontSize: 16px;
+        --iconSize: var(--fontSize);
+        --height: 32px;
+        --padding: 6px 12px;
+        --placeholderFontSize: 13.6px;
+    }
+    &.size-large {
+        --fontSize: 20px;
+        --iconSize: var(--fontSize);
+        --height: 36px;
+        --padding: 8px 16px;
+        --placeholderFontSize: 16px;
+    }
+}

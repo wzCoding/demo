@@ -103,7 +103,6 @@ export default {
         const handleMenuClick = (menu) => {
             setActive(menu)
             emit("menuClick", menu, visible)
-            console.log(props.title)
         }
 
         return {

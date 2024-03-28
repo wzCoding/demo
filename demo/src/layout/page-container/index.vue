@@ -50,7 +50,6 @@ export default {
             
             menuStore.getPageMenu(id.value).then(res => {
                 menus.value = res
-                console.log(res)
             })
         }
         return {

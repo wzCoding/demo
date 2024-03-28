@@ -1,17 +1,15 @@
 <template>
-    <div class="components-popup components-page">
+    <div class="components-input components-page">
         <div class="item" v-for="item in examples" :key="item.desc">
             <div class="display-area">
-                <template v-for="example in item.options" :key="example.target">
-                   <e-select></e-select>
-                </template>
+               <e-input></e-input>
             </div>
             <code-demo :desc="item.desc" :type="item.type" :code="item.code" />
         </div>
     </div>
 </template>
 <script setup>
-import ESelect from '@/components/Select/index'
+import EInput from '@/components/Input/index'
 import CodeDemo from '@/components/CodeDemo'
 const examples = [
     {
