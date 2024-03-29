@@ -18,7 +18,7 @@
     </teleport>
 </template>
 <script>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, toRef } from 'vue'
 import { triggerEvents, handleEvent } from './event'
 import { getElement } from '@/utils/index'
 import IconButton from '@/components/IconButton'
@@ -87,7 +87,6 @@ export default {
     emits: ['show', 'close', 'confirm', 'cancel'],
     setup(props, { emit }) {
         const popup = ref(null)
-        const visible = ref(false)
         const popupOptions = computed(() => {
             return {
                 direction: props.direction,
@@ -98,19 +97,21 @@ export default {
                 theme: props.theme,
                 onHide: () => {
                     visible.value = false
-                },
+                    
+                }
             }
         })
         let instance = new EasePopup(popupOptions.value)
         const handleConfirm = () => {
-            visibleChange()
+            instance.hide()
             emit('confirm')
         }
 
         const handleCancel = () => {
-            visibleChange()
+            instance.hide()
             emit('cancel')
         }
+        const visible = ref(false)
         const visibleChange = () => {
             visible.value = !visible.value
             Promise.resolve(visible.value).then((res) => {
@@ -121,6 +122,8 @@ export default {
                     instance.hide()
                     emit('close')
                 }
+                console.log(visible.value)
+                console.log(instance.options.popup.visible)
             })
         }
 

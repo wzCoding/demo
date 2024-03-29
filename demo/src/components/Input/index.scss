@@ -1,49 +1,97 @@
 .input-container {
-    --border-color:#d0d2d8;
+    --border-color: #d0d2d8;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 0 0 0 1px var(--border-color) inset;
     border-radius: 4px;
+    width: var(--width);
     height: var(--height);
     padding: var(--padding);
     font-size: var(--fontSize);
     color: var(--theme-text-color);
     cursor: text;
     transition: box-shadow var(--transition-time) ease;
+    box-sizing: border-box;
+    &.ease-input {
+        --fontSize: 14px;
+        --iconSize: var(--fontSize);
+        --padding: 6px 12px;
+        --width: 220px;
+        --clearWidth: 12px;
+        --clearHeight: 12px;
+        --clear-font: 16px;
+        --placeholder-font: 13.6px;
+        --word-limit-font: 12px;
+    }
     input {
         outline: none;
         border: none;
-        flex: 1;
+        width: 100%;
         line-height: var(--height);
         font-size: inherit;
         color: inherit;
         background-color: transparent;
         &::placeholder {
             color: var(--border-color);
-            font-size: var(--placeholderFontSize);
+            font-size: var(--placeholder-font);
         }
     }
+    .clear {
+        width: var(--clearWidth);
+        height: var(--clearHeight);
+        background-color: transparent;
+        border-radius: 99%;
+        box-shadow: 0 0 0 1px var(--border-color) inset;
+        cursor: pointer;
+        position: relative;
+        line-height: var(--clearHeight);
+        margin-left: 8px;
+        &::after {
+            content: "×";
+            color: var(--border-color);
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: var(--clear-font);
+            transform: scale(0.75);
+        }
+    }
+    .word-limit {
+        color: var(--border-color);
+        font-size: var(--word-limit-font);
+        padding-left: 6px;
+    }
+    .prefix-icon,
+    .suffix-icon {
+        font-size: var(--iconSize);
+        line-height: var(--fontSize);
+        padding-right: 4px;
+        :deep(svg) {
+            width: var(--fontSize) !important;
+            height: var(--fontSize) !important;
+            color: var(--border-color);
+        }
+    }
+    .suffix-icon {
+        padding-left: 4px;
+    }
+
     &.focus {
         box-shadow: 0 0 1px 1px var(--theme-gradient-color-2) inset;
     }
+    &.disabled {
+        cursor: not-allowed;
+        background-color: #f5f7fa;
+    }
     &.size-small {
-        --fontSize: 12px;
-        --iconSize: 16px;
         --height: 24px;
-        --padding: 4px 10px;
-        --placeholderFontSize: 12px;
     }
     &.size-default {
-        --fontSize: 16px;
-        --iconSize: var(--fontSize);
         --height: 32px;
-        --padding: 6px 12px;
-        --placeholderFontSize: 13.6px;
     }
     &.size-large {
-        --fontSize: 20px;
-        --iconSize: var(--fontSize);
-        --height: 36px;
-        --padding: 8px 16px;
-        --placeholderFontSize: 16px;
+        --height: 38px;
     }
 }
