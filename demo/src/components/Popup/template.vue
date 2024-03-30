@@ -1,16 +1,16 @@
 <template>
     <teleport to='body'>
         <transition name="fade">
-            <dialog class="ease-popup" v-show="visible" ref="popup">
+            <dialog class="ease-popup" :class="name" v-show="visible" ref="popup">
                 <div class="popup-box">
                     <div class="popup-content">
                         <slot></slot>
                     </div>
                     <div class="popup-footer" v-if="confirm || cancel">
-                        <icon-button v-if="confirm" type="primary" size="small" @click="handleConfirm">{{ confirmText
-                            }}</icon-button>
-                        <icon-button v-if="cancel" type="default" size="small" @click="handleCancel">{{ cancelText
-                            }}</icon-button>
+                        <e-button v-if="confirm" type="primary" size="small" @click="handleConfirm">{{ confirmText
+                            }}</e-button>
+                        <e-button v-if="cancel" type="default" size="small" @click="handleCancel">{{ cancelText
+                            }}</e-button>
                     </div>
                 </div>
             </dialog>
@@ -18,15 +18,23 @@
     </teleport>
 </template>
 <script>
-import { ref, onMounted, onBeforeUnmount, computed, toRef } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { triggerEvents, handleEvent } from './event'
 import { getElement } from '@/utils/index'
-import IconButton from '@/components/IconButton'
+import EButton from '@/components/Button'
 import EasePopup from 'ease-popup'
 
 export default {
-    name: "Popup",
+    name: "EPopup",
     props: {
+        name: {
+            type: String,
+            default: ''
+        },
+        show: {
+            type: Boolean,
+            default: false
+        },
         theme: {
             type: String,
             default: 'light',
@@ -58,6 +66,10 @@ export default {
             type: String,
             default: 'outside'
         },
+        selfClick:{
+            type: Boolean,
+            default: true
+        },
         fullScreen: {
             type: Boolean,
             default: false
@@ -65,6 +77,10 @@ export default {
         target: {
             type: [String, Object],
             default: ''
+        },
+        targetGap: {
+            type: [String, Number],
+            default: 15
         },
         confirm: {
             type: Boolean,
@@ -83,21 +99,22 @@ export default {
             default: '取消'
         }
     },
-    components: { IconButton },
+    components: { EButton },
     emits: ['show', 'close', 'confirm', 'cancel'],
     setup(props, { emit }) {
         const popup = ref(null)
         const popupOptions = computed(() => {
             return {
                 direction: props.direction,
-                width: props.width,
                 needArrow: props.needArrow,
                 placement: props.placement,
                 fullScreen: props.fullScreen,
                 theme: props.theme,
+                targetGap: props.targetGap,
+                selfClick: props.selfClick,
+
                 onHide: () => {
                     visible.value = false
-                    
                 }
             }
         })
@@ -111,7 +128,7 @@ export default {
             instance.hide()
             emit('cancel')
         }
-        const visible = ref(false)
+        const visible = ref(props.show)
         const visibleChange = () => {
             visible.value = !visible.value
             Promise.resolve(visible.value).then((res) => {
@@ -122,14 +139,13 @@ export default {
                     instance.hide()
                     emit('close')
                 }
-                console.log(visible.value)
-                console.log(instance.options.popup.visible)
             })
-        }
-
+        } 
         onMounted(() => {
+            console.log(props.target)
             const target = getElement(props.target)
-            instance.update({ target: props.fullScreen ? document.body : target, popup: popup.value })
+            const width = props.width === props.target ? target.clientWidth : props.width
+            instance.update({ target: props.fullScreen ? document.body : target, popup: popup.value, width })
 
             handleEvent({
                 target,

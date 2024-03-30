@@ -13,7 +13,7 @@
 import { computed } from 'vue'
 import Mask from '../Mask/template'
 export default {
-    name: "Loading",
+    name: "ELoading",
     props: {
         show: {
             type: Boolean,

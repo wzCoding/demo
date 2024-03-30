@@ -2,9 +2,9 @@
     <div class="code-demo">
         <div class="code-info">
             <h4 class="code-desc">{{ desc }}</h4>
-            <icon-button class="code-open" @click="openCode">
-                <icon-svg size="24" name="code" color="--theme-gradient-color-2" />
-            </icon-button>
+            <e-button class="code-open" @click="openCode">
+                <e-svg size="24" name="code" color="--theme-gradient-color-2" />
+            </e-button>
         </div>
         <transition name="rotate-in">
             <pre v-show="showCode">
@@ -16,8 +16,8 @@
 <script>
 import { computed, nextTick, ref } from 'vue'
 import { findScrollElement } from '@/utils/index'
-import IconButton from '@/components/IconButton'
-import IconSvg from '@/components/IconSvg'
+import EButton from '@/components/Button'
+import ESvg from '@/components/Svg'
 
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css' //默认样式主题
@@ -40,7 +40,7 @@ export default {
         }
     },
     emits: ['openCode'],
-    components: { IconButton, IconSvg },
+    components: { EButton, ESvg },
     setup(props, { emit }) {
         const showCode = ref(props.open)
         const openCode = (e) => {

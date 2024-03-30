@@ -3,8 +3,8 @@
         <div class="item" v-for="item in examples" :key="item.desc">
             <div class="display-area">
                 <template v-for="example in item.options" :key="example.target">
-                    <icon-button :class="example.target" size=default type="primary" :text="example.trigger" />
-                    <Popup :direction="example.direction" :target="example.target" :trigger="example.trigger"
+                    <e-button :class="example.target" size=default type="primary" :text="example.trigger" />
+                    <e-popup :direction="example.direction" :target="example.target" :trigger="example.trigger"
                         :confirm="example.confirm || false" :cancel="example.cancel || false"
                         :placement="example.placement || 'outside'" :fullScreen="example.fullScreen || false"
                         :needArrow="example.needArrow || true" :modal="example.modal || false" :width="example.width || 'auto'">
@@ -12,7 +12,7 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus numquam reprehenderit neque
                             non
                         </span>
-                    </Popup>
+                    </e-popup>
                 </template>
             </div>
             <code-demo :desc="item.desc" :type="item.type" :code="item.code" />
@@ -20,8 +20,8 @@
     </div>
 </template>
 <script setup>
-import Popup from '@/components/Popup/template'
-import IconButton from '@/components/IconButton'
+import EPopup from '@/components/Popup/template'
+import EButton from '@/components/Button'
 import CodeDemo from '@/components/CodeDemo'
 const examples = [
     {
@@ -38,8 +38,8 @@ const examples = [
                 target: "hover-btn"
             },
         ],
-        code: `<Popup direction="top" target="click-btn" trigger="click"></Popup>
-<Popup direction="top" target="hover-btn" trigger="hover"></Popup>`,
+        code: `<e-popup direction="top" target="click-btn" trigger="click"></e-popup>
+<e-popup direction="top" target="hover-btn" trigger="hover"></e-popup>`,
         type: "html",
 
     },
@@ -55,7 +55,7 @@ const examples = [
 
             }
         ],
-        code: `<Popup direction="top" target="click-btn-options" trigger="click" confirm=true cancel=true></Popup>`,
+        code: `<e-popup direction="top" target="click-btn-options" trigger="click" confirm=true cancel=true></e-popup>`,
         type: "html",
     },
     {
@@ -72,7 +72,7 @@ const examples = [
                 width:300
             }
         ],
-        code: `<Popup direction="top" target="click-btn-fullScreen" trigger="click" placement="inside" fullScreen></Popup>`,
+        code: `<e-popup direction="top" target="click-btn-fullScreen" trigger="click" placement="inside" fullScreen></e-popup>`,
         type: "html",
     },
 ]

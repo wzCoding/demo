@@ -13,7 +13,7 @@
 import { computed } from "vue"
 import { convertCssUnit } from '@/utils/index'
 export default {
-    name: "IconButton",
+    name: "EButton",
     props: {
         //图标的位置
         direction: {

@@ -2,9 +2,9 @@
     <div class="components-message components-page">
         <div class="item" v-for="item in examples" :key="item.desc">
             <div class="display-area">
-                <icon-button v-for="msg in item.messages" :key="msg" size="default"
+                <e-button v-for="msg in item.messages" :key="msg" size="default"
                     :type="typeof msg == 'object' ? btns[msg.type] : btns[msg]"
-                    @click="sendMessage(msg)">Message</icon-button>
+                    @click="sendMessage(msg)">Message</e-button>
             </div>
             <code-demo :desc="item.desc" :type="item.type" :code="item.code" />
         </div>
@@ -13,7 +13,7 @@
 <script setup>
 import { Message } from '@/components/Message'
 import CodeDemo from '@/components/CodeDemo'
-import IconButton from '@/components/IconButton'
+import EButton from '@/components/Button'
 const btns = {
     info: "primary",
     success: "success",

@@ -5,7 +5,7 @@
             @[mouseLeave]="startTimer">
             <div class="message-content">
                 <div class="message-icon">
-                    <icon-svg size="16" :name="type" />
+                    <e-svg size="16" :name="type" />
                 </div>
                 <div class="message-text">{{ text }}</div>
             </div>
@@ -18,12 +18,12 @@
 import { ref, toRefs, computed, nextTick, watch } from 'vue'
 import { instances, getIndex, getInstance } from "./instance"
 import { isMobile } from "../../utils/index"
-import IconSvg from '../IconSvg/index.vue'
+import ESvg from '../Svg'
 
 const gap = 20
 
 export default {
-    name: "Message",
+    name: "EMessage",
     props: {
         text: {
             type: String,
@@ -49,7 +49,7 @@ export default {
         onClose: { type: Function, default: () => { } },
 
     },
-    components: { IconSvg },
+    components: { ESvg },
     setup(props, { expose, emit }) {
         const { type, duration, id, onClose } = toRefs(props)
         const repeatNum = ref(1)

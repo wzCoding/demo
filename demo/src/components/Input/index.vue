@@ -20,10 +20,10 @@
     </div>
 </template>
 <script>
-import { onMounted, onUnmounted, ref, computed } from 'vue'
-import { debounce } from '@/utils/index'
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
+import { debounce, getElement } from '@/utils/index'
 import clickOutSide from '@/utils/clickOutSide'
-import ESvg from '@/components/IconSvg'
+import ESvg from '@/components/Svg'
 export default {
     name: 'EaseInput',
     props: {
@@ -71,6 +71,10 @@ export default {
             type: String,
             default: '#409eff'
         },
+        focusElement: {
+            type: String,
+            default: ''
+        }
     },
     components: { ESvg },
     emits: ['update:modelValue', 'focus', 'blur', 'input', 'change', 'clear'],
@@ -87,7 +91,10 @@ export default {
         const showLimit = computed(() => {
             return props.showWordLimit && props.maxlength
         })
-
+        const cleanWatch = watch(() => props.modelValue, (val) => {
+            inputValue.value = val
+            emit('update:modelValue', val)
+        })
         const handleClick = () => {
             input.value.focus()
             focus.value = true
@@ -117,13 +124,16 @@ export default {
         }
         let cleanClickOutSide = null
         onMounted(() => {
-            cleanClickOutSide = clickOutSide(inputContainer.value, () => {
+            const focusElement = getElement(props.focusElement)
+            const elements = [inputContainer.value, focusElement]
+            cleanClickOutSide = clickOutSide(elements, () => {
                 focus.value = false
                 emit('blur', input.value.value)
             })
         })
         onUnmounted(() => {
             cleanClickOutSide && cleanClickOutSide()
+            cleanWatch()
         })
         return {
             slots,

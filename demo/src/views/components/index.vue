@@ -2,55 +2,55 @@
     <div class="components-button components-page" @click="handleClick">
         <div class="item">
             <div class="display-area">
-                <icon-button size="default" type="default">button</icon-button>
-                <icon-button size="default" type="primary">button</icon-button>
-                <icon-button size="default" type="success">button</icon-button>
-                <icon-button size="default" type="warning">button</icon-button>
-                <icon-button size="default" type="danger">button</icon-button>
+                <e-button size="default" type="default">button</e-button>
+                <e-button size="default" type="primary">button</e-button>
+                <e-button size="default" type="success">button</e-button>
+                <e-button size="default" type="warning">button</e-button>
+                <e-button size="default" type="danger">button</e-button>
             </div>
             <code-demo :desc="examples[0].desc" :type="examples[0].type" :code="examples[0].code"/>
         </div>
         <div class="item">
             <div class="display-area">
-                <icon-button size="small" type="default">button</icon-button>
-                <icon-button size="default" type="primary">button</icon-button>
-                <icon-button size="large" type="success">button</icon-button>
-                <icon-button size="default" type="warning">button</icon-button>
-                <icon-button size="small" type="danger">button</icon-button>
+                <e-button size="small" type="default">button</e-button>
+                <e-button size="default" type="primary">button</e-button>
+                <e-button size="large" type="success">button</e-button>
+                <e-button size="default" type="warning">button</e-button>
+                <e-button size="small" type="danger">button</e-button>
             </div>
             <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code"/>
         </div>
         <div class="item">
             <div class="display-area">
-                <icon-button size="default" type="default">
-                    <icon-svg name="components"></icon-svg>
+                <e-button size="default" type="default">
+                    <e-svg name="components"></e-svg>
                     组件
-                </icon-button>
-                <icon-button size="default" type="primary">
-                    <icon-svg name="info"></icon-svg>
+                </e-button>
+                <e-button size="default" type="primary">
+                    <e-svg name="info"></e-svg>
                     info
-                </icon-button>
-                <icon-button size="default" type="success">
-                    <icon-svg name="success"></icon-svg>
+                </e-button>
+                <e-button size="default" type="success">
+                    <e-svg name="success"></e-svg>
                     success
-                </icon-button>
-                <icon-button size="default" type="warning">
-                    <icon-svg name="warning"></icon-svg>
+                </e-button>
+                <e-button size="default" type="warning">
+                    <e-svg name="warning"></e-svg>
                     warning
-                </icon-button>
-                <icon-button size="default" type="danger">
-                    <icon-svg name="error"></icon-svg>
+                </e-button>
+                <e-button size="default" type="danger">
+                    <e-svg name="error"></e-svg>
                     error
-                </icon-button>
+                </e-button>
             </div>
             <code-demo :desc="examples[2].desc" :type="examples[2].type" :code="examples[2].code"/>
         </div>
     </div>
 </template>
 <script setup>
-import IconButton from '@/components/IconButton'
+import EButton from '@/components/Button'
+import ESvg from '@/components/Svg'
 import CodeDemo from '@/components/CodeDemo'
-import IconSvg from '@/components/IconSvg'
 import { Message } from '@/components/Message'
 
 const handleClick = ($event) => {
@@ -66,46 +66,46 @@ const examples = [
     {
         desc: "普通按钮",
         code:
-            `<icon-button size="default" type="default">button</icon-button>
-<icon-button size="default" type="primary">button</icon-button>
-<icon-button size="default" type="success">button</icon-button>
-<icon-button size="default" type="warning">button</icon-button>
-<icon-button size="default" type="danger">button</icon-button>`,
+            `<e-button size="default" type="default">button</e-button>
+<e-button size="default" type="primary">button</e-button>
+<e-button size="default" type="success">button</e-button>
+<e-button size="default" type="warning">button</e-button>
+<e-button size="default" type="danger">button</e-button>`,
         type: "html",
     },
     {
         desc: "调整尺寸",
         code:
-            `<icon-button size="small" type="default">button</icon-button>
-<icon-button size="default" type="primary">button</icon-button>
-<icon-button size="large" type="success">button</icon-button>
-<icon-button size="default" type="warning">button</icon-button>
-<icon-button size="small" type="danger">button</icon-button>`,
+            `<e-button size="small" type="default">button</e-button>
+<e-button size="default" type="primary">button</e-button>
+<e-button size="large" type="success">button</e-button>
+<e-button size="default" type="warning">button</e-button>
+<e-button size="small" type="danger">button</e-button>`,
         type: "html",
     },
     {
         desc: "添加图标",
         code:
-            `<icon-button size="default" type="default">
-    <icon-svg><icon-components/></icon-svg>
+            `<e-button size="default" type="default">
+    <e-svg><icon-components/></e-svg>
     组件
-</icon-button>
-<icon-button size="default" type="primary">
-    <icon-svg name="info"></icon-svg>
+</e-button>
+<e-button size="default" type="primary">
+    <e-svg name="info"></e-svg>
     info
-</icon-button>
-<icon-button size="default" type="success">
-    <icon-svg name="success"></icon-svg>
+</e-button>
+<e-button size="default" type="success">
+    <e-svg name="success"></e-svg>
     success
-</icon-button>
-<icon-button size="default" type="warning">
-    <icon-svg name="warning"></icon-svg>
+</e-button>
+<e-button size="default" type="warning">
+    <e-svg name="warning"></e-svg>
     warning
-</icon-button>
-<icon-button size="default" type="danger">
-    <icon-svg name="danger"></icon-svg>
+</e-button>
+<e-button size="default" type="danger">
+    <e-svg name="danger"></e-svg>
     error
-</icon-button>`,
+</e-button>`,
         type: "html",
     },
 ]

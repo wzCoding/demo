@@ -13,7 +13,7 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 import { convertCssUnit } from '@/utils/index'
 import { useThemeStore } from '@/store/useThemeStore'
 export default {
-    name: "IconSvg",
+    name: "ESvg",
     props: {
         size: {
             type: [Number, String],

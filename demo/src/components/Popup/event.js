@@ -9,6 +9,7 @@ function handleEvent(options = {
         let delay = 300
         let timer = null
         const handleLeave = (e) => {
+            if (!popup.visible) return
             timer = setTimeout(() => {
                 handler && handler(e)
                 clearTimeout(timer)

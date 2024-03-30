@@ -1,9 +1,9 @@
 <template>
     <div class="page-menu">
         <div class="menu-button" :style="buttonStyle" :class="{ active: visible }" @click="handleButonClick">
-            <icon-button class="menu-icon" :style="iconStyle">
-                <icon-svg size="32" :name="title" />
-            </icon-button>
+            <e-button class="menu-icon" :style="EStyle">
+                <e-svg size="32" :name="title" />
+            </e-button>
         </div>
         <transition name="scale">
             <div class="menu" v-show="visible" :style="transformStyle">
@@ -21,8 +21,8 @@
 <script>
 import { computed, ref } from 'vue'
 import Card from '@/components/Card'
-import IconButton from '../IconButton'
-import IconSvg from '../IconSvg'
+import EButton from '../Button'
+import ESvg from '../Svg'
 
 export default {
     name: "PageMneu",
@@ -51,7 +51,7 @@ export default {
             default: 0
         }
     },
-    components: { IconButton, IconSvg, Card },
+    components: { EButton, ESvg, Card },
     emits: ["visibleChange", "menuClick"],
     setup(props, { emit }) {
         const [direction, align] = props.position.split('-')
@@ -69,7 +69,7 @@ export default {
                 [`border-${radiusReverse[direction]}-${radiusReverse[align]}-radius`]: '100%'
             }
         })
-        const iconStyle = computed(() => {
+        const EStyle = computed(() => {
             return {
                 "position": "absolute",
                 [direction]: '8px',
@@ -108,7 +108,7 @@ export default {
         return {
             visible,
             buttonStyle,
-            iconStyle,
+            EStyle,
             transformStyle,
             menulist,
             handleButonClick,

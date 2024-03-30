@@ -204,6 +204,7 @@ function getCssValue(el, property) {
     return getComputedStyle(el).getPropertyValue(property)
 }
 function getElement(el) {
+    if(!el) return
     if (!isObject(el)) {
         return document.getElementById(el) || document.getElementsByClassName(el)[0] || document.getElementsByTagName(el)[0] || document.querySelector(el)
     }

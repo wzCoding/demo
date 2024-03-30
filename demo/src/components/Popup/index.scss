@@ -13,6 +13,9 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    .popup-content{
+        width: 100%;
+    }
     .popup-footer {
         width: 100%;
         display: flex;

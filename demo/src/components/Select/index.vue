@@ -1,20 +1,41 @@
 <template>
-    <div class="select-example">
-        <div :class="[defaultClass, name, { active: active }]" tabindex="1" ref="select" @click="handleClick">
-            <input type="text" readonly>
+    <div class="select-container" :class="selectClass">
+        <div class="select-input">
+            <e-input v-model="selectValue" readonly :focus-element="name" :placeholder="placeholder" :class="inputClass">
+                <template #suffix>
+                    <div class="select-icon" :class="{ active: arrowActive }">
+                        <e-svg size="16" name="arrowdown" color="#999"/>
+                    </div>
+                </template>
+            </e-input>
         </div>
-
+        <e-popup :name="name" :direction="direction" :target-gap="popupGap" :need-arrow="false" :self-click="false"
+            :target="inputClass" :width="inputClass" @show="handleShow" @close="handleClose">
+            <template #default>
+                <div class="options-container">
+                    <div v-for="option in selectOptions" :key="option.value" class="select-option"
+                        :class="{ active: option.active, disabled: option.disabled }" @click="optionClick(option)">{{
+        option.label }}</div>
+                </div>
+            </template>
+        </e-popup>
     </div>
 </template>
 <script>
-import { ref, computed, watch, reactive, onMounted, onUnmounted } from 'vue'
-import Popup from '../Popup/template.vue'
+import { ref, computed } from 'vue'
+import EPopup from '../Popup/template.vue'
+import EInput from '../Input'
+import ESvg from '../Svg'
 export default {
     name: 'ESelect',
     props: {
-        value: {
-            type: [String,Boolean],
+        modelValue: {
+            type: [String, Boolean, Number, Object, Array],
             default: ''
+        },
+        placeholder: {
+            type: String,
+            default: '请选择'
         },
         name: {
             type: String,
@@ -25,123 +46,53 @@ export default {
             default: () => []
         }
     },
-    //components: { Popup },
-    emits: ['change'],
+    components: { EPopup, EInput,ESvg },
+    emits: ['update:modelValue', 'change'],
     setup(props, { emit }) {
-        const width = '180px'
-        const defaultClass = 'select-input'
-        const popupOptions = reactive({
-            target: props.name ? `.${defaultClass}.${props.name}` : `.${defaultClass}`,
-            direction: 'bottom-start',
-            targetGap: 8,
-            needArrow: false,
-            width: width.match(/\d+/g)[0],
-            container: 'body'
-        })
-
-        const visible = ref(false)
-        const active = ref(false)
-        const select = ref(null)
-        const selectValue = ref(props.value)
-        watch(() => props.value, (val) => {
-            selectValue.value = val
-        })
-        const list = computed(() => {
+        const direction = 'bottom'
+        const popupGap = 8
+        const inputClass = props.name ? `${props.name}-input` : ''
+        const selectClass = props.name ? `${props.name}-select` : ''
+        const selectValue = ref(props.modelValue)
+        const arrowActive = ref(false)
+        const selectOptions = computed(() => {
+            if (!props.options.length) {
+                return [{ label: '暂无数据', value: 'no-data', disabled: true }]
+            }
             return props.options.map(item => {
                 const option = typeof item === 'string' ? { label: item, value: item } : item
                 option.active = option.value === selectValue.value
                 option.disabled = option.disabled || false
                 return option
             })
-        })
-        const selectOption = computed(() => {
-            return list.value.find(item => item.value === selectValue.value)
-        })
-        const handleClick = () => {
-            visible.value = !visible.value
-        }
-        const handleOptionClick = (item) => {
-            emit('change', props.name, item.value)
-            selectValue.value = item.value
-            visible.value = false
-            select.value.focus()
-            Array.from(document.querySelectorAll(`.${defaultClass}`)).filter(el => el !== select.value).forEach(item => item.classList.remove('active'))
 
-        }
-        const handleActive = (event) => {
-            const { x, y, width, height } = select.value.getBoundingClientRect()
-            const endX = x + width
-            const endY = y + height
-            if (event.clientX > endX || event.clientX < x || event.clientY > endY || event.clientY < y) {
-                active.value = false
-            }
-            if (event.clientX > x && event.clientX < endX && event.clientY > y && event.clientY < endY) {
-                active.value = true
-            }
-        }
-        onMounted(() => {
-            document.addEventListener('click', handleActive, true)
         })
-        onUnmounted(() => {
-            document.removeEventListener('click', handleActive, true)
-        })
+        const optionClick = (option) => {
+            emit('update:modelValue', option.value)
+            emit('change', option.value)
+            selectValue.value = option.value
+            arrowActive.value = false
+        }
+        const handleShow = () => {
+            arrowActive.value = true
+        }
+        const handleClose = () => {
+            arrowActive.value = false
+        }
         return {
-            list,
-            select,
-            width,
-            visible,
-            active,
-            popupOptions,
-            defaultClass,
-            selectOption,
-            handleClick,
-            handleOptionClick,
+            selectValue,
+            selectClass,
+            inputClass,
+            arrowActive,
+            direction,
+            popupGap,
+            selectOptions,
+            optionClick,
+            handleShow,
+            handleClose
         }
     }
 }
+
 </script>
-<style scoped>
-.select-input {
-    width: v-bind(width);
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 0 1px #d0d2d8 inset;
-    border-radius: 4px;
-    cursor: text;
-    height: 30px;
-    position: relative;
-
-}
-
-:deep(.select-options .ease-popup) {
-    overflow-y: auto;
-}
-
-.select-input input {
-    border: none;
-    outline: none;
-}
-
-.select-input.active,
-.select-input:focus {
-    box-shadow: 0 0 0 1px #4abf8a inset;
-}
-
-.option-item {
-    cursor: pointer;
-    padding: 5px;
-    margin: 2px 0;
-    border-radius: 2px;
-}
-
-.option-item:hover,
-.option-item.active {
-    background-color: #f5f7fa;
-    color: #3eaf7c;
-}
-.option-item.disabled {
-    color: #c0c4cc;
-    pointer-events: none;
-}</style>
+<style src="./index.scss" lang="scss" scoped></style>

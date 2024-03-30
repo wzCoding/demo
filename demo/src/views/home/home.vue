@@ -7,9 +7,9 @@
                     <div class="menu-wrap">
                         <div class="menu-grid">
                             <div v-for="menu in menuStore.menu[id]" :key="menu.title" class="menu-item">
-                                <icon-button class="menu-btn" direction="top" :text="menu.title" @click="toPage(menu)">
-                                    <icon-svg size="32" color="#fff" :name="menu.icon" />
-                                </icon-button>
+                                <e-button class="menu-btn" direction="top" :text="menu.title" @click="toPage(menu)">
+                                    <e-svg size="32" color="#fff" :name="menu.icon" />
+                                </e-button>
                             </div>
                         </div>
                     </div>
@@ -28,9 +28,9 @@
         title }}</span>
                 </h2>
                 <p class="home-info">{{ info }}</p>
-                <icon-button class="start-btn" :text="startBtn.name" @click="toPage()">
-                    <icon-svg size="28" color="#fff" :name="startBtn.icon" />
-                </icon-button>
+                <e-button class="start-btn" :text="startBtn.name" @click="toPage()">
+                    <e-svg size="28" color="#fff" :name="startBtn.icon" />
+                </e-button>
             </div>
         </div>
     </div>
@@ -39,8 +39,8 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/useMenuStore'
-import IconButton from '@/components/IconButton'
-import IconSvg from '@/components/IconSvg'
+import EButton from '@/components/Button'
+import ESvg from '@/components/Svg'
 
 const id = "home"
 const loading = computed(() => menuStore.loading)
