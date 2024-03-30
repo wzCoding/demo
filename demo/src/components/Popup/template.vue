@@ -142,7 +142,6 @@ export default {
             })
         } 
         onMounted(() => {
-            console.log(props.target)
             const target = getElement(props.target)
             const width = props.width === props.target ? target.clientWidth : props.width
             instance.update({ target: props.fullScreen ? document.body : target, popup: popup.value, width })
