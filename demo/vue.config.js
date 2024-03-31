@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+
 module.exports = defineConfig({
   devServer: {
     port: 8081,
@@ -25,5 +26,10 @@ module.exports = defineConfig({
         additionalData: `@import "~@/assets/css/gradient.scss";`
       }
     }
+  },
+  configureWebpack: {
+    plugins: [
+      require('unplugin-element-plus/webpack'),
+    ],
   }
 })
