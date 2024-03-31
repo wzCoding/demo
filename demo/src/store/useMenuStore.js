@@ -1,6 +1,6 @@
 import { ref, reactive } from "vue"
 import { defineStore } from "pinia"
-import { getData, setStorageCache, getStorageCache } from "@/utils/index"
+import { getData } from "@/utils/service"
 
 export const useMenuStore = defineStore("menu", () => {
     const type = "menu"

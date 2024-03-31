@@ -1,13 +1,11 @@
 <template>
     <div class="chart-page">
-
+       
     </div>
 </template>
-<script>
+<script setup>
+import {ElTable, ElTableColumn} from 'element-plus'
 
-export default {
-    name:"charts1"
-}
 </script>
 <style lang="scss" scoped>
 

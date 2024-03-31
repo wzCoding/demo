@@ -1,6 +1,6 @@
 import { ref,reactive } from "vue"
 import { defineStore } from "pinia"
-import { getData } from "@/utils"
+import { getData } from "@/utils/service"
 
 export const useDataStore = defineStore("data", () => {
     const type = "data"

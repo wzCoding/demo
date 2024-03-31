@@ -1,4 +1,4 @@
-import service from '@/axios'
+
 /**
  * 
  * @param {function} func - 需要降低触发频率的函数
@@ -130,12 +130,7 @@ function deepClone(target) {
     return clone;
 }
 
-async function getData(id, type) {
-    if (!id || !type) return []
-    const param = { id, type }
-    const result = await service.post('mock/data', param)
-    return result && result.data ? deepClone(result.data) : []
-}
+
 
 function setStorageCache(key, value) {
     if (!key) return
@@ -287,7 +282,6 @@ export {
     removeClass,
     isMobile,
     deepClone,
-    getData,
     setStorageCache,
     getStorageCache,
     convertCssUnit,
