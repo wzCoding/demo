@@ -29,7 +29,9 @@ module.exports = defineConfig({
   },
   configureWebpack: {
     plugins: [
-      require('unplugin-element-plus/webpack'),
+      require('unplugin-element-plus/webpack')({
+        useSource: false,
+      }),
     ],
   }
 })

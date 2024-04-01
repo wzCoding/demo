@@ -52,82 +52,82 @@ function debounce(func, delay = 1000) {
 }
 
 function getType(value) {
-    const dataType = Object.prototype.toString.call(value).replace('object ', "").match(/\w+/g)[0];
-    return dataType.toLocaleLowerCase();
+    const dataType = Object.prototype.toString.call(value).replace('object ', "").match(/\w+/g)[0]
+    return dataType.toLocaleLowerCase()
 }
 
 function isObject(value) {
-    return getType(value) === "object" ? true : getType(value).includes("element");
+    return getType(value) === "object" ? true : getType(value).includes("element")
 }
 
 function isArray(value) {
-    return getType(value) === "array";
+    return getType(value) === "array"
 }
 
 function isString(value) {
-    return getType(value) === "string";
+    return getType(value) === "string"
 }
 
 function isNumber(value) {
-    return getType(value) === "number";
+    return getType(value) === "number"
 }
 
 function isEmpty(value) {
-    let result = true;
-    if (!value) return result;
+    let result = true
+    if (!value) return result
     switch (getType(value)) {
         case "object":
-            result = Object.keys(value).length === 0 && JSON.stringify(value) === "{}";
-            break;
+            result = Object.keys(value).length === 0 && JSON.stringify(value) === "{}"
+            break
         case "array":
-            result = value.length === 0;
-            break;
+            result = value.length === 0
+            break
         case "string":
-            result = value === "" && value.trim().length === 0;
-            break;
-        default: result = true;
+            result = value === "" && value.trim().length === 0
+            break
+        default: result = true
     }
     return result
 }
 
 function addClass(target, className) {
-    const node = isString(target) ? document.querySelector(target) : target;
+    const node = isString(target) ? document.querySelector(target) : target
     if (node.className) {
-        node.className += ` ${className}`;
+        node.className += ` ${className}`
     } else {
-        node.className = className;
+        node.className = className
     }
 }
 function removeClass(target, className) {
-    const node = isString(target) ? document.querySelector(target) : target;
+    const node = isString(target) ? document.querySelector(target) : target
     if (className && node.className) {
-        node.className = node.className.replace(className, "").trim();
+        node.className = node.className.replace(className, "").trim()
     }
 }
 function isMobile() {
-    return ('ontouchstart' in document.documentElement);
+    return ('ontouchstart' in document.documentElement)
 }
 
-const cache = new WeakMap();
+const cache = new WeakMap()
 function deepClone(target) {
     if (target == null || typeof target !== 'object') {
-        return target;
+        return target
     }
     // 检查是否存在缓存
     if (cache.has(target)) {
-        return cache.get(target);
+        return cache.get(target)
     }
-    let clone = Array.isArray(target) ? [] : {};
-    Object.setPrototypeOf(clone, Object.getPrototypeOf(target));
-    cache.set(target, clone);
+    let clone = Array.isArray(target) ? [] : {}
+    Object.setPrototypeOf(clone, Object.getPrototypeOf(target))
+    cache.set(target, clone)
     // 递归复制属性
     for (let key in target) {
         if (target.hasOwnProperty(key)) {
-            clone[key] = deepClone(target[key]);
+            clone[key] = deepClone(target[key])
         }
     }
 
-    return clone;
+    return clone
 }
 
 
@@ -135,18 +135,18 @@ function deepClone(target) {
 function setStorageCache(key, value) {
     if (!key) return
     if (value) {
-        localStorage.setItem(key, JSON.stringify(value));
+        localStorage.setItem(key, JSON.stringify(value))
     } else {
-        localStorage.removeItem(key);
+        localStorage.removeItem(key)
     }
 }
 
 function getStorageCache(key) {
-    const value = localStorage.getItem(key);
+    const value = localStorage.getItem(key)
     if (value) {
-        return JSON.parse(value);
+        return JSON.parse(value)
     }
-    return null;
+    return null
 }
 
 function convertCssUnit(value, unit = null) {
@@ -155,18 +155,18 @@ function convertCssUnit(value, unit = null) {
     if (value.includes('%')) return value
     if (!unit) {
         // 如果未提供单位，尝试自动解析
-        const match = String(value).match(/(\d+(\.\d+)?)(\w+)?/);
+        const match = String(value).match(/(\d+(\.\d+)?)(\w+)?/)
         if (match) {
-            const [, num, , str] = match;
-            const units = ['px', 'em', 'rem', 'vw', 'vh', 'vmin', 'vmax'];
-            const defaultUnit = 'px';
-            value = num;
-            unit = str && units.includes(str) ? str : defaultUnit;
+            const [, num, , str] = match
+            const units = ['px', 'em', 'rem', 'vw', 'vh', 'vmin', 'vmax']
+            const defaultUnit = 'px'
+            value = num
+            unit = str && units.includes(str) ? str : defaultUnit
         } else {
             return value
         }
     }
-    return `${value}${unit}`;
+    return `${value}${unit}`
 }
 
 function findScrollElement(el, dir = "parent", result = []) {
@@ -176,30 +176,30 @@ function findScrollElement(el, dir = "parent", result = []) {
     }
     if (!el || !nodeDirection[dir]) return
 
-    const node = el[nodeDirection[dir]];
+    const node = el[nodeDirection[dir]]
     if (node && dir === "parent") {
-        const styles = getComputedStyle(node).getPropertyValue("overflow").split(" ");
+        const styles = getComputedStyle(node).getPropertyValue("overflow").split(" ")
         if (styles.includes("auto") || styles.includes("scroll") || styles.includes("overlay")) {
-            result.push(node);
+            result.push(node)
         } else {
-            findScrollElement(node, dir, result);
+            findScrollElement(node, dir, result)
         }
     }
 
     else if (node && node.length && dir === "child") {
         node.forEach(item => {
-            result.push(findScrollElement(item, "parent", result));
+            result.push(findScrollElement(item, "parent", result))
         })
     }
 
-    return result;
+    return result
 }
 
 function getCssValue(el, property) {
     return getComputedStyle(el).getPropertyValue(property)
 }
 function getElement(el) {
-    if(!el) return
+    if (!el) return
     if (!isObject(el)) {
         return document.getElementById(el) || document.getElementsByClassName(el)[0] || document.getElementsByTagName(el)[0] || document.querySelector(el)
     }
@@ -233,42 +233,10 @@ function getElementSize(el) {
         return el.getBoundingClientRect()
     }
 }
-function addStylesheetRules(rules) {
-
-    const style = document.createElement("style")
-    document.getElementsByTagName("head")[0].appendChild(style)
-
-    if (!window.createPopup) {
-        /* For Safari */
-        style.appendChild(document.createTextNode(""))
-    }
-
-    const sheet = document.styleSheets[document.styleSheets.length - 1]
-
-    for (let index = 0; index < rules.length; index++) {
-
-        let rule = rules[index]
-        let selector = rule[0]
-        let rulesText = ""
-
-        let childIndex = 1
-        if (Object.prototype.toString.call(rule[1][0]) === "[object Array]") {
-            rule = rule[1]
-            childIndex = 0
-        }
-
-        for (; childIndex < rule.length; childIndex++) {
-            let childRule = rule[childIndex]
-            rulesText += `${childRule[0]}:${childRule[1]}${childRule[2] ? " !important" : ""};\n`
-        }
-
-        if (sheet.insertRule) {
-            sheet.insertRule(selector + "{" + rulesText + "}", sheet.cssRules.length);
-        } else {
-            /* IE */
-            sheet.addRule(selector, rulesText, -1);
-        }
-    }
+function getRadom(min = 0, max = 100) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 export {
     throttle,
@@ -289,5 +257,5 @@ export {
     getCssValue,
     getElement,
     getElementSize,
-    addStylesheetRules
+    getRadom
 }
