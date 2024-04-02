@@ -13,6 +13,7 @@
     "ease-popup": "^1.2.1",
     "element-plus": "^2.6.3",
     "highlight.js": "^11.9.0",
+    "json5": "^2.2.3",
     "mockjs": "^1.1.0",
     "pinia": "^2.1.6",
     "three": "^0.160.0",

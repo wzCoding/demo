@@ -2,13 +2,12 @@
     <div class="chart-page">
         <div class="table-container">
             <el-table header-cell-class-name="header-cell" :data="pageData" border stripe lazy row-key="code"
-                :cell-class-name="handleCellClass" :empty-text="emptyText"
+                :cell-class-name="handleCellClass" :empty-text="emptyText" :height="438"
                 :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" :load="loadData"
                 @cell-click="handleCellClick">
-                <template #default>
-                    <el-table-column v-for="column in tableColumns" :key="column.prop" :prop="column.prop"
-                        :label="column.label" :align="column.align" :formatter="formatterCellValue"></el-table-column>
-                </template>
+                <el-table-column v-for="column in tableColumns" :key="column.prop" :prop="column.prop"
+                    :label="column.label" :align="column.align" :width="column.width ? column.width : ''"
+                    :formatter="formatterCellValue" show-overflow-tooltip></el-table-column>
             </el-table>
             <div class="table-pagination">
                 <ElConfigProvider :locale="locale">
@@ -42,10 +41,11 @@ const locale = {
         }
     }
 }
+const dataType = 'map'
+const defaultSize = 10
 const layout = ref('total, sizes, prev, pager, next, jumper')
 const currentPage = ref(1)
-const pageSize = ref(8)
-const dataType = 'map'
+const pageSize = ref(defaultSize)
 const mapId = ref('china')
 const emptyText = ref('暂无数据')
 const tableData = ref([])
@@ -55,10 +55,10 @@ const pageData = computed(() => {
     return tableData.value.slice(start, end)
 })
 const total = computed(() => tableData.value.length)
-const pageSizes = computed(() => [pageSize.value, pageSize.value * 2, pageSize.value * 3, tableData.value.length])
+const pageSizes = computed(() => [defaultSize, defaultSize * 2, defaultSize * 3, tableData.value.length])
 const tableColumns = reactive([
     {
-        prop: 'province', label: '省份/直辖市', align: 'left'
+        prop: 'province', label: '省份/直辖市', align: 'left', width: 160
     },
     {
         prop: 'apple', label: '苹果', align: 'right'
@@ -88,14 +88,12 @@ const tableColumns = reactive([
 ])
 const handleTableData = (data) => {
     const result = data.map(item => {
-        const { fullname, code, level, childrenNum } = item.properties
-        const obj = {
-            code,
-            level,
-            hasChildren: childrenNum > 0,
-        }
+        const { fullname = '', code = '', level = '', filename = '', name = '', childrenNum = false } = item.properties
+        const obj = { code, level, filename }
+        obj.hasChildren = childrenNum > 0 && code < 150000
+        if(!obj.code) obj.code = name
         for (const column of tableColumns) {
-            obj[column.prop] = column.prop === 'province' ? fullname : (getRadom(0, 100000) > 90000 ? 0 : getRadom(0, 100000))
+            obj[column.prop] = column.prop === 'province' ? (fullname || name) : (getRadom(0, 100000) > 90000 ? 0 : getRadom(0, 100000))
         }
         return obj
     })
@@ -111,6 +109,7 @@ const handleCellClass = ({ columnIndex, row, column }) => {
     if (columnIndex > 0) {
         return row[column.property] === 0 ? 'cell-zero' : 'cell-not-zero'
     }
+    return 'province-cell'
 }
 const formatterCellValue = (row, column, cellValue, index) => {
     if (column.property !== 'province') {
@@ -124,13 +123,14 @@ const handleCellClick = (cell) => {
 const loadData = async (row, treeNode, resolve) => {
     const { code } = row
     const res = await getData(code, dataType)
-    resolve(handleTableData(res.objects.default.geometries))
+    console.log(res)
+    const mapData = res.objects ? res.objects.default.geometries : res.features
+    resolve(handleTableData(mapData))
 }
 
 getData(mapId.value, dataType).then(res => {
     console.log(res)
     tableData.value = handleTableData(res.objects.default.geometries)
-    console.log(tableData.value)
 })
 </script>
 <style lang="scss" scoped>
@@ -163,6 +163,12 @@ getData(mapId.value, dataType).then(res => {
     background-color: #f5f5f5 !important;
     color: #333;
     font-weight: bold;
+}
+
+.province-cell .cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cell-not-zero {

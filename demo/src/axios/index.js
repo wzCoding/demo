@@ -19,7 +19,6 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     config.data = JSON.stringify(config.data)
-    config.headers = {}
     return config
   },
   error => {
