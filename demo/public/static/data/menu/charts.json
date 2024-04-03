@@ -2,7 +2,8 @@
     "menu": [
         {
             "index": "1",
-            "title": "bar",
+            "title": "chart and table",
+            "titleCN": "简单报表",
             "path": "/charts/index"
         }
     ]
