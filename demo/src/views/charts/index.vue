@@ -1,5 +1,5 @@
 <template>
-    <div class="chart-page">
+    <div class="chart-page" v-loading="loading">
         <div class="chart-container">
             <div class="chart-box">
                 <div class="chart-title">全国各地区水果产量统计图（单位：吨）</div>
@@ -40,7 +40,7 @@ ElMessage({
     message: '本页面所有数据均为随机虚构，如有雷同，纯属巧合！',
     type: 'info',
     showClose: true,
-    duration:0,
+    duration: 3000,
 })
 const locale = {
     name: 'zh-cn',
@@ -60,6 +60,7 @@ const locale = {
     }
 }
 let myChart = null
+const loading = ref(true)
 const dataType = 'map'
 const defaultSize = 8
 const layout = ref('total, sizes, prev, pager, next, jumper')
@@ -96,7 +97,6 @@ const tooltipFormatter = (params) => {
     return startElement + endElement
 }
 const chartOptions = {
-    color: ['#409eff'],
     legend: {
         show: true,
         itemWidth: 20,
@@ -302,10 +302,13 @@ const exportData = () => {
 }
 getData(mapId.value, dataType).then(res => {
     tableData.value = handleTableData(res.objects.default.geometries)
+    loading.value = false
 })
 </script>
 <style lang="scss" scoped>
 .chart-page {
+    width: 100%;
+    height: 100%;
     padding: 1rem;
     box-sizing: border-box;
 
@@ -328,6 +331,7 @@ getData(mapId.value, dataType).then(res => {
     .table-container {
         width: 100%;
         background-color: #fff;
+
         .table-title {
             width: 100%;
             display: flex;

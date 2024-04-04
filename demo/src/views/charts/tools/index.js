@@ -16,55 +16,10 @@ async function getMapData(code) {
     //json数据太大（>=300kb），解析会偶发性报错
     return JSON.parse(data)
 }
-const chartOptions = {
-    color: ['#409eff'],
-    tooltip: {
-        show: true,
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: [
-        {
-            type: 'category',
-            data: [],
-            axisTick: {
-                alignWithLabel: true
-            }
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value'
-        }
-    ],
-    series: [
-        {
-            name: '消耗量',
-            type: 'bar',
-            barWidth: '20',
-            data: []
-        }
-    ]
-}
-function getChartOptions(data = {}) {
-    const options = deepClone(chartOptions)
-    data.forEach(item => {
-        if(data.color) options.color = data.color
-        if(data.series){
-            
-        }
-    })
-    return options
+function pageScale(el){
+
 }
 export {
     getMapData,
-    getChartOptions
+    pageScale
 }

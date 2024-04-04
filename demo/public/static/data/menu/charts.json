@@ -5,6 +5,12 @@
             "title": "chart and table",
             "titleCN": "简单报表",
             "path": "/charts/index"
+        },
+        {
+            "index": "2",
+            "title": "big screen table",
+            "titleCN": "大屏报表",
+            "path": "/charts/screen"
         }
     ]
 }
