@@ -33,6 +33,7 @@
 import { ElButton, ElTable, ElTableColumn, ElPagination, ElMessage, ElConfigProvider } from 'element-plus'
 import { getData } from '@/utils/service'
 import { getRadom } from '@/utils/index'
+import { getEchartOption } from './tools'
 import { ref, reactive, computed } from 'vue'
 import { ElMapExportTable } from 'table-excel'
 import * as echarts from 'echarts'
@@ -96,79 +97,7 @@ const tooltipFormatter = (params) => {
     })
     return startElement + endElement
 }
-const chartOptions = {
-    legend: {
-        show: true,
-        itemWidth: 20,
-        itemHeight: 12,
-        bottom: '10%',
-        data: []
-    },
-    tooltip: {
-        show: true,
-        trigger: 'axis',
-        confine: true,
-        axisPointer: {
-            type: 'shadow'
-        },
-        formatter: tooltipFormatter
-    },
-    dataZoom: [
-        {
-            type: 'slider',
-            show: true,
-            start: 0,
-            end: 10,
-            xAxisIndex: [0],
-            bottom: '5%',
-            height: 16,
-            handleSize: 0,
-            zoomLock: true
-        }
-    ],
-    grid: {
-        top: '10%',
-        left: '1%',
-        right: '1%',
-        bottom: '20%',
-        containLabel: true
-    },
-    xAxis: [
-        {
-            type: 'category',
-            data: [],
-            axisTick: {
-                alignWithLabel: true
-            }
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value',
-            axisLabel: {
-                color: '#333',
-            }
-        },
-        {
-            type: 'value',
-            min: 0,
-            max: 100,
-            interval: 20,
-            splitLine: {
-                lineStyle: {
-                    color: ['#ccc']
-                }
-            },
-            axisLabel: {
-                color: '#333',
-                formatter: function (value) {
-                    return value + '%';
-                }
-            }
-        }
-    ],
-    series: []
-}
+
 const handleChartData = (data) => {
     const legend = []
     const series = []
@@ -203,6 +132,8 @@ const initChart = (data) => {
         myChart = echarts.init(document.getElementById('chart-1'))
     }
     const { xAxis, series, legend } = handleChartData(data)
+    const chartOptions = getEchartOption()
+    chartOptions.tooltip.formatter = tooltipFormatter
     chartOptions.legend.data = legend
     chartOptions.xAxis[0].data = xAxis
     chartOptions.series = series
@@ -254,9 +185,6 @@ const formatterCellValue = (row, column, cellValue, index) => {
 }
 const handleCellClick = (row, column, cell) => {
     if (cell.columnIndex === 0) return
-    console.log(cell)
-    console.log(row)
-    console.log(column)
 }
 const loadData = async (row, treeNode, resolve) => {
     const { code } = row
