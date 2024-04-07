@@ -3,14 +3,20 @@
         {
             "index": "1",
             "title": "chart and table",
-            "titleCN": "简单报表",
+            "titleCN": "简单图表",
             "path": "/charts/index"
         },
         {
             "index": "2",
             "title": "big screen table",
-            "titleCN": "大屏报表",
+            "titleCN": "大屏数据",
             "path": "/charts/screen"
+        },
+        {
+            "index": "2",
+            "title": "chart map",
+            "titleCN": "echarts 地图",
+            "path": "/charts/map"
         }
     ]
 }

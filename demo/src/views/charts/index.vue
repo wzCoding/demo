@@ -11,7 +11,7 @@
                 <span>全国各地区水果产量统计表（单位：吨）</span>
                 <el-button @click="exportData">导出</el-button>
             </div>
-            <el-table header-cell-class-name="header-cell" :data="pageData" border stripe lazy row-key="code"
+            <el-table header-cell-class-name="header-cell" :data="pageData" border stripe lazy row-key="adcode"
                 :cell-class-name="handleCellClass" :empty-text="emptyText" :height="tableHeight"
                 :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" :load="loadData"
                 @cell-click="handleCellClick">
@@ -142,20 +142,20 @@ const initChart = (data) => {
     myChart.setOption(chartOptions)
 }
 const handleTableData = (data) => {
-    const result = data.map(item => {
-        const { fullname = '', code = '', level = '', filename = '', name = '', childrenNum = false } = item.properties
-        const obj = { code, level, filename }
-        obj.hasChildren = childrenNum > 0 && code < 150000
+    const result = data.features.map(item => {
+        const { adcode = '', level = '', name = '', childrenNum = 0 } = item.properties
+        const obj = { adcode, level }
+        obj.hasChildren = childrenNum > 0 && adcode < 150000
         for (const column of tableColumns) {
             if (column.prop === 'name') {
-                obj[column.prop] = fullname || name
+                obj[column.prop] = name
             } else if (column.prop !== 'passrate') {
                 obj[column.prop] = getRadom(0, 100000) > 90000 ? 0 : getRadom(0, 100000)
             } else {
                 obj.passrate = getRadom(0, 100)
             }
         }
-        if (!obj.code) obj.code = name
+        if (!obj.adcode) obj.adcode = name
         return obj
     })
     initChart(result)
@@ -187,10 +187,9 @@ const handleCellClick = (row, column, cell) => {
     if (cell.columnIndex === 0) return
 }
 const loadData = async (row, treeNode, resolve) => {
-    const { code } = row
-    const res = await getData(code, dataType)
-    const mapData = res.objects ? res.objects.default.geometries : res.features
-    const tableData = handleTableData(mapData, row)
+    const { adcode } = row
+    const res = await getData(adcode, dataType)
+    const tableData = handleTableData(res)
     row.children = tableData
     resolve(tableData)
 }
@@ -229,7 +228,7 @@ const exportData = () => {
 
 }
 getData(mapId.value, dataType).then(res => {
-    tableData.value = handleTableData(res.objects.default.geometries)
+    tableData.value = handleTableData(res)
     loading.value = false
 })
 </script>
