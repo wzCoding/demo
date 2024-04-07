@@ -1,5 +1,5 @@
 <template>
-    <div class="map map-page">
+    <div class="map map-page" v-loading="loading">
         <div class="map-info">
             <div class="info-left">{{ mapInfo }}</div>
             <div class="info-right">
@@ -11,11 +11,12 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import { getData } from '@/utils/service'
 import * as echarts from 'echarts'
 import EButton from '@/components/Button'
 
+const loading = ref(true)
 const dataType = 'map'
 const mapId = ref('china')
 const mapInfo = computed(() => {
@@ -27,29 +28,37 @@ const mapInfo = computed(() => {
 })
 const area = ref([])
 const back = () => {
-    if (!area.value.length) return
+    if (loading.value) return
+    loading.value = true
     const lastIndex = area.value.length - 1
     area.value.splice(lastIndex, 1)
     if (area.value.length === 0) {
+        loading.value = false
         reset()
         return
     }
     const backIndex = area.value.length - 1
     const backAdcode = area.value[backIndex].adcode
     getData(backAdcode, dataType).then(res => {
+        loading.value = false
         initChart(backAdcode, res)
     })
 }
 const reset = () => {
+    if (loading.value) return
+    loading.value = true
     area.value = []
     getData(mapId.value, dataType).then(res => {
+        loading.value = false
         initChart(mapId.value, res)
     })
 }
 const handleChartClick = (params) => {
+    loading.value = true
     const { adcode, name, level, hasChildren } = params.data
     if (!hasChildren) return
     getData(adcode, dataType).then(res => {
+        loading.value = false
         area.value.push({ name, adcode, level })
         initChart(adcode, res)
     })
@@ -92,7 +101,6 @@ const initChart = (mapId, data) => {
                 regions: regionStyle(source),
                 zoom: 3,
                 roam: true,
-                selectedMode: 'single',
                 layoutCenter: ['40%', '100%'],
                 layoutSize: '100%',
                 scaleLimit: {
@@ -131,6 +139,7 @@ const initChart = (mapId, data) => {
     }
 }
 getData(mapId.value, dataType).then(res => {
+    loading.value = false
     initChart(mapId.value, res)
 })
 // onMounted(() => {
