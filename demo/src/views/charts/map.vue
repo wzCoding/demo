@@ -20,38 +20,37 @@ const dataType = 'map'
 const mapId = ref('china')
 const mapInfo = computed(() => {
     let path = '全国地图'
-    if (area && area.length) {
-        path = area.map(item => item.name).join('/')
+    if (area.value && area.value.length) {
+        path = area.value.map(item => item.name).join('/')
     }
     return `当前地图：${path}`
 })
-const area = reactive([])
+const area = ref([])
 const back = () => {
-    if(!area.length) return
-    const lastIndex = area.length - 1
-    area.splice(lastIndex, 1)
-    if (area.length === 0) {
+    if (!area.value.length) return
+    const lastIndex = area.value.length - 1
+    area.value.splice(lastIndex, 1)
+    if (area.value.length === 0) {
         reset()
         return
     }
-    const backIndex = area.length - 1
-    const backAdcode = area[backIndex].adcode
+    const backIndex = area.value.length - 1
+    const backAdcode = area.value[backIndex].adcode
     getData(backAdcode, dataType).then(res => {
         initChart(backAdcode, res)
     })
 }
 const reset = () => {
+    area.value = []
     getData(mapId.value, dataType).then(res => {
         initChart(mapId.value, res)
     })
 }
 const handleChartClick = (params) => {
-    console.log(params)
     const { adcode, name, level, hasChildren } = params.data
     if (!hasChildren) return
     getData(adcode, dataType).then(res => {
-        console.log(res)
-        area.push({ name, adcode, level })
+        area.value.push({ name, adcode, level })
         initChart(adcode, res)
     })
 }
@@ -124,13 +123,12 @@ const initChart = (mapId, data) => {
     const chartDom = document.querySelector('.map-box')
     const instance = echarts.getInstanceByDom(chartDom)
     if (instance) {
-        instance.setOption(options)
+        instance.setOption(options, { notMerge: true, lazyUpdate: true })
     } else {
         const myChart = echarts.init(chartDom)
         myChart.setOption(options)
         myChart.on('click', handleChartClick)
     }
-
 }
 getData(mapId.value, dataType).then(res => {
     initChart(mapId.value, res)

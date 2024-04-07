@@ -15,7 +15,7 @@
         {
             "index": "2",
             "title": "chart map",
-            "titleCN": "echarts 地图",
+            "titleCN": "地图数据",
             "path": "/charts/map"
         }
     ]
