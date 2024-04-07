@@ -29,34 +29,34 @@ const mapInfo = computed(() => {
 const area = ref([])
 const back = () => {
     if (loading.value) return
-    loading.value = true
     const lastIndex = area.value.length - 1
     area.value.splice(lastIndex, 1)
     if (area.value.length === 0) {
-        loading.value = false
         reset()
         return
     }
     const backIndex = area.value.length - 1
     const backAdcode = area.value[backIndex].adcode
+    loading.value = true
     getData(backAdcode, dataType).then(res => {
         loading.value = false
         initChart(backAdcode, res)
     })
 }
 const reset = () => {
-    if (loading.value) return
-    loading.value = true
+    if (loading.value) return 
     area.value = []
+    loading.value = true
     getData(mapId.value, dataType).then(res => {
         loading.value = false
         initChart(mapId.value, res)
     })
 }
 const handleChartClick = (params) => {
-    loading.value = true
+    if (loading.value) return 
     const { adcode, name, level, hasChildren } = params.data
     if (!hasChildren) return
+    loading.value = true
     getData(adcode, dataType).then(res => {
         loading.value = false
         area.value.push({ name, adcode, level })
