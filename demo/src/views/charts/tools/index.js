@@ -98,8 +98,7 @@ function getEchartOption(options = {}) {
     return chartOptions
 }
 //页面缩放
-function pageScale(el) {
-
+function pageScale(el, callback) {
     const scale = () => {
         //获取元素的宽高
         const targetWidth = el.clientWidth || 1920
@@ -128,15 +127,11 @@ function pageScale(el) {
             scaleRatio = targetWidth / rootWidth
             scaleStyle += `transform: scale(${scaleRatio});`
         }
+        callback && callback(scaleRatio)
     }
+    scale()
     const resize = debounce(scale, 300)
-    onMounted(() => {
-        scale()
-        window.addEventListener('resize', resize)
-    })
-    onUnmounted(() => {
-        window.removeEventListener('resize', resize)
-    })
+    return resize
 }
 export {
     getMapData,

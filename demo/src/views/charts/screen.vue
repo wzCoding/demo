@@ -3,7 +3,7 @@
         <div class="screen-header">
             <div class="header-left date">{{ date }}</div>
             <h3 class="header-middle title">{{ title }}</h3>
-            <div class="header-right time">{{ time }}</div>
+            <div class="header-right time">{{ weekDay }} {{ time }}</div>
         </div>
         <div class="screen-chart-container">
             <div class="chart-container container-1">
@@ -61,7 +61,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Timer } from '@/utils/timer'
-import { getEchartOption } from './tools'
+import { getEchartOption, pageScale } from './tools'
 import { getRadom } from '@/utils/index'
 import * as echarts from 'echarts'
 const timer = new Timer()
@@ -71,6 +71,12 @@ const day = new Date().getDate()
 const hour = ref(new Date().getHours())
 const minute = ref(new Date().getMinutes())
 const second = ref(new Date().getSeconds())
+const getWeekDay = () => {
+    const weekDay = new Date().getDay()
+    const weekDayMap = ['日', '一', '二', '三', '四', '五', '六']
+    return `星期${weekDayMap[weekDay]}`
+}
+const weekDay = getWeekDay()
 const timeFormatter = (num) => num < 10 ? '0' + num : num
 const timeOut = ref(0)
 const timeNow = () => {
@@ -148,7 +154,7 @@ const chartOptions = [
         ],
         option: () => {
             const options = getEchartOption()
-            const names = [
+            const datas = [
                 { name: '水果产量', color: 'rgba(137, 189, 27, $alpha)' },
                 { name: '水果合格产量', color: 'rgba(219, 50, 51, $alpha)' },
                 { name: '水果销量', color: 'rgba(0, 136, 212, $alpha)' }
@@ -204,7 +210,7 @@ const chartOptions = [
                 itemGap: 10,
                 top: '16',
                 right: '10',
-                data: (() => names.map(item => item.name))(),
+                data: (() => datas.map(item => item.name))(),
                 textStyle: {
                     fontSize: 14,
                     color: '#a0a8b9'
@@ -240,7 +246,7 @@ const chartOptions = [
                 containLabel: false
             }
             options.series = (() => {
-                return names.map((item, index) => {
+                return datas.map((item, index) => {
                     return {
                         name: item.name,
                         type: 'line',
@@ -283,7 +289,7 @@ const chartOptions = [
         ],
         option: () => {
             const options = getEchartOption()
-            const names = [
+            const datas = [
                 { name: '水果产量', color: 'rgba(137, 189, 27, $alpha)' },
                 { name: '水果合格产量', color: 'rgba(219, 50, 51, $alpha)' },
                 { name: '水果销量', color: 'rgba(0, 136, 212, $alpha)' }
@@ -339,7 +345,7 @@ const chartOptions = [
                 itemGap: 10,
                 top: '16',
                 right: '10',
-                data: (() => names.map(item => item.name))(),
+                data: (() => datas.map(item => item.name))(),
                 textStyle: {
                     fontSize: 14,
                     color: '#a0a8b9'
@@ -375,7 +381,7 @@ const chartOptions = [
                 containLabel: false
             }
             options.series = (() => {
-                return names.map((item, index) => {
+                return datas.map((item, index) => {
                     return {
                         name: item.name,
                         type: 'line',
@@ -435,7 +441,89 @@ const chartOptions = [
         class: 'chart-box-4',
         title: '水果销量统计',
         option: () => {
-
+            const datas = { name: '水果销量', types: ['bar', 'line'] }
+            const options = getEchartOption()
+            options.yAxis[1].show = false
+            options.dataZoom = null
+            options.color = ['#c23531']
+            options.grid = {
+                top: '40',
+                left: '10%',
+                right: '10',
+                containLabel: false
+            }
+            options.tooltip = {
+                trigger: "axis",
+                backgroundColor: 'rgba(50,50,50,0.7)',
+                borderColor: 'rgba(50,50,50,0.7)',
+                borderRadius: 8,
+                borderWidth: 2,
+                padding: [5],
+                formatter: function (params) {
+                    return `<div><span>${params[0].seriesName}</span><div>${params[0].axisValueLabel}：${params[0].data
+                        }</div></div>`
+                },
+                textStyle: { color: '#fff' },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#ffff00'
+                    }
+                }
+            }
+            options.yAxis = [
+                {
+                    type: 'value',
+                    splitNumber: 5,
+                    max: 5000,
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    splitArea: { show: false },
+                    axisLabel: { color: '#9faeb5', fontSize: 16, },
+                    axisLine: { show: true, lineStyle: { width: 2, color: '#4d4d4d' } }
+                }
+            ]
+            options.xAxis = [
+                {
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    splitArea: { show: false },
+                    axisLabel: { fontSize: 14, fontWeight: 100, color: '#9faeb5' },
+                    interval: 0,
+                    data: (() => Array(9).fill(0).map((_, index) => `${index + 1}月`))(),
+                }
+            ]
+            options.series = (() => {
+                const itemStyle = {
+                    borderRadius: 15,
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#00d386' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#0076fc' // 100% 处的颜色
+                        }]
+                    }
+                }
+                const seriesData = (() => options.xAxis[0].data.map(() => getRadom(500, 5000)))()
+                return datas.types.map(item => {
+                    const series = {
+                        type: item,
+                        name: item === 'bar' ? datas.name : '',
+                        itemStyle: item === 'bar' ? itemStyle : null,
+                        label: item === 'bar' ? { show: true, position: 'top', color: '#fff', fontSize: 10 } : { show: false },
+                        data: seriesData,
+                        barWidth: 16,
+                    }
+                    return series
+                })
+            })()
+            return options
         }
     },
     {
@@ -443,7 +531,80 @@ const chartOptions = [
         class: 'chart-box-5',
         title: '水果销量统计',
         option: () => {
-
+            const datas = { name: '水果销量', types: ['bar', 'line'] }
+            const options = getEchartOption()
+            options.yAxis[1].show = false
+            options.dataZoom = null
+            options.color = ['#4a4df0', '#c7b198']
+            options.grid = {
+                top: '40',
+                left: '10%',
+                right: '10',
+                containLabel: false
+            }
+            options.legend = {
+                right: '24',
+                top: "10",
+                itemWidth: 8,
+                itemHeight: 12,
+                textStyle: { color: '#fff', fontSize: 14 },
+                data: ['水果销量'],
+            }
+            options.tooltip = {
+                trigger: "axis",
+                backgroundColor: 'rgba(50,50,50,0.7)',
+                borderColor: 'rgba(50,50,50,0.7)',
+                borderRadius: 8,
+                borderWidth: 2,
+                padding: [5],
+                formatter: function (params) {
+                    return `<div><span>${params[0].seriesName}</span><div>${params[0].axisValueLabel}：${params[0].data
+                        }</div></div>`
+                },
+                textStyle: { color: '#fff' },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#ffff00'
+                    }
+                }
+            }
+            options.yAxis = [
+                {
+                    type: 'value',
+                    max: 7000,
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    splitArea: { show: false },
+                    axisLabel: { color: '#9faeb5', fontSize: 14, },
+                    axisLine: { show: true, lineStyle: { width: 2, color: '#4d4d4d' } }
+                }
+            ]
+            options.xAxis = [
+                {
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    splitArea: { show: false },
+                    axisLabel: { fontSize: 14, fontWeight: 100, color: '#9faeb5' },
+                    interval: 0,
+                    data: ['苹果', '香蕉', '橙子', '菠萝', '西瓜', '葡萄', '草莓', '樱桃', '梨子'],
+                }
+            ]
+            options.series = (() => {
+                const seriesData = (() => options.xAxis[0].data.map(() => getRadom(500, 7000)))()
+                return datas.types.map(item => {
+                    const series = {
+                        type: item,
+                        name: item === 'bar' ? datas.name : '',
+                        label: item === 'bar' ? { show: true, position: 'top', color: '#fff', fontSize: 10 } : { show: false },
+                        data: seriesData,
+                        barWidth: 16,
+                    }
+                    return series
+                })
+            })()
+            return options
         }
     },
     {
@@ -451,12 +612,80 @@ const chartOptions = [
         class: 'chart-box-6',
         title: '水果销量统计',
         option: () => {
-
+            const datas = { name: '水果销量', types: ['bar', 'line'] }
+            const options = getEchartOption()
+            options.yAxis[1].show = false
+            options.dataZoom = null
+            options.color = ['#ff2600', '#ffc000', '#00ad4e', '#0073c2', '#165868', '#e76f00', '#316194', '#723761', '#00b2f1', '#4d6022', '#4b83bf', '#f9c813', '#0176c0']
+            options.grid = {
+                top: '40',
+                left: '10%',
+                right: '10',
+                containLabel: false
+            }
+            options.tooltip = {
+                trigger: "axis",
+                backgroundColor: 'rgba(50,50,50,0.7)',
+                borderColor: 'rgba(50,50,50,0.7)',
+                borderRadius: 8,
+                borderWidth: 2,
+                padding: [5],
+                formatter: function (params) {
+                    return `<div><span>${params[0].seriesName}</span><div>${params[0].axisValueLabel}：${params[0].data
+                        }</div></div>`
+                },
+                textStyle: { color: '#fff' },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#ffff00'
+                    }
+                }
+            }
+            options.yAxis = [
+                {
+                    type: 'value',
+                    splitNumber: 5,
+                    max: 6000,
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    splitArea: { show: false },
+                    axisLabel: { color: '#9faeb5', fontSize: 14, },
+                    axisLine: { show: false }
+                }
+            ]
+            options.xAxis = [
+                {
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    splitArea: { show: false },
+                    axisLine: { show: false },
+                    axisLabel: { fontSize: 14, fontWeight: 100, color: '#9faeb5' },
+                    interval: 0,
+                    data: ['苹果', '香蕉', '橙子', '菠萝', '西瓜', '葡萄', '草莓', '樱桃', '梨子'],
+                }
+            ]
+            options.series = (() => {
+                const seriesData = (() => options.xAxis[0].data.map(() => getRadom(500, 5000)))()
+                return datas.types.map(item => {
+                    const series = {
+                        type: item,
+                        name: item === 'bar' ? datas.name : '',
+                        label: item === 'bar' ? { show: true, position: 'top', color: '#fff', fontSize: 10 } : { show: false },
+                        itemStyle: item === 'bar' ? { color: (params) => options.color[params.dataIndex] } : null,
+                        lineStyle: { color: '#d3d5fd' },
+                        data: seriesData,
+                        barWidth: 16,
+                    }
+                    return series
+                })
+            })()
+            return options
         }
     }
 ]
 const initChart = (id, option) => {
-
     const chartDom = document.getElementById(id)
     const instance = echarts.getInstanceByDom(chartDom)
     if (instance) {
@@ -464,6 +693,15 @@ const initChart = (id, option) => {
     } else {
         const myChart = echarts.init(chartDom)
         myChart.setOption(option)
+    }
+}
+const resizeCharts = () => {
+    for (const item of chartOptions) {
+        if (item.option) {
+            const chartDom = document.getElementById(item.id)
+            const instance = echarts.getInstanceByDom(chartDom)
+            instance && instance.resize()
+        }
     }
 }
 const chartIndex = ref(0)
@@ -496,6 +734,7 @@ const timeInterval = timer.interval(() => {
     chartUpdate(chartIndex.value)
     tableUpdate()
 }, 3000)
+
 onMounted(() => {
     for (const item of chartOptions) {
         const option = item.option && item.option()
@@ -503,10 +742,12 @@ onMounted(() => {
             initChart(item.id, option)
         }
     }
+    window.addEventListener('resize', pageScale(document.querySelector('.screen-page'), resizeCharts))
 })
 onBeforeUnmount(() => {
     timer.clear(timeOut.value)
     timer.clear(timeInterval)
+    window.removeEventListener('resize', pageScale(document.querySelector('.screen-page'), resizeCharts))
 })
 </script>
 <style lang="scss" scoped>
@@ -519,7 +760,6 @@ onBeforeUnmount(() => {
 .list-enter-from,
 .list-leave-to {
     opacity: 0;
-    transform: translateY(30px);
 }
 
 .list-leave-active {
@@ -552,6 +792,8 @@ onBeforeUnmount(() => {
         .title {
             color: #fff;
             text-align: center;
+            padding-bottom: 20px;
+            font-size: 24px;
         }
 
         .date {
@@ -590,7 +832,7 @@ onBeforeUnmount(() => {
             &.container-2 {
                 margin-top: 10px;
                 grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(2, 400px);
+                grid-template-rows: repeat(2, 360px);
 
                 .chart-table {
                     width: 100%
@@ -744,7 +986,7 @@ onBeforeUnmount(() => {
                     .table-content {
                         padding: 10px 20px;
                         width: 100%;
-                        height: 270px;
+                        height: 220px;
                         list-style-type: none;
                         overflow: hidden;
 
