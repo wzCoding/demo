@@ -18,17 +18,17 @@
             <div class="home-content">
                 <h2 class="home-greet">{{ greet }}</h2>
                 <h1 class="home-main-title">
-                    <span v-for=" title  in  mainTitle " :key="title"
+                    <span v-for=" title in mainTitle " :key="title"
                         :class="colorText.includes(title) ? 'color-text' : ''">{{
-        title }}</span>
+                            title }}</span>
                 </h1>
                 <h2 class="home-sub-title">
-                    <span v-for=" title  in  subTitle " :key="title"
+                    <span v-for=" title in subTitle " :key="title"
                         :class="colorText.includes(title) ? 'color-text' : ''">{{
-        title }}</span>
+                            title }}</span>
                 </h2>
                 <p class="home-info">{{ info }}</p>
-                <e-button class="start-btn" :text="startBtn.name" @click="toPage()">
+                <e-button class="start-btn" :text="startBtn.name" @click="toPage(menuStore.menu[id][1])">
                     <e-svg size="28" color="#fff" :name="startBtn.icon" />
                 </e-button>
             </div>
