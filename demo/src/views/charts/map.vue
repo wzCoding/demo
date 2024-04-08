@@ -44,7 +44,7 @@ const back = () => {
     })
 }
 const reset = () => {
-    if (loading.value) return 
+    if (loading.value) return
     area.value = []
     loading.value = true
     getData(mapId.value, dataType).then(res => {
@@ -53,7 +53,7 @@ const reset = () => {
     })
 }
 const handleChartClick = (params) => {
-    if (loading.value) return 
+    if (loading.value) return
     const { adcode, name, level, hasChildren } = params.data
     if (!hasChildren) return
     loading.value = true

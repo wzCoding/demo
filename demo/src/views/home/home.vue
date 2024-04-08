@@ -39,6 +39,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/useMenuStore'
+import { Message } from '@/components/Message'
 import EButton from '@/components/Button'
 import ESvg from '@/components/Svg'
 
@@ -53,9 +54,13 @@ const subTitle = ['I`m', 'wzCoding']
 const colorText = ['Demo', 'I`m']
 const info = '这是我的 Demo 网页，这里记录展示了一些使用 CSS 和 JS 实现的前端 Demo，欢迎浏览 .'
 const startBtn = { name: "开始浏览", icon: "arrow" }
-
+const notAllowed = ['css','about']
 const router = useRouter()
 const toPage = (menu) => {
+    if(notAllowed.includes(menu.title)){
+        Message.info('敬请期待')
+        return
+    }
     if (menu.path) {
         const params = { path: menu.path, icon: menu.icon }
         router.push(params)
