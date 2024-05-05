@@ -1,5 +1,10 @@
 {
     "menu": [
-        
+        {
+            "index": "0",
+            "title": "cube",
+            "titleCN": "the dropping cubes",
+            "path": "/css/index"
+        }
     ]
 }
