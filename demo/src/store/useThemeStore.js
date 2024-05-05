@@ -1,6 +1,6 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
-import { setStorageCache, getStorageCache } from "@/utils"
+import { setStorageCache, getStorageCache,viewTransition } from "@/utils"
 
 let first = true
 const defaultTheme = ""
@@ -10,15 +10,19 @@ export const useThemeStore = defineStore("theme", () => {
     const theme = ref(getStorageCache(themeKey) || defaultTheme)
     
     if(first){
-        first = false
         if(theme.value !== defaultTheme) toggleTheme(theme.value)
+        first = false
     }
-
-    function toggleTheme(name) {
+    
+    function toggleTheme(event,name) {
         theme.value = name
-        document.documentElement.setAttribute('theme', name)
-        setStorageCache(themeKey, theme.value)
+        if(!first){
+            viewTransition(event,()=>{
+                document.documentElement.setAttribute('theme', name)
+                setStorageCache(themeKey, theme.value)
+            },theme.value)
+        }
     }
-
+    
     return { theme, toggleTheme }
 })

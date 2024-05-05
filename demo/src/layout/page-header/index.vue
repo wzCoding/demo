@@ -22,7 +22,7 @@
                         <div class="theme-control">
                             <div class="theme-btn" :class="themeClass">
                                 <e-button v-for=" item in themeIcon " :key="item.theme" :class="item.theme" gap="0"
-                                    @click="themeChange(item.toChangeTheme)">
+                                    @click="themeChange($event,item.toChangeTheme)">
                                     <e-svg size="24" :color="item.color" :name="item.theme" />
                                 </e-button>
                             </div>
@@ -92,8 +92,8 @@ export default {
                 toChangeTheme: ""
             }
         ]
-        const themeChange = (theme) => {
-            themeStore.toggleTheme(theme)
+        const themeChange = (event,theme) => {
+            themeStore.toggleTheme(event,theme)
         }
 
         return {

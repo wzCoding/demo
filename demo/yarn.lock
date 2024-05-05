@@ -6229,6 +6229,11 @@ svgo@^2.7.0:
     picocolors "^1.0.0"
     stable "^0.1.8"
 
+swiper@^11.1.1:
+  version "11.1.1"
+  resolved "https://registry.npmjs.org/swiper/-/swiper-11.1.1.tgz#5efaa222d4a47a3ac75090cfc2fda6e53e564982"
+  integrity sha512-jGmEA/fNz1lACIcY4/40ggm1Gcyv+EUivmgV/Jd2WFPsEJhbWXnRAwzZR8OPjkBLtDxmzcoYG/iiAMWfRs0YKQ==
+
 table-excel@^2.0.5:
   version "2.0.5"
   resolved "https://registry.npmjs.org/table-excel/-/table-excel-2.0.5.tgz#69cfe3ae9db70a75f4947970bdcb4921534b2a21"

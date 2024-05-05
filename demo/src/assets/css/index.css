@@ -39,6 +39,38 @@
     cursor: pointer;
 }
 
+::view-transition-image-pair(root) {
+    isolation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    display: block;
+}
+
+:root::view-transition-old(root) {
+    z-index: 1;
+}
+
+:root::view-transition-new(root) {
+    z-index: 2;
+}
+
+:root[theme=dark]::view-transition-old(root) {
+    z-index: 2;
+}
+
+:root[theme=dark]::view-transition-new(root) {
+    z-index: 1;
+}
+
+/* 页面过渡动画 */
+.fade-in-enter-active,
+.fade-in-leave-active {
+    transition: all var(--transition-time) cubic-bezier(0.67, 0.01, 0.36, 1);
+}
 
 /* transition组件过渡样式 */
 .rotate-in-enter-active,
@@ -75,13 +107,16 @@
     display: grid;
     grid-template-columns: 100%;
 }
+
 .components-page .item {
     position: relative;
     border-bottom: 1px solid var(--theme-gradient-color-2);
 }
+
 .components-page .item:last-child {
     border-bottom: none;
 }
+
 .components-page .item .display-area {
     min-height: 240px;
     display: flex;
@@ -299,8 +334,8 @@
     .home .home-content .start-btn {
         display: none;
     }
-    
-    .main .components-page .item .display-area{
+
+    .main .components-page .item .display-area {
         flex-direction: column;
     }
 }
