@@ -17,8 +17,8 @@ function createMask(options) {
         fullScreen: options.fullScreen,
         scrollLock: options.scrollLock,
         destoryOnClose: options.destoryOnClose,
-        onClose:()=>{
-            if(options.onClose && typeof options.onClose === 'function'){
+        onClose: () => {
+            if (options.onClose && typeof options.onClose === 'function') {
                 options.onClose()
             }
         },
@@ -105,14 +105,14 @@ function resolveOptions(options) {
         children: []
     })
     if (isObject(options)) {
-        Object.assign(defaultOptions, options)
+        Object.assign(defaultOptions,options)
         if (options.target) {
             defaultOptions.target = isObject(options.target) ? options.target : document.querySelector(options.target)
             defaultOptions.parent = defaultOptions.target == document.body ? document.body : defaultOptions.target
             defaultOptions.fullScreen = defaultOptions.target == document.body
         }
     }
-    
+
     return defaultOptions
 }
 
@@ -154,7 +154,6 @@ function maskInstance(options) {
     if (resolved.fullScreen) {
         fullScreenInstance = instance
     }
-
     resolved.parent.mask = instance
 
     return instance

@@ -62,7 +62,7 @@
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Timer } from '@/utils/timer'
 import { getEchartOption, pageScale } from './tools'
-import { getRadom } from '@/utils/index'
+import { getRandom } from '@/utils/index'
 import * as echarts from 'echarts'
 const timer = new Timer()
 const year = new Date().getFullYear()
@@ -148,9 +148,9 @@ const chartOptions = [
         class: 'chart-box-1',
         title: '全国水果产量统计',
         table: [
-            { name: '水果产量', data: getRadom(0, 10000) },
-            { name: '水果合格产量', data: getRadom(0, 10000) },
-            { name: '水果销量', data: getRadom(0, 10000) }
+            { name: '水果产量', data: getRandom(0, 10000) },
+            { name: '水果合格产量', data: getRandom(0, 10000) },
+            { name: '水果销量', data: getRandom(0, 10000) }
         ],
         option: () => {
             const options = getEchartOption()
@@ -250,7 +250,7 @@ const chartOptions = [
                     return {
                         name: item.name,
                         type: 'line',
-                        data: (() => options.xAxis[0].data.map(() => getRadom(0, (4 - index) * 1000)))(),
+                        data: (() => options.xAxis[0].data.map(() => getRandom(0, (4 - index) * 1000)))(),
                         smooth: true,
                         showSymbol: false,
                         lineStyle: { width: 2, color: item.color.replace("$alpha", "1") },
@@ -283,9 +283,9 @@ const chartOptions = [
         title: '全国水果销量统计',
         tableTitle: [{ text: '苹果', active: true }, { text: '香蕉', active: false }, { text: '西瓜', active: false }],
         table: [
-            { name: '水果产量', data: Array(3).fill(0).map(() => getRadom(0, 10000)) },
-            { name: '水果合格产量', data: Array(3).fill(0).map(() => getRadom(0, 10000)) },
-            { name: '水果销量', data: Array(3).fill(0).map(() => getRadom(0, 10000)) }
+            { name: '水果产量', data: Array(3).fill(0).map(() => getRandom(0, 10000)) },
+            { name: '水果合格产量', data: Array(3).fill(0).map(() => getRandom(0, 10000)) },
+            { name: '水果销量', data: Array(3).fill(0).map(() => getRandom(0, 10000)) }
         ],
         option: () => {
             const options = getEchartOption()
@@ -385,7 +385,7 @@ const chartOptions = [
                     return {
                         name: item.name,
                         type: 'line',
-                        data: (() => options.xAxis[0].data.map(() => getRadom(0, (4 - index) * 1000)))(),
+                        data: (() => options.xAxis[0].data.map(() => getRandom(0, (4 - index) * 1000)))(),
                         smooth: true,
                         showSymbol: false,
                         lineStyle: { width: 2, color: item.color.replace("$alpha", "1") },
@@ -424,14 +424,14 @@ const chartOptions = [
             ],
             data: reactive(
                 [
-                    { name: '苹果', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '香蕉', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '西瓜', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '葡萄', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '草莓', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '樱桃', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '橙子', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
-                    { name: '菠萝', total: getRadom(1000, 10000), money: getRadom(3000, 10000) },
+                    { name: '苹果', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '香蕉', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '西瓜', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '葡萄', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '草莓', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '樱桃', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '橙子', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
+                    { name: '菠萝', total: getRandom(1000, 10000), money: getRandom(3000, 10000) },
                 ]
             )
         }
@@ -510,7 +510,7 @@ const chartOptions = [
                         }]
                     }
                 }
-                const seriesData = (() => options.xAxis[0].data.map(() => getRadom(500, 5000)))()
+                const seriesData = (() => options.xAxis[0].data.map(() => getRandom(500, 5000)))()
                 return datas.types.map(item => {
                     const series = {
                         type: item,
@@ -592,7 +592,7 @@ const chartOptions = [
                 }
             ]
             options.series = (() => {
-                const seriesData = (() => options.xAxis[0].data.map(() => getRadom(500, 7000)))()
+                const seriesData = (() => options.xAxis[0].data.map(() => getRandom(500, 7000)))()
                 return datas.types.map(item => {
                     const series = {
                         type: item,
@@ -667,7 +667,7 @@ const chartOptions = [
                 }
             ]
             options.series = (() => {
-                const seriesData = (() => options.xAxis[0].data.map(() => getRadom(500, 5000)))()
+                const seriesData = (() => options.xAxis[0].data.map(() => getRandom(500, 5000)))()
                 return datas.types.map(item => {
                     const series = {
                         type: item,

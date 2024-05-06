@@ -32,7 +32,7 @@
 <script setup>
 import { ElButton, ElTable, ElTableColumn, ElPagination, ElMessage, ElConfigProvider } from 'element-plus'
 import { getData } from '@/utils/service'
-import { getRadom } from '@/utils/index'
+import { getRandom } from '@/utils/index'
 import { getEchartOption } from './tools'
 import { ref, reactive, computed } from 'vue'
 import { ElMapExportTable } from 'table-excel'
@@ -150,9 +150,9 @@ const handleTableData = (data) => {
             if (column.prop === 'name') {
                 obj[column.prop] = name
             } else if (column.prop !== 'passrate') {
-                obj[column.prop] = getRadom(0, 100000) > 90000 ? 0 : getRadom(0, 100000)
+                obj[column.prop] = getRandom(0, 100000) > 90000 ? 0 : getRandom(0, 100000)
             } else {
-                obj.passrate = getRadom(0, 100)
+                obj.passrate = getRandom(0, 100)
             }
         }
         if (!obj.adcode) obj.adcode = name

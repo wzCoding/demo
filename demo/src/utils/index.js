@@ -233,7 +233,7 @@ function getElementSize(el) {
         return el.getBoundingClientRect()
     }
 }
-function getRadom(min = 0, max = 100) {
+function getRandom(min = 0, max = 100) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
@@ -292,6 +292,6 @@ export {
     getCssValue,
     getElement,
     getElementSize,
-    getRadom,
+    getRandom,
     viewTransition
 }

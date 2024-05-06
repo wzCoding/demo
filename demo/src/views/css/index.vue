@@ -1,21 +1,24 @@
 <template>
     <div class="cubes" ref="cubes">
         <div class="cube-box" ref="cubesBox" :style="cubeBoxStyle">
-            <div v-for="i in sums" :key="i" class="cube-item" :style="cubeStyle"></div>
+            <div v-for="i in sums" :key="i" class="cube-item" :class="{ danger: i === dangerNum }" :style="cubeStyle">
+            </div>
         </div>
         <h1 class="cube-title">wzCoding</h1>
     </div>
 </template>
 <script setup>
-import { ref, onMounted, computed, nextTick } from 'vue';
+import { ref, onMounted, computed, nextTick } from 'vue'
+import { getRandom } from '@/utils/index'
+import { Message } from '@/components/Message/index'
+import { Mask } from '@/components/Mask/index'
 const cubeSize = 36
-const resetNums = 2
 const cubes = ref(null)
 const cubesBox = ref(null)
 const x = ref(0)
 const y = ref(0)
 const sums = ref(0)
-const bucket = []
+const dangerNum = ref(0)
 const cubeBoxStyle = computed(() => {
     return {
         width: `${cubeSize * x.value}px`,
@@ -25,29 +28,48 @@ const cubeBoxStyle = computed(() => {
 const cubeStyle = { width: `${cubeSize}px`, height: `${cubeSize}px` }
 
 const resetCubes = () => {
-    for (const cube of bucket) {
-        cube.classList.remove('active')
+    for (const cube of [...cubesBox.value.children]) {
+        const resetClasses = ['active', 'danger', 'reset']
+        cube.classList.remove(...resetClasses)
         cube.addEventListener('mouseenter', handleMouseEnter, { once: true })
     }
-    bucket.length = 0
+    dangerNum.value = getRandom(1, sums.value)
 }
 const handleMouseEnter = (e) => {
-    if (e.target.className !== 'cube-item') return
+    if (!e.target.className.includes('cube-item')) return
+   
+    if (e.target.className.includes('danger')) {
+        e.target.classList.add('reset')
+        const mask = Mask.open({
+            target:cubes.value,
+            show: true,
+            fullScreen: true,
+            zIndex: 998,
+            background: 'rgba(0,0,0,0.3)',
+        })
+        Message.info({
+            text:'啊哦，再来一次！',
+            showClose:true,
+            duration:0,
+            onClose:()=>{
+                resetCubes()
+                mask.close()
+            }
+        })
+        return
+    }
 
     let random = Math.random() * 2
     e.target.classList.add('active')
     e.target.style.animationDuration = 1 + random + 's'
-
-    bucket.push(e.target)
-    if(sums.value - bucket.length <= resetNums){
-        resetCubes()
-    }
 }
 onMounted(async () => {
     const { clientWidth, clientHeight } = cubes.value
     x.value = Math.floor(clientWidth / cubeSize)
     y.value = Math.floor(clientHeight / cubeSize)
     sums.value = x.value * y.value
+    dangerNum.value = getRandom(1, sums.value)
+
     await nextTick()
 
     for (const cube of [...cubesBox.value.children]) {
@@ -63,26 +85,29 @@ onMounted(async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    .cube-title{
+
+    .cube-title {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         color: #fff;
-        font-size:7.5rem;
+        font-size: 7.5rem;
     }
+
     .cube-box {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
         flex-wrap: wrap;
         overflow: hidden;
-        
+
         .cube-item {
             background-color: #222;
             box-shadow: 0 0 1px 1px #000;
             cursor: pointer;
-            z-index:1;
+            z-index: 1;
+
             &.active {
                 z-index: 2;
                 background-color: #0f0;
@@ -91,18 +116,25 @@ onMounted(async () => {
                     0 0 30px #0f0c;
                 animation: drop 2s linear forwards;
             }
-        }
 
-        @keyframes drop {
-            from {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            to {
-                transform: translateY(100vh) rotate(360deg);
+            &.danger.reset {
+                z-index: 2;
+                background-color: #f00;
+                box-shadow: 0 0 10px #f005,
+                    0 0 20px #f008,
+                    0 0 30px #f00c;
             }
         }
     }
 
+    @keyframes drop {
+        from {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        to {
+            transform: translateY(100vh) rotate(360deg);
+        }
+    }
 }
 </style>
