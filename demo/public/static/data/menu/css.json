@@ -2,9 +2,15 @@
     "menu": [
         {
             "index": "0",
-            "title": "cube",
-            "titleCN": "the dropping cubes",
+            "title": "dropping cubes",
+            "titleCN": "掉落的方块",
             "path": "/css/index"
+        },
+        {
+            "index": "1",
+            "title": "cards",
+            "titleCN": "抽卡效果",
+            "path": "/css/card"
         }
     ]
 }

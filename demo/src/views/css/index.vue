@@ -37,23 +37,25 @@ const resetCubes = () => {
 }
 const handleMouseEnter = (e) => {
     if (!e.target.className.includes('cube-item')) return
-   
+
     if (e.target.className.includes('danger')) {
         e.target.classList.add('reset')
         const mask = Mask.open({
-            target:cubes.value,
+            target: cubes.value,
             show: true,
             fullScreen: true,
-            zIndex: 998,
+            zIndex: 100,
             background: 'rgba(0,0,0,0.3)',
         })
         Message.info({
-            text:'啊哦，再来一次！',
-            showClose:true,
-            duration:0,
-            onClose:()=>{
-                resetCubes()
-                mask.close()
+            text: '啊哦，再来一次！',
+            showClose: true,
+            duration: 0,
+            onClose: () => {
+                if (cubesBox.value) {
+                    resetCubes()
+                    mask.close()
+                }
             }
         })
         return
@@ -61,7 +63,7 @@ const handleMouseEnter = (e) => {
 
     let random = Math.random() * 2
     e.target.classList.add('active')
-    e.target.style.animationDuration = 1 + random + 's'
+    e.target.style.animationDuration = 2 + random + 's'
 }
 onMounted(async () => {
     const { clientWidth, clientHeight } = cubes.value
