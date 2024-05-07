@@ -176,11 +176,11 @@ onMounted(() => {
                 .card-num {
                     
                     &.top {
-                        left: 10px;
+                        left: 5px;
                     }
 
                     &.bottom {
-                        right: 10px;
+                        right: 5px;
                     }
                 }
             }
