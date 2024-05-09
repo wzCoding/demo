@@ -11,6 +11,12 @@
             "title": "cards",
             "titleCN": "抽卡效果",
             "path": "/css/card"
+        },
+        {
+            "index": "2",
+            "title": "carousel",
+            "titleCN": "轮播图",
+            "path": "/css/carousel"
         }
     ]
 }
