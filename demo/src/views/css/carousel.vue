@@ -34,16 +34,11 @@ const carousel = ref(null)
 const carouselBox = ref(null)
 const defaultLength = ref(0)
 
+// 设置轮播图的索引数据
 const activeIndex = ref(0)
 const startIndex = ref(0)
 const endIndex = ref(0)
 
-const carouselStyle = computed(() => {
-    return {
-        transform: `translateX(${-activeIndex.value}00%)`,
-        transition: 'transform 0.5s ease-in-out'
-    }
-})
 // 设置无缝轮播 dom 结构
 const setCarousel = () => {
     //设置背景色
@@ -81,11 +76,8 @@ const updateCarousel = () => {
 const moveForward = () => {
     if (activeIndex.value === defaultLength.value) {
         activeIndex.value = startIndex.value - 1
-        // 设置过渡效果为 none，以便瞬间跳转到起始位置
-        carouselBox.value.style.transition = `none`
-        carouselBox.value.style.transform = `translateX(${-activeIndex.value}00%)`
-        // 强制渲染
-        carouselBox.value.getBoundingClientRect()
+        // 取消过渡效果
+        cancelTransition(activeIndex.value)
         // 从起始位置前进
         moveTo(activeIndex.value + 1)
     } else {
@@ -97,11 +89,8 @@ const moveForward = () => {
 const moveBackward = () => {
     if (activeIndex.value === startIndex.value) {
         activeIndex.value = endIndex.value
-        // 设置过渡效果为 none，以便瞬间跳转到结束位置
-        carouselBox.value.style.transition = `none`
-        carouselBox.value.style.transform = `translateX(${-activeIndex.value}00%)`
-        // 强制渲染
-        carouselBox.value.getBoundingClientRect()
+        // 取消过渡效果
+        cancelTransition(activeIndex.value)
         // 从结束位置后退
         moveTo(activeIndex.value - 1)
     } else {
@@ -113,18 +102,30 @@ const moveBackward = () => {
 const moveTo = (index) => {
     activeIndex.value = index
 }
+//取消过渡效果
+const cancelTransition = (index) => {
+    // 设置过渡效果为 none，以便瞬间跳转到结束位置
+    carouselBox.value.style.transition = `none`
+    carouselBox.value.style.transform = `translateX(${-index}00%)`
+    // 强制渲染
+    carouselBox.value.getBoundingClientRect()
+}
+//设置过渡效果
+const setTransition = (index) => {
+    return {
+        transform: `translateX(${-index}00%)`,
+        transition: 'transform 0.5s ease-in-out'
+    }
+}
 
-const handleMouseUp = (e) => {
-    console.log(e)
-}
-const handleMouseDown = (e) => {
-    console.log(e)
-}
+const carouselStyle = computed(() => setTransition(activeIndex.value))
+
 onMounted(() => {
     defaultLength.value = carouselBox.value.children.length
     // 设置轮播图
     setCarousel()
 })
+
 onBeforeUnmount(() => {
     // 清除定时器
     timer.clear(carouselTimer.value)
