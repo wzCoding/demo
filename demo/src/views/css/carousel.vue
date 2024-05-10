@@ -29,7 +29,7 @@ const carouselTimer = ref(null)
 // 设置轮播图的一些默认属性
 const loop = ref(true)
 const autoPlay = ref(true)
-const delay = 2000
+const delay = 1500
 
 const carousel = ref(null)
 const carouselBox = ref(null)

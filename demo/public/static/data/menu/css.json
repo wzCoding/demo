@@ -17,6 +17,24 @@
             "title": "carousel",
             "titleCN": "无缝轮播图",
             "path": "/css/carousel"
+        },
+        {
+            "index": "3",
+            "title": "waterfall",
+            "titleCN": "瀑布流",
+            "path": "/css/waterfall"
+        },
+        {
+            "index": "4",
+            "title": "flip animate",
+            "titleCN": "flip 动画",
+            "path": "/css/flip"
+        },
+        {
+            "index": "5",
+            "title": "virtual list",
+            "titleCN": "虚拟列表",
+            "path": "/css/virtualList"
         }
     ]
 }
