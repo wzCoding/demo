@@ -29,6 +29,7 @@ const carouselTimer = ref(null)
 // 设置轮播图的一些默认属性
 const loop = ref(true)
 const autoPlay = ref(true)
+const delay = 2000
 
 const carousel = ref(null)
 const carouselBox = ref(null)
@@ -48,9 +49,11 @@ const setCarousel = () => {
     if (loop.value) {
         //设置开始索引
         activeIndex.value = startIndex.value = 1
+        // 设置原始长度
+        defaultLength.value = carouselBox.value.children.length
         // 克隆第一张和最后一张
         const firstNode = carouselBox.value.children[0]
-        const lastNode = carouselBox.value.children[carouselBox.value.children.length - 1]
+        const lastNode = carouselBox.value.children[defaultLength.value - 1]
         carouselBox.value.insertBefore(lastNode.cloneNode(true), firstNode)
         carouselBox.value.appendChild(firstNode.cloneNode(true))
         //设置结束索引
@@ -62,14 +65,14 @@ const setCarousel = () => {
     }
 }
 const updateCarousel = () => {
-    carouselTimer.value = timer.interval(moveForward, 1000)
+    carouselTimer.value = timer.interval(moveForward, delay)
     carousel.value.addEventListener('mouseenter', () => {
         // 清除定时器
         timer.clear(carouselTimer.value)
     })
     carousel.value.addEventListener('mouseleave', () => {
         // 重新设置定时器
-        carouselTimer.value = timer.interval(moveForward, 1000)
+        carouselTimer.value = timer.interval(moveForward, delay)
     })
 }
 //向前移动
@@ -114,14 +117,13 @@ const cancelTransition = (index) => {
 const setTransition = (index) => {
     return {
         transform: `translateX(${-index}00%)`,
-        transition: 'transform 0.5s ease-in-out'
+        transition: 'transform 0.5s ease-in'
     }
 }
 
 const carouselStyle = computed(() => setTransition(activeIndex.value))
 
 onMounted(() => {
-    defaultLength.value = carouselBox.value.children.length
     // 设置轮播图
     setCarousel()
 })
@@ -137,14 +139,14 @@ onBeforeUnmount(() => {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: #666;
+    background-color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
 
     .carousel {
-        width: 400px;
-        height: 200px;
+        width:500px;
+        height: 240px;
         overflow: hidden;
         border: 4px solid #000;
         box-sizing: content-box;
@@ -159,10 +161,10 @@ onBeforeUnmount(() => {
         .carousel-item {
             width: 100%;
             height: 100%;
-            line-height: 200px;
             cursor: pointer;
             display: inline-block;
             text-align: center;
+            line-height: 240px;
             font-size: 48px;
             color: #333;
         }
