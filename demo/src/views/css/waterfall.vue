@@ -8,7 +8,7 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,onBeforeUnmount } from 'vue'
 import { getRandom, debounce } from '@/utils/index'
 
 //设置默认属性
@@ -18,7 +18,7 @@ const defaultWidth = 200, defaultGap = 10, difference = 30
 const waterfall = ref(null)
 const waterfallBox = ref(null)
 
-//设置随机高度
+//模拟设置随机高度
 const setItemHeight = () => {
     Array.from(waterfallBox.value.children).forEach(item => {
         item.style.height = `${getRandom(minHeight, maxHeight)}px`
@@ -72,11 +72,13 @@ const initColumns = () => {
     columns = Math.max(Math.ceil(parentWidth / (defaultWidth + defaultGap)), 1)
 
     let { width } = getWidth(parentWidth, columns, defaultGap)
-
+    
+    //根据差值重新计算列数，确保子元素宽度变化在差值之内
+    //如果宽度变大，则增加列数重新计算以缩小宽度
     if (width > defaultWidth && width - defaultWidth > difference) {
         columns++
     }
-
+    //如果宽度变小，则减少列数重新计算以增加宽度
     if (width < defaultWidth && width + difference < defaultWidth) {
         columns--
     }
@@ -93,13 +95,17 @@ const initColumns = () => {
         setItemStyle(item, width)
     })
 }
+const resize = debounce(initColumns, 100)
 
 onMounted(() => {
     setItemHeight()
     initColumns()
-    window.addEventListener('resize', debounce(initColumns, 100))
+    window.addEventListener('resize', resize)
 })
 
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', resize)
+})
 
 </script>
 <style lang="scss" scoped>
