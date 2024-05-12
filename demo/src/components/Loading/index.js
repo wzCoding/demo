@@ -1,6 +1,6 @@
 import LoadingTemplate from "./template"
 import { createVNode,createApp, reactive, ref, isRef ,nextTick,toRefs} from "vue"
-import { isObject,addClass,removeClass } from "../../utils/index"
+import { isObject } from "../../utils/index"
 
 //全屏loading使用同一个实例
 let fullScreenInstance
@@ -49,7 +49,6 @@ function LoadingInstance(options) {
     if (resolved.fullScreen && fullScreenInstance) {
         return fullScreenInstance
     }
-
     const instance = createLoading({
         ...resolved,
     })
@@ -90,15 +89,15 @@ function resolveOptions(options) {
 function setParentStyle(options) {
     if (!options.parent) return
     const { position } = getComputedStyle(options.parent, "position")
-    if (options.scrollLock) {
-        addClass(options.parent, "mask-scrollLock")
+    if (options.scrollLock.value) {
+        options.parent.classList.add("mask-scrollLock")
     } else {
-        removeClass(options.parent, "mask-scrollLock")
+        options.parent.classList.remove("mask-scrollLock")
     }
     if (!["absolute", "fixed", "sticky"].includes(position)) {
-        addClass(options.parent, "mask-position")
+        options.parent.classList.add("mask-position")
     } else {
-        removeClass(options.parent, "mask-position")
+        options.parent.classList.remove("mask-position")
     }
 }
 

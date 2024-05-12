@@ -35,6 +35,12 @@
             "title": "virtual list",
             "titleCN": "虚拟列表",
             "path": "/css/virtualList"
+        },
+        {
+            "index": "6",
+            "title": "parallax scroll",
+            "titleCN": "视差滚动",
+            "path": "/css/parallaxScroll"
         }
     ]
 }

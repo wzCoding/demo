@@ -90,20 +90,6 @@ function isEmpty(value) {
     return result
 }
 
-function addClass(target, className) {
-    const node = isString(target) ? document.querySelector(target) : target
-    if (node.className) {
-        node.className += ` ${className}`
-    } else {
-        node.className = className
-    }
-}
-function removeClass(target, className) {
-    const node = isString(target) ? document.querySelector(target) : target
-    if (className && node.className) {
-        node.className = node.className.replace(className, "").trim()
-    }
-}
 function isMobile() {
     return ('ontouchstart' in document.documentElement)
 }
@@ -254,7 +240,7 @@ function viewTransition(event = null, callback = null, reverse = false) {
         Math.max(y, document.body.clientHeight - y)
     );
     //剪裁路径
-    const path = [`circle(0 at ${x}px ${y}px)`,`circle(${endRadius}px at ${x}px ${y}px)`]
+    const path = [`circle(0 at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
     const transition = document.startViewTransition(() => {
         // 过渡动画执行完毕后的回调函数
         callback && callback()
@@ -263,15 +249,19 @@ function viewTransition(event = null, callback = null, reverse = false) {
         //使用 animate 动画函数执行过渡动画
         document.documentElement.animate(
             {
-                clipPath: reverse ? path.reverse() :path,
+                clipPath: reverse ? path.reverse() : path,
             },
             {
                 duration: 300,
                 easing: 'ease-in',
-                pseudoElement:reverse ? '::view-transition-old(root)' :'::view-transition-new(root)' ,
+                pseudoElement: reverse ? '::view-transition-old(root)' : '::view-transition-new(root)',
             }
         )
     })
+}
+async function getImage(name) {
+    const image = await import(`@/assets/images/${name}`)
+    return image.default
 }
 export {
     throttle,
@@ -281,8 +271,6 @@ export {
     isString,
     isNumber,
     isEmpty,
-    addClass,
-    removeClass,
     isMobile,
     deepClone,
     setStorageCache,
@@ -293,5 +281,6 @@ export {
     getElement,
     getElementSize,
     getRandom,
-    viewTransition
+    viewTransition,
+    getImage
 }

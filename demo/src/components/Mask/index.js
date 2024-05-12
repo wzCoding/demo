@@ -1,6 +1,6 @@
 import MaskTemplate from "./template"
 import { createVNode, render, reactive, Transition } from 'vue'
-import { isObject, addClass, removeClass } from "@/utils/index"
+import { isObject } from "@/utils/index"
 
 //全屏遮罩实例
 let fullScreenInstance
@@ -73,9 +73,7 @@ function createMask(options) {
 
     function destory() {
         options.parent.mask = null
-
-        removeClass(options.parent, "mask-position")
-        removeClass(options.parent, "mask-scrollLock")
+        options.parent.classList.remove("mask-position", "mask-scrollLock")
         render(null, container)
     }
 
@@ -105,7 +103,7 @@ function resolveOptions(options) {
         children: []
     })
     if (isObject(options)) {
-        Object.assign(defaultOptions,options)
+        Object.assign(defaultOptions, options)
         if (options.target) {
             defaultOptions.target = isObject(options.target) ? options.target : document.querySelector(options.target)
             defaultOptions.parent = defaultOptions.target == document.body ? document.body : defaultOptions.target
@@ -120,15 +118,15 @@ function resolveOptions(options) {
 function setParentStyle(options) {
     if (!options.parent) return
     const { position } = getComputedStyle(options.parent, "position")
-    if (options.scrollLock) {
-        addClass(options.parent, "mask-scrollLock")
+    if (options.scrollLock.value) {
+        options.parent.classList.add("mask-scrollLock")
     } else {
-        removeClass(options.parent, "mask-scrollLock")
+        options.parent.classList.remove("mask-scrollLock")
     }
     if (!["absolute", "fixed", "sticky"].includes(position)) {
-        addClass(options.parent, "mask-position")
+        options.parent.classList.add("mask-position")
     } else {
-        removeClass(options.parent, "mask-position")
+        options.parent.classList.remove("mask-position")
     }
 }
 

@@ -64,16 +64,19 @@ const setCarousel = () => {
         updateCarousel()
     }
 }
+
 const updateCarousel = () => {
     carouselTimer.value = timer.interval(moveForward, delay)
-    carousel.value.addEventListener('mouseenter', () => {
-        // 清除定时器
-        timer.clear(carouselTimer.value)
-    })
-    carousel.value.addEventListener('mouseleave', () => {
-        // 重新设置定时器
-        carouselTimer.value = timer.interval(moveForward, delay)
-    })
+    carousel.value.addEventListener('mouseenter', handleMouseEnter)
+    carousel.value.addEventListener('mouseleave', handleMouseLeave)
+}
+const handleMouseEnter = () => {
+    // 清除定时器
+    timer.clear(carouselTimer.value)
+}
+const handleMouseLeave = () => {
+    // 重新设置定时器
+    carouselTimer.value = timer.interval(moveForward, delay)
 }
 //向前移动
 const moveForward = () => {
@@ -145,7 +148,7 @@ onBeforeUnmount(() => {
     align-items: center;
 
     .carousel {
-        width:500px;
+        width: 500px;
         height: 240px;
         overflow: hidden;
         border: 4px solid #000;
