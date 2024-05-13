@@ -24,7 +24,7 @@ import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { Timer } from '@/utils/timer'
 
 let timer = new Timer()
-const carouselTimer = ref(null)
+let carouselTimer = null
 
 // 设置轮播图的一些默认属性
 const loop = ref(true)
@@ -66,17 +66,18 @@ const setCarousel = () => {
 }
 
 const updateCarousel = () => {
-    carouselTimer.value = timer.interval(moveForward, delay)
-    carousel.value.addEventListener('mouseenter', handleMouseEnter)
-    carousel.value.addEventListener('mouseleave', handleMouseLeave)
+    carouselTimer = timer.interval(moveForward, delay)
+    carousel.value.addEventListener('mouseenter', stopCarousel)
+    carousel.value.addEventListener('mouseleave', startCarousel)
 }
-const handleMouseEnter = () => {
+const stopCarousel = () => {
     // 清除定时器
-    timer.clear(carouselTimer.value)
+    timer.clear(carouselTimer)
+    carouselTimer = null
 }
-const handleMouseLeave = () => {
+const startCarousel = () => {
     // 重新设置定时器
-    carouselTimer.value = timer.interval(moveForward, delay)
+    carouselTimer = timer.interval(moveForward, delay)
 }
 //向前移动
 const moveForward = () => {
@@ -133,7 +134,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     // 清除定时器
-    timer.clear(carouselTimer.value)
+    stopCarousel()
+    carousel.value.removeEventListener('mouseenter', stopCarousel)
+    carousel.value.removeEventListener('mouseleave', startCarousel)
     timer = null
 })
 </script>

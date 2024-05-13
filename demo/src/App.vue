@@ -1,5 +1,7 @@
 <template>
-  <PageHeader v-show="isHome" themeControl></PageHeader>
+  <Transition name="rotate-in">
+    <PageHeader v-show="isHome" themeControl></PageHeader>
+  </Transition>
   <Transition name="rotate-in">
     <component :is="isHome ? Home : PageContainer" />
   </Transition>

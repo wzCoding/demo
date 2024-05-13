@@ -98,6 +98,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+    stopAutoScroll()
     parallax.value.removeEventListener('wheel', handleWheel)
     parallax.value.removeEventListener('transitionend', handleTransitionEnd)
     parallax.value.removeEventListener('mouseenter', stopAutoScroll)

@@ -63,7 +63,7 @@ const handleClick = () => {
     align-items: center;
     flex-direction: column;
     gap: 40px;
-
+    background-color: #333;
     .flip-box {
         width: 360px;
         position: relative;

@@ -235,12 +235,11 @@ getData(mapId.value, dataType).then(res => {
 <style lang="scss" scoped>
 .chart-page {
     width: 100%;
-    height: 100%;
     padding: 1rem;
     box-sizing: border-box;
+    background-color: #fff;
 
     .chart-container {
-        background-color: #fff;
         width: 100%;
 
         .chart-title {
@@ -257,7 +256,7 @@ getData(mapId.value, dataType).then(res => {
 
     .table-container {
         width: 100%;
-        background-color: #fff;
+        padding:10px 0;
 
         .table-title {
             width: 100%;

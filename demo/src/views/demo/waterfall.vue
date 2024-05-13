@@ -116,7 +116,6 @@ onBeforeUnmount(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-
     .waterfall-box {
         position: relative;
 
@@ -130,7 +129,7 @@ onBeforeUnmount(() => {
             font-size: 20px;
             box-sizing: border-box;
             border: 1px solid #000;
-            box-shadow: 0 0 5px #000;
+            box-shadow: 0 0 5px #333;
             transition: transform 0.3s, width 0.3s;
         }
     }
