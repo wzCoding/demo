@@ -1,5 +1,5 @@
 import LoadingTemplate from "./template"
-import { createVNode,createApp, reactive, ref, isRef ,nextTick,toRefs} from "vue"
+import { createVNode,createApp, reactive, ref, isRef ,unref,nextTick,toRefs} from "vue"
 import { isObject } from "../../utils/index"
 
 //全屏loading使用同一个实例
@@ -89,7 +89,7 @@ function resolveOptions(options) {
 function setParentStyle(options) {
     if (!options.parent) return
     const { position } = getComputedStyle(options.parent, "position")
-    if (options.scrollLock.value) {
+    if (unref(options.scrollLock)) {
         options.parent.classList.add("mask-scrollLock")
     } else {
         options.parent.classList.remove("mask-scrollLock")

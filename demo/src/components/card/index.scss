@@ -82,7 +82,7 @@
     }
     &.active {
         animation-play-state: running;
-        box-shadow: 0 0 10px 10px var(--theme-box-shadow-color);
+        box-shadow: 0 0 4px 4px var(--theme-gradient-color-1);
         &::before {
             animation-play-state: running;
         }

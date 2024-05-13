@@ -1,6 +1,8 @@
 <template>
     <div class="virtual-list">
-        <div class="list-content"></div>
+        <div class="list-content">
+            
+        </div>
     </div>
 </template>
 <script setup>
