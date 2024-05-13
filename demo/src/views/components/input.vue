@@ -132,7 +132,7 @@ const examples = [
             maxlength: 140,
             showWordLimit: false,
             suffixIcon: 'components',
-            prefixIcon: 'css',
+            prefixIcon: 'code',
             readonly: false,
             disabled: false,
             size: 'default',

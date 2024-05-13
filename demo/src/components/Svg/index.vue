@@ -33,7 +33,7 @@ export default {
         const iconColor = computed(() => {
             if (props.color.match(regExp)) {
                 const themeStore = useThemeStore()
-                return themeStore.theme !== undefined && getComputedStyle(document.documentElement).getPropertyValue(props.color)
+                return themeStore.theme !== undefined ? getComputedStyle(document.documentElement).getPropertyValue(props.color) : props.color
             }
             return props.color
         })

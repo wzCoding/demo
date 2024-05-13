@@ -4,43 +4,43 @@
             "index": "0",
             "title": "dropping cubes",
             "titleCN": "掉落的方块",
-            "path": "/css/index"
+            "path": "/demo/index"
         },
         {
             "index": "1",
             "title": "cards",
             "titleCN": "抽卡效果",
-            "path": "/css/card"
+            "path": "/demo/card"
         },
         {
             "index": "2",
             "title": "carousel",
             "titleCN": "无缝轮播图",
-            "path": "/css/carousel"
+            "path": "/demo/carousel"
         },
         {
             "index": "3",
             "title": "waterfall",
             "titleCN": "瀑布流",
-            "path": "/css/waterfall"
+            "path": "/demo/waterfall"
         },
         {
             "index": "4",
             "title": "flip animate",
             "titleCN": "flip 动画",
-            "path": "/css/flip"
+            "path": "/demo/flip"
         },
         {
             "index": "5",
             "title": "virtual list",
             "titleCN": "虚拟列表",
-            "path": "/css/virtualList"
+            "path": "/demo/virtualList"
         },
         {
             "index": "6",
             "title": "parallax scroll",
             "titleCN": "视差滚动",
-            "path": "/css/parallaxScroll"
+            "path": "/demo/parallaxScroll"
         }
     ]
 }

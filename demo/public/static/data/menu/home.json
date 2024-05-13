@@ -2,9 +2,9 @@
     "menu": [
         {
             "index": "1",
-            "title": "css",
-            "icon": "css",
-            "path": "/css"
+            "title": "demo",
+            "icon": "demo",
+            "path": "/demo"
         },
         {
             "index": "2",

@@ -9,7 +9,7 @@
                     <components />
                 </e-svg>
                 <e-svg color="--theme-text-color">
-                    <Css />
+                    <demo />
                 </e-svg>
                 <e-svg color="--theme-text-color">
                     <Charts />
@@ -21,7 +21,7 @@
             <div class="display-area">
                 <e-svg name="about" color="--theme-text-color" />
                 <e-svg name="components" color="--theme-text-color"/>
-                <e-svg name="css" color="--theme-text-color"/>
+                <e-svg name="demo" color="--theme-text-color"/>
                 <e-svg name="charts" color="--theme-text-color"/>
             </div>
             <code-demo :desc="examples[1].desc" :type="examples[1].type" :code="examples[1].code" />
@@ -30,7 +30,7 @@
             <div class="display-area">
                 <e-svg name="about" color=yellowgreen size=24 />
                 <e-svg name="components" color=#db7093 size=36 />
-                <e-svg name="css" color=#add8e6 size=48 />
+                <e-svg name="demo" color=#add8e6 size=48 />
                 <e-svg name="charts" color=#daa520 size=56 />
             </div>
             <code-demo :desc="examples[2].desc" :type="examples[2].type" :code="examples[2].code" />
@@ -42,7 +42,7 @@ import CodeDemo from '@/components/CodeDemo'
 import ESvg from '@/components/Svg'
 import About from '@/assets/images/svg/about.vue'
 import components from '@/assets/images/svg/components.vue'
-import Css from '@/assets/images/svg/css.vue'
+import demo from '@/assets/images/svg/demo.vue'
 import Charts from '@/assets/images/svg/charts.vue'
 const examples = [
     {
@@ -55,12 +55,12 @@ const examples = [
             `// 引入 .vue 图标文件并使用
 import About from '@/assets/images/svg/about.vue'
 import components from '@/assets/images/svg/components.vue'
-import Css from '@/assets/images/svg/css.vue'
+import demo from '@/assets/images/svg/demo.vue'
 import Charts from '@/assets/images/svg/chart.vue'
 
 <e-svg><About /></e-svg>
 <e-svg><components /></e-svg>
-<e-svg><Css /></e-svg>
+<e-svg><demo /></e-svg>
 <e-svg><Charts /></e-svg>`
         ],
         type: 'html'
@@ -70,7 +70,7 @@ import Charts from '@/assets/images/svg/chart.vue'
         code:
             `<e-svg name="about" />
 <e-svg name="components"/>
-<e-svg name="css"/>
+<e-svg name="demo"/>
 <e-svg name="canvas"/>`,
         type: 'html'
     },
@@ -79,7 +79,7 @@ import Charts from '@/assets/images/svg/chart.vue'
         code:
 `<e-svg name="about" color=yellowgreen size=24 />
 <e-svg name="components" color=#db7093 size=36 />
-<e-svg name="css" color=#add8e6 size=48 />
+<e-svg name="demo" color=#add8e6 size=48 />
 <e-svg name="charts" color=#daa520 size=56 />`,
         type: 'html'
     }
