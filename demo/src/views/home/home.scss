@@ -5,9 +5,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: var( --background-image);
     background-color: var(--theme-page-background);
     overflow: hidden;
-
     .home-main {
         width: 100%;
         margin: 0 4rem;
@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-       
+
         .menu-wrap {
             width: 50%;
             display: flex;
@@ -44,7 +44,7 @@
                     margin-left: 0%;
                     margin-right: 0%;
                     overflow: hidden;
-                    transition:transform var(--transition-time);
+                    transition: transform var(--transition-time);
                     @extend .background-gradient;
 
                     .menu-btn {
@@ -57,7 +57,10 @@
                         text-align: center;
                         color: #fff;
                         transform: rotate(45deg) translate(-43px, 0);
-                        transition:transform var(--transition-time),background-color var(--transition-time),color var(--transition-time);
+                        transition:
+                            transform var(--transition-time),
+                            background-color var(--transition-time),
+                            color var(--transition-time);
                         cursor: pointer;
 
                         &:hover {

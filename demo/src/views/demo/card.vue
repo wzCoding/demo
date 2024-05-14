@@ -57,10 +57,7 @@ function createCard(total) {
     cardMap.push(res)
 }
 
-onMounted(() => {
-    createCard(totalCards)
-    console.log(cardMap)
-})
+onMounted(() => createCard(totalCards))
 
 </script>
 <style lang="scss" scoped>

@@ -9,7 +9,7 @@
 </template>
 <script setup>
 import { ref, onMounted,onBeforeUnmount } from 'vue'
-import { getRandom, debounce } from '@/utils/index'
+import { getRandom, getRandomColor, debounce } from '@/utils/index'
 
 //设置默认属性
 const maxHeight = 300, minHeight = 100
@@ -22,7 +22,7 @@ const waterfallBox = ref(null)
 const setItemHeight = () => {
     Array.from(waterfallBox.value.children).forEach(item => {
         item.style.height = `${getRandom(minHeight, maxHeight)}px`
-        item.style.backgroundColor = `rgba(${getRandom(0, 255)},${getRandom(0, 255)},${getRandom(0, 255)},0.5)`
+        item.style.backgroundColor = getRandomColor(0.5)
     })
 }
 

@@ -224,6 +224,10 @@ function getRandom(min = 0, max = 100) {
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
+function getRandomColor(alpha) {
+    const r = getRandom(0, 255), g = getRandom(0, 255), b = getRandom(0, 255)
+    return alpha ? `rgba(${r},${g},${b},${alpha})` : `rgb(${r},${g},${b})`
+}
 function viewTransition(event = null, callback = null, reverse = false) {
     if (!document.startViewTransition) {
         callback && callback()
@@ -281,6 +285,7 @@ export {
     getElement,
     getElementSize,
     getRandom,
+    getRandomColor,
     viewTransition,
     getImage
 }

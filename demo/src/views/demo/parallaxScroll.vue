@@ -118,20 +118,17 @@ onBeforeUnmount(() => {
         height: 100%;
         overflow: hidden;
 
-
         img {
             position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover;
-
         }
 
         &.prev,
         &.next {
             height: 0;
             z-index: 1;
-
         }
 
         &.prev {
@@ -155,7 +152,7 @@ onBeforeUnmount(() => {
         .curr {
             img {
                 transition: 1s ease;
-                transform: translateY(10%);
+                transform: translateY(20%);
             }
         }
 
@@ -173,7 +170,7 @@ onBeforeUnmount(() => {
         .curr {
             img {
                 transition: 1s ease;
-                transform: translateY(-10%);
+                transform: translateY(-20%);
             }
         }
 
