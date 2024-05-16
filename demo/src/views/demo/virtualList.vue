@@ -12,6 +12,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { getRandom, getRandomColor, rafThrottle } from '@/utils/index'
+import { Message } from '@/components/Message'
 
 //随机高度范围
 const minHeight = 100, maxHeight = 300
@@ -21,7 +22,7 @@ const margin = 10
 const expectedHeight = minHeight
 
 //模拟设置数据总数
-const dataCount = 60
+const dataCount = 10000
 //所有数据集合，处理数据设置随机高度
 const dataMap = Array.from({ length: dataCount }).map((_, index) => { return { index, name: index + 1, height: getRandom(minHeight, maxHeight), color: getRandomColor(0.5) } })
 
@@ -41,7 +42,10 @@ const startIndex = ref(0)
 //列表最大渲染的数据条数
 const maxSize = ref(0)
 //列表结束索引
-const endIndex = computed(() => Math.min(startIndex.value + maxSize.value + 1, dataCount))
+const endIndex = computed(() => {
+    if (loadedData.value.length === 0) return startIndex.value + maxSize.value + 1
+    return Math.min(startIndex.value + maxSize.value + 1, loadedData.value.length)
+})
 //实际渲染的列表
 const itemList = computed(() => loadedData.value.slice(startIndex.value, endIndex.value))
 //列表已经滚动的距离
@@ -54,30 +58,26 @@ const contentStyle = computed(() => {
     }
 
 })
-watch(loadedData.value,()=>{
-    initPositions()
-    nextTick(()=>{
-        setPosition()
-    })
-})
-
-//监听startIndex，自动更新后续列表项的位置信息
-watch(startIndex, () => {
-    setPosition()
-})
 
 //模拟加载数据
-const getData = async (start, end) => {
+const getData = async () => {
     loading.value = true
     let timer, p
+    const start = loadedData.value.length, end = start + 20
     const data = dataMap.slice(start, end)
-
-    p = new Promise(resolve => { timer = setTimeout(() => resolve(data), 1000) })
+    Message.success({
+        text: `模拟数据总量${dataCount}条，已加载${end}条`,
+        duration:0
+    })
+    p = new Promise(resolve => {
+        timer = setTimeout(() => resolve(data), 1000)
+    })
     const result = await p
     //清除临时变量
     clearTimeout(timer)
     timer = null
     p = null
+    Message.close()
     loading.value = false
     return result
 }
@@ -86,6 +86,7 @@ const getData = async (start, end) => {
 let oldDataLength = 0
 //初始化列表项位置信息
 const initPositions = () => {
+    console.log("initPosition")
     //设置一个临时数组，处理存储加载的列表项数据
     const tempList = []
     //获取当前将要渲染到页面上的第一个列表项的上一项，并获取它的bottom值，计算实际滑动的高度
@@ -97,23 +98,23 @@ const initPositions = () => {
         //计算新加载的列表项的位置信息
         const top = prevBottom ? prevBottom + (expectedHeight + margin) * i : (expectedHeight + margin) * i
         const bottom = prevBottom ? prevBottom + (expectedHeight + margin) * (i + 1) : (expectedHeight + margin) * (i + 1)
-        const diffHeight = 0
         tempList.push({
             index: i, //列表项索引
             height: expectedHeight,  //列表项预估高度
             top,  //列表项顶部坐标
             bottom,  //列表项底部坐标
-            diffHeight  //列表项实际高度与预估高度的差值
+            diffHeight: 0  //列表项实际高度与预估高度的差值
         })
     }
     //更新positions数组
-    positions.value.push(...tempList)
+    positions.value = [...positions.value, ...tempList]
     //更新数据长度
     oldDataLength = loadedData.value.length
 }
 
 //重新设置列表项位置信息
 const setPosition = () => {
+    console.log("setPosition")
     const children = [...content.value.children]
     if (!children.length) return
     //遍历页面上每个列表项元素，更新缓存的列表项实际高度以及 相关位置信息
@@ -121,26 +122,26 @@ const setPosition = () => {
         if (!node) return
         //获取列表项索引
         const index = +node.dataset.index
+        const item = positions.value[index]
         const rect = node.getBoundingClientRect()
-        const oldHeight = positions.value[index].height
-        const diff = rect.height - oldHeight
+        const diff = item.height - rect.height
         //存在差值，说明预估高度不准确，更新列表项位置信息
         if (diff) {
-            positions.value[index].height = rect.height
-            positions.value[index].bottom = positions.value[index].bottom - diff
-            positions.value[index].diffHeight = diff
+            item.height = rect.height
+            item.bottom = item.bottom - diff
+            item.diffHeight = diff
         }
     })
 
     //从页面上渲染的第一个元素开始，逐个更新后面元素的位置信息
     //获取第一个元素索引
-    const startIndex = +children[0].dataset.index
+    const start = +children[0].dataset.index
     const length = positions.value.length
-    let startHeight = positions.value[startIndex].diffHeight
-    positions.value[startIndex].diffHeight = 0
+    let startHeight = positions.value[start].diffHeight
+    positions.value[start].diffHeight = 0
 
     //通过循环更新后续位置信息
-    for (let i = startIndex + 1; i < length; i++) {
+    for (let i = start + 1; i < length; i++) {
         const item = positions.value[i]
         item.top = positions.value[i - 1].bottom
         item.bottom = item.bottom - startHeight
@@ -157,13 +158,15 @@ const setPosition = () => {
 
 const handleScroll = rafThrottle(() => {
     const { scrollTop, scrollHeight, clientHeight } = container.value
-    startIndex.value = binarySearch(positions.value, scrollTop)
+    const oldStart = startIndex.value
+    const newStart = binarySearch(positions.value, scrollTop)
+    startIndex.value = newStart > loadedData.value.length ? oldStart : newStart
     console.log("start==>", startIndex.value)
     console.log("end==>", endIndex.value)
     //加载数据...
-    const restHeight = scrollHeight - (clientHeight + scrollTop)
+    const restHeight = scrollHeight - clientHeight - scrollTop
     if (restHeight <= 20) {
-        getData(startIndex.value, endIndex.value).then(res => {
+        !loading.value && getData().then(res => {
             loadedData.value = [...loadedData.value, ...res]
         })
     }
@@ -201,11 +204,22 @@ const binarySearch = (list, value) => {
 
     return tempIndex
 }
-onMounted(() => {
+//监听已经加载的数据，自动更新列表项位置信息
+watch(() => loadedData.value.length, () => {
     initPositions()
+    nextTick(() => {
+        setPosition()
+    })
+})
+
+//监听startIndex，自动更新后续列表项的位置信息
+watch(startIndex, () => {
     setPosition()
+})
+
+onMounted(() => {
     maxSize.value = Math.ceil(container.value.clientHeight / expectedHeight)
-    getData(startIndex.value, endIndex.value).then(res => {
+    getData().then(res => {
         loadedData.value = [...loadedData.value, ...res]
     })
     container.value.addEventListener('scroll', handleScroll)
