@@ -1,5 +1,5 @@
 import MaskTemplate from "./template"
-import { createVNode, render, reactive, Transition } from 'vue'
+import { createVNode, render, reactive, Transition, unref } from 'vue'
 import { isObject } from "@/utils/index"
 
 //全屏遮罩实例
@@ -118,7 +118,7 @@ function resolveOptions(options) {
 function setParentStyle(options) {
     if (!options.parent) return
     const { position } = getComputedStyle(options.parent, "position")
-    if (options.scrollLock.value) {
+    if (unref(options.scrollLock)) {
         options.parent.classList.add("mask-scrollLock")
     } else {
         options.parent.classList.remove("mask-scrollLock")

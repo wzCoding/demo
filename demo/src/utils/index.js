@@ -28,7 +28,22 @@ function throttle(func, delay = 1000) {
         }
     }
 }
+function rafThrottle(func) {
+    //触发锁
+    let lock = false
 
+    return function () {
+        if (lock) return
+        lock = true
+        const that = this
+        const args = arguments
+        //调用动画帧执行传入的方法
+        window.requestAnimationFrame(() => {
+            func.call(that, ...args)
+            lock = false
+        })
+    }
+}
 /**
  * 
  * @param {function} func - 需要降低触发频率的函数
@@ -269,6 +284,7 @@ async function getImage(name) {
 }
 export {
     throttle,
+    rafThrottle,
     debounce,
     isObject,
     isArray,

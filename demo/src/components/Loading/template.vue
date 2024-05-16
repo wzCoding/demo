@@ -1,6 +1,6 @@
 <template>
     <Transition name="fade">
-        <Mask class="loading-mask" :fullScreen="fullScreen" :style="styles">
+        <Mask class="loading-mask" :fullScreen="fullScreen" :scrollLock="scrollLock" :style="styles">
             <div class="loading-spinner">
                 <div :class="spinnerClass"></div>
             </div>
@@ -31,11 +31,15 @@ export default {
             type: Boolean,
             default: false
         },
+        scrollLock: {
+            type: Boolean,
+            default: true
+        },
         background: {
             type: String,
             default: "rgba(0, 0, 0, 0.5)"
         },
-        color:{
+        color: {
             type: [String, Array],
             default: ''
         },
@@ -63,7 +67,7 @@ export default {
             }
             return style
         })
-    
+
         return { spinnerClass, styles }
     }
 }

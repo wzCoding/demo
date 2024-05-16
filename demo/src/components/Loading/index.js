@@ -1,5 +1,5 @@
 import LoadingTemplate from "./template"
-import { createVNode,createApp, reactive, ref, isRef ,unref,nextTick,toRefs} from "vue"
+import { createVNode, createApp, reactive, ref, isRef, unref, nextTick, toRefs } from "vue"
 import { isObject } from "../../utils/index"
 
 //全屏loading使用同一个实例
@@ -9,14 +9,15 @@ const INSTANCE_KEY = Symbol("Loading")
 
 //使用LoadingTemplate组件模板创建loading应用
 function createLoading(options = {}) {
-
     const data = reactive({
         show: options.show,
         text: options.text,
         zIndex: options.zIndex,
         customClass: options.customClass,
         background: options.background,
-        color: options.color
+        color: options.color,
+        fullScreen: options.fullScreen,
+        scrollLock: options.scrollLock
     })
 
     const close = function () {
@@ -53,7 +54,6 @@ function LoadingInstance(options) {
         ...resolved,
     })
 
-    setParentStyle(resolved)
     resolved.parent.appendChild(instance.$el)
     nextTick(() => (instance.show = resolved.show))
 
@@ -79,25 +79,9 @@ function resolveOptions(options) {
         color: options.color || "",
         customClass: options.customClass || "",
         fullScreen: target == document.body && options.fullScreen,
-        scrollLock: options.scrollLock,
+        scrollLock: options.scrollLock !== null ? options.scrollLock : true,
         show: options.show,
         target
-    }
-}
-
-// 设置容器的一些样式
-function setParentStyle(options) {
-    if (!options.parent) return
-    const { position } = getComputedStyle(options.parent, "position")
-    if (unref(options.scrollLock)) {
-        options.parent.classList.add("mask-scrollLock")
-    } else {
-        options.parent.classList.remove("mask-scrollLock")
-    }
-    if (!["absolute", "fixed", "sticky"].includes(position)) {
-        options.parent.classList.add("mask-position")
-    } else {
-        options.parent.classList.remove("mask-position")
     }
 }
 
