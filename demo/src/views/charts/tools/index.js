@@ -24,6 +24,7 @@ function getEchartOption(options = {}) {
             show: true,
             itemWidth: 20,
             itemHeight: 12,
+            textStyle: { color: '#333' },
             bottom: '10%',
             data: []
         },
@@ -31,6 +32,10 @@ function getEchartOption(options = {}) {
             show: true,
             trigger: 'axis',
             confine: true,
+            padding:0,
+            borderWidth:0,
+            borderRadius:4,
+            backgroundColor:'unset',
             axisPointer: {
                 type: 'shadow'
             }
@@ -62,6 +67,12 @@ function getEchartOption(options = {}) {
                 data: [],
                 axisTick: {
                     alignWithLabel: true
+                },
+                axisLabel: {
+                    color: '#333',
+                },
+                axisLine: {
+                    lineStyle: { color: 'transparent' }
                 }
             }
         ],

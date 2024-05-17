@@ -7,8 +7,8 @@
             </div>
         </div>
         <div class="table-container">
-            <div class="table-title">
-                <span>全国各地区水果产量统计表（单位：吨）</span>
+            <div class="table-header">
+                <span class="table-title">全国各地区水果产量统计表（单位：吨）</span>
                 <el-button @click="exportData">导出</el-button>
             </div>
             <el-table header-cell-class-name="header-cell" :data="pageData" border stripe lazy row-key="adcode"
@@ -32,9 +32,10 @@
 <script setup>
 import { ElButton, ElTable, ElTableColumn, ElPagination, ElMessage, ElConfigProvider } from 'element-plus'
 import { getData } from '@/utils/service'
-import { getRandom } from '@/utils/index'
+import { debounce, getRandom } from '@/utils/index'
 import { getEchartOption } from './tools'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onUnmounted } from 'vue'
+import { useThemeStore } from '@/store/useThemeStore'
 import { ElMapExportTable } from 'table-excel'
 import * as echarts from 'echarts'
 ElMessage({
@@ -61,6 +62,7 @@ const locale = {
     }
 }
 let myChart = null
+const themeStore = useThemeStore()
 const loading = ref(true)
 const dataType = 'map'
 const defaultSize = 8
@@ -69,7 +71,9 @@ const currentPage = ref(1)
 const pageSize = ref(defaultSize)
 const mapId = ref('china')
 const emptyText = ref('暂无数据')
+const chartOptions = getEchartOption()
 const tableData = ref([])
+
 const pageData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value
     const end = currentPage.value * pageSize.value
@@ -132,7 +136,6 @@ const initChart = (data) => {
         myChart = echarts.init(document.getElementById('chart-1'))
     }
     const { xAxis, series, legend } = handleChartData(data)
-    const chartOptions = getEchartOption()
     chartOptions.tooltip.formatter = tooltipFormatter
     chartOptions.legend.data = legend
     chartOptions.xAxis[0].data = xAxis
@@ -161,7 +164,18 @@ const handleTableData = (data) => {
     initChart(result)
     return result
 }
-
+const resizeCharts = debounce(() => {
+    const chartDom = document.getElementById('chart-1')
+    const instance = echarts.getInstanceByDom(chartDom)
+    instance && instance.resize()
+}, 100)
+const setColor = () => {
+    const color = themeStore.theme === 'dark' ? '#adbac7' : '#333'
+    chartOptions.yAxis[0].axisLabel.color = color
+    chartOptions.yAxis[1].axisLabel.color = color
+    chartOptions.xAxis[0].axisLabel.color = color
+    chartOptions.legend.textStyle.color = color
+}
 const handleSizeChange = (val) => {
     pageSize.value = val
 }
@@ -227,10 +241,14 @@ const exportData = () => {
     instance.download(sheetTitle)
 
 }
+
+setColor()
 getData(mapId.value, dataType).then(res => {
     tableData.value = handleTableData(res)
     loading.value = false
 })
+window.addEventListener('resize', resizeCharts)
+
 </script>
 <style lang="scss" scoped>
 .chart-page {
@@ -245,7 +263,7 @@ getData(mapId.value, dataType).then(res => {
         .chart-title {
             font-size: 16px;
             font-weight: bold;
-            color: #333;
+            color: var(--theme-text-color);
         }
 
         .chart-content {
@@ -257,17 +275,17 @@ getData(mapId.value, dataType).then(res => {
     .table-container {
         width: 100%;
 
-        .table-title {
+        .table-header {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
 
-            span {
+            span.table-title {
                 font-size: 16px;
                 font-weight: bold;
-                color: #333;
+                color: var(--theme-text-color);
             }
         }
 
@@ -281,17 +299,26 @@ getData(mapId.value, dataType).then(res => {
 </style>
 <style lang="scss">
 .el-table {
-    color: #333;
+    color: var(--theme-text-color);
     transition: height var(--transition-time) ease;
+    background-color: var(--theme-table-background);
+}
+
+.el-table tr {
+    background-color: var(--theme-table-background1);
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+    background-color: var(--theme-table-background2);
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-    background-color: #ecf5ff;
+    background-color: var(--theme-table-hoverColor);
 }
 
 .header-cell {
-    background-color: #f5f5f5 !important;
-    color: #333;
+    background-color: var(--theme-table-background) !important;
+    color: var(--theme-text-color);
     font-weight: bold;
 }
 
@@ -306,8 +333,9 @@ getData(mapId.value, dataType).then(res => {
 
 .chart-tooltip {
 
-    padding: 0 5px;
-    color: #333;
+    padding: 10px 15px;
+    color: var(--theme-text-color);
+    background-color: var(--theme-page-background);
 
     .chart-tooltip-title {
         font-weight: 600;
