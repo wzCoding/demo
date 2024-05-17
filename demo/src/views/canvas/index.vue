@@ -14,7 +14,9 @@ const id = "waves"
 const canvas = ref()
 const waves = ref()
 const startWaves = (data) => {
-    waves.value.addWave(data)
+    waves.value.addWave(data[id])
+    waves.value.addCloud(data['clouds'])
+    waves.value.addSun(data['sun'])
     waves.value.start(60)
 }
 const stopWaves = () => {
@@ -36,7 +38,7 @@ onMounted(() => {
     });
     waves.value = new Waves(canvas.value);
     dataStore.getPageData(id).then(res => {
-        startWaves(res[0][id])
+        startWaves(res[0])
     })
 
 })

@@ -44,10 +44,6 @@ function createCard(total) {
     if (exist.length > 0) {
         return createCard(total)
     }
-    total--
-    if (total > 0) {
-        createCard(total)
-    }
     // 创建卡牌
     const res = {
         num,
@@ -55,6 +51,11 @@ function createCard(total) {
         ...icon
     }
     cardMap.push(res)
+    // 创建完成总数减一
+    total--
+    if (total > 0) {
+        createCard(total)
+    }
 }
 
 onMounted(() => createCard(totalCards))
@@ -137,6 +138,7 @@ onMounted(() => createCard(totalCards))
             .card-num {
                 font-size: 2rem;
                 position: relative;
+
                 &.top {
                     align-self: flex-start;
                 }
@@ -146,7 +148,7 @@ onMounted(() => createCard(totalCards))
                 }
             }
 
-            &[data-num="10"]{
+            &[data-num="10"] {
                 .card-num {
                     &.top {
                         left: 15px;
@@ -157,6 +159,7 @@ onMounted(() => createCard(totalCards))
                     }
                 }
             }
+
             &[data-num="Q"] {
                 .card-num {
                     &.top {
@@ -169,9 +172,10 @@ onMounted(() => createCard(totalCards))
                 }
 
             }
-            &[data-num="K"]{
+
+            &[data-num="K"] {
                 .card-num {
-                    
+
                     &.top {
                         left: 5px;
                     }

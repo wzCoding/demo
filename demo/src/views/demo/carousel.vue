@@ -61,11 +61,11 @@ const setCarousel = () => {
     }
 
     if (autoPlay.value) {
-        updateCarousel()
+        autoPlayCarousel()
     }
 }
 
-const updateCarousel = () => {
+const autoPlayCarousel = () => {
     carouselTimer = timer.interval(moveForward, delay)
     carousel.value.addEventListener('mouseenter', stopCarousel)
     carousel.value.addEventListener('mouseleave', startCarousel)

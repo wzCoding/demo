@@ -151,8 +151,8 @@ onBeforeUnmount(() => {
     &.scroll-up {
         .curr {
             img {
-                transition: 1s ease;
-                transform: translateY(20%);
+                transition:1s ease;
+                transform: translateY(10%);
             }
         }
 
@@ -169,8 +169,8 @@ onBeforeUnmount(() => {
     &.scroll-down {
         .curr {
             img {
-                transition: 1s ease;
-                transform: translateY(-20%);
+                transition:1s ease;
+                transform: translateY(-10%);
             }
         }
 

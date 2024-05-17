@@ -86,7 +86,6 @@ const getData = async () => {
 let oldDataLength = 0
 //初始化列表项位置信息
 const initPositions = () => {
-    console.log("initPosition")
     //设置一个临时数组，处理存储加载的列表项数据
     const tempList = []
     //获取当前将要渲染到页面上的第一个列表项的上一项，并获取它的bottom值，计算实际滑动的高度
@@ -114,7 +113,6 @@ const initPositions = () => {
 
 //重新设置列表项位置信息
 const setPosition = () => {
-    console.log("setPosition")
     const children = [...content.value.children]
     if (!children.length) return
     //遍历页面上每个列表项元素，更新缓存的列表项实际高度以及 相关位置信息
@@ -161,8 +159,6 @@ const handleScroll = rafThrottle(() => {
     const oldStart = startIndex.value
     const newStart = binarySearch(positions.value, scrollTop)
     startIndex.value = newStart > loadedData.value.length ? oldStart : newStart
-    console.log("start==>", startIndex.value)
-    console.log("end==>", endIndex.value)
     //加载数据...
     const restHeight = scrollHeight - clientHeight - scrollTop
     if (restHeight <= 20) {
