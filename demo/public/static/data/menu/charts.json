@@ -1,13 +1,13 @@
 {
     "menu": [
         {
-            "index": "1",
+            "index": "0",
             "title": "chart and table",
             "titleCN": "简单图表",
             "path": "/charts/index"
         },
         {
-            "index": "2",
+            "index": "1",
             "title": "big screen table",
             "titleCN": "大屏数据",
             "path": "/charts/screen"
@@ -17,6 +17,12 @@
             "title": "chart map",
             "titleCN": "地图数据",
             "path": "/charts/map"
+        },
+        {
+            "index": "3",
+            "title": "chart sort",
+            "titleCN": "排序动画",
+            "path": "/charts/sort"
         }
     ]
 }
