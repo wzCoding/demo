@@ -10,7 +10,7 @@ function viewTransition(callback = null) {
     if (!document.startViewTransition) {
         return callback
     }
-    return function (theme = '', event = null) {
+    return function (reverse = false, event = null) {
         //获取点击事件的页面坐标，从点击位置开始过渡
         const x = event ? event.clientX : document.body.clientWidth / 2
         const y = event ? event.clientY : document.body.clientHeight / 2
@@ -24,25 +24,25 @@ function viewTransition(callback = null) {
         const path = [`circle(0 at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
         const transition = document.startViewTransition(() => {
             // 过渡动画执行完毕后的回调函数
-            callback && callback(theme)
+            callback && callback(reverse)
         })
         transition.ready.then(() => {
             //使用 animate 动画函数执行过渡动画
             document.documentElement.animate(
                 {
-                    clipPath: theme ? path.reverse() : path,
+                    clipPath: reverse ? path.reverse() : path,
                 },
                 {
                     duration: 300,
                     easing: 'ease-in',
-                    pseudoElement: theme ? '::view-transition-old(root)' : '::view-transition-new(root)',
+                    pseudoElement: reverse ? '::view-transition-old(root)' : '::view-transition-new(root)',
                 }
             )
         })
     }
 }
 //theme切换回调
-function themeCallback(theme){
+function themeCallback(theme) {
     document.documentElement.setAttribute('theme', theme)
     setStorageCache(themeKey, theme)
 }
