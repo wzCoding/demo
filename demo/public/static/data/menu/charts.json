@@ -17,12 +17,6 @@
             "title": "chart map",
             "titleCN": "地图数据",
             "path": "/charts/map"
-        },
-        {
-            "index": "3",
-            "title": "chart sort",
-            "titleCN": "排序动画",
-            "path": "/charts/sort"
         }
     ]
 }

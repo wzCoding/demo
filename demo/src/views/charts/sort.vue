@@ -2,58 +2,53 @@
     <div class="chart-sort">
         <div class="sort-container" v-loading="loading">
             <div class="sort-header">
-                <el-select v-model="selectValue" placeholder="请选择排序方法" @change="selectChange">
-                    <el-option v-for="item in sorts" :key="item.name" :lable="item.name" :value="item.value">{{ item.name }}</el-option>
+                <el-select v-model="selectValue" placeholder="请选择排序方法" :disabled="disabled" @change="selectChange">
+                    <el-option v-for="item in sorts" :key="item" :value="item">{{ item }}</el-option>
                 </el-select>
             </div>
-            <div class="sort-content" ref="chartContent">
-
-            </div>
+            <div class="sort-content" ref="chartContent"></div>
         </div>
     </div>
 </template>
 <script setup>
 import { ElSelect, ElOption, ElButton } from 'element-plus'
-import { debounce, getRandom } from '@/utils/index'
+import { getRandom } from '@/utils/index'
 import { getEchartOption } from './tools'
-import { ref, reactive, watch, computed, onUnmounted, onMounted } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import { useThemeStore } from '@/store/useThemeStore'
 import * as echarts from 'echarts'
 
 const loading = ref(false)
 const chartContent = ref(null)
 const chartOptions = getEchartOption()
+const chartInstance = ref(null)
 const selectValue = ref('冒泡排序')
-const sorts = [
-    {
-        name: '冒泡排序',
-        value: 1
-    },
-    {
-        name: '选择排序',
-        value: 2
-    },
-    {
-        name: '插入排序',
-        value: 3
-    },
-    {
-        name: '快速排序',
-        value: 4
+const sorts = ['冒泡排序', '选择排序', '插入排序', '快速排序']
+const data = reactive(setData(10))
+const counter = ref(0)
+const disabled = ref(true)
+const delay = 500
+const selectChange = (val) => {
+    disabled.value = true
+    chartInstance.value.clear()
+    const clone = JSON.parse(JSON.stringify(data))
+    switch (val) {
+        case '冒泡排序':
+            bubbleSort(clone)
+            break;
+        case '选择排序':
+            selectionSort(clone)
+            break;
+        case '插入排序':
+            insertionSort(clone)
+            break;
+        case '快速排序':
+            quickSort(clone)
+            break;
+        default: bubbleSort(clone)
     }
-]
-
-const selectChange = (val)=>{
-    console.log(val)
 }
 
-const setData = (count = 15) => {
-    const list = []
-    for (let i = 0; i < count; i++) {
-        list.push(getRandom())
-    }
-    return list
-}
 const setChartOptions = () => {
     const themeStore = useThemeStore()
     const color = themeStore.theme === 'dark' ? '#adbac7' : '#333'
@@ -70,8 +65,8 @@ const setChartOptions = () => {
 
 
 const initChart = (data) => {
-    const chartInstance = echarts.getInstanceByDom(chartContent.value)
-    if (!chartInstance) {
+    chartInstance.value = echarts.getInstanceByDom(chartContent.value)
+    if (!chartInstance.value) {
         chartOptions.xAxis[0].data = data
         chartOptions.series = [{
             name: 'random',
@@ -84,8 +79,17 @@ const initChart = (data) => {
         myChart.setOption(chartOptions)
     } else {
         chartOptions.series[0].data = data
-        chartInstance && chartInstance.setOption(chartOptions)
+        chartInstance.value && chartInstance.value.setOption(chartOptions)
     }
+}
+
+
+function setData(count = 15) {
+    const list = []
+    for (let i = 0; i < count; i++) {
+        list.push(getRandom())
+    }
+    return list
 }
 
 function sleep(ms) {
@@ -112,21 +116,24 @@ async function bubbleSort(arr) {
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
                 //延迟
-                await sleep(1000);
+                await sleep(delay);
                 initChart(arr)
             }
+        }
+        counter.value++
+        if (counter.value == len - 1) {
+            counter.value = 0
+            disabled.value = false
         }
     }
     initChart(arr)
     return arr;
 }
-let count = 0
 //选择排序
 async function selectionSort(arr) {
     let len = arr.length;
     let minIndex, temp;
     for (let i = 0; i < len - 1; i++) {
-        count++
         minIndex = i;
         for (let j = i + 1; j < len; j++) {
             if (arr[j] < arr[minIndex]) {     // 寻找最小的数
@@ -139,11 +146,14 @@ async function selectionSort(arr) {
         arr[i] = arr[minIndex];
         arr[minIndex] = temp;
 
-        await sleep(1000);
-        if (count === arr.length - 1) {
-            console.log('success')
+        await sleep(delay);
+        initChart(arr)
+
+        counter.value++
+        if (counter.value == len - 1) {
+            counter.value = 0
+            disabled.value = false
         }
-        initChart(arr);
     }
     initChart(arr)
     return arr;
@@ -154,14 +164,17 @@ async function insertionSort(arr) {
     let len = arr.length;
     let preIndex, current;
     for (let i = 1; i < len; i++) {
+        //从最后往前
         preIndex = i - 1;
+        //取当前起始值
         current = arr[i];
         while (preIndex >= 0 && arr[preIndex] > current) {
+            //当前一个值大于当前值，就将前一个值与当前值交换
             arr[preIndex + 1] = arr[preIndex];
             preIndex--;
         }
         arr[preIndex + 1] = current;
-        await sleep(1000);
+        await sleep(delay);
         initChart(arr);
     }
     initChart(arr);
@@ -171,6 +184,7 @@ async function insertionSort(arr) {
 //快速排序
 async function quickSort(arr, left = 0, right = arr.length - 1) {
     if (left < right) {
+        //将数组分割，堆每个部分进行快速排序
         let partitionIndex = await partition(arr, left, right);
         quickSort(arr, left, partitionIndex - 1);
         quickSort(arr, partitionIndex + 1, right);
@@ -181,11 +195,12 @@ async function quickSort(arr, left = 0, right = arr.length - 1) {
 async function partition(arr, left, right) {
     let pivot = left;
     let index = pivot + 1;
+    //遍历分割后的每个部分，进行大小比较并交换比较后的值
     for (let i = index; i <= right; i++) {
         if (arr[i] < arr[pivot]) {
             [arr[i], arr[index]] = [arr[index], arr[i]];
             index++;
-            await sleep(1000)
+            await sleep(delay)
             initChart(arr)
         }
     }
@@ -195,16 +210,10 @@ async function partition(arr, left, right) {
     return index - 1;
 }
 
-const data = setData()
-
 onMounted(() => {
-
     setChartOptions()
-    //bubbleSort(data)
-    //selectionSort(data)
-    //insertionSort(data)
-    //quickSort(data)
-    //mergeSort(data)
+    const clone = JSON.parse(JSON.stringify(data))
+    bubbleSort(clone)
 })
 </script>
 <style lang="scss" scoped>
@@ -226,8 +235,7 @@ onMounted(() => {
 
         .sort-header {
             width: 100%;
-            height: 120px;
-            background-color: bisque;
+            height: 80px;
         }
 
         .sort-content {
