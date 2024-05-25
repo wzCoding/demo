@@ -1,8 +1,10 @@
 class Timer {
     constructor() {
+        //记录定时器数据
         this.record = {}
+        this.minInterval = 1000 / 60
     }
-
+    
     loop(type, callback, delay) {
         if (!['interval', 'timeout'].includes(type)) return;
         if (!this.record[type]) this.record[type] = {}
@@ -15,9 +17,9 @@ class Timer {
         const loopStart = () => {
 
             this.setRecord(record, type, loopStart);
-
+            //获取当前时间
             let currentTime = Date.now();
-
+     
             if (currentTime - startTime >= delay) {
         
                 if (type == "timeout") {
@@ -44,21 +46,22 @@ class Timer {
 
     }
     
+    //记录 raf 的id
     setRecord(record, type, callback) {
         const id = window.requestAnimationFrame(callback)
         this.record[type][record] = id;
     }
-
+    //模拟 setInterval 方法
     interval(callback, delay = 1000) {
-        delay = delay < (1000 / 60) ? (1000 / 60) : delay;
+        delay = delay < this.minInterval ? this.minInterval : delay;
         return this.loop("interval", callback, delay);
     }
-
+    //模拟 setTimeout 方法
     timeout(callback, delay = 1000) {
-        delay = delay < (1000 / 60) ? (1000 / 60) : delay;
+        delay = delay < this.minInterval ? this.minInterval : delay;
         return this.loop("timeout", callback, delay);
     }
-
+    //清除定时器方法
     clear(timer) {
         if(!timer) return
         const { record, type } = timer

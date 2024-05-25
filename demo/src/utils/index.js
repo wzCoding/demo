@@ -243,41 +243,6 @@ function getRandomColor(alpha) {
     const r = getRandom(0, 255), g = getRandom(0, 255), b = getRandom(0, 255)
     return alpha ? `rgba(${r},${g},${b},${alpha})` : `rgb(${r},${g},${b})`
 }
-function viewTransition(event = null, callback = null, reverse = false) {
-    if (!document.startViewTransition) {
-        callback && callback()
-        return
-    }
-
-    //获取点击事件的页面坐标，从点击位置开始过渡
-    const x = event ? event.clientX : document.body.clientWidth / 2
-    const y = event ? event.clientY : document.body.clientHeight / 2
-
-    //获取过渡动画的半径
-    const endRadius = Math.hypot(
-        Math.max(x, document.body.clientWidth - x),
-        Math.max(y, document.body.clientHeight - y)
-    );
-    //剪裁路径
-    const path = [`circle(0 at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
-    const transition = document.startViewTransition(() => {
-        // 过渡动画执行完毕后的回调函数
-        callback && callback()
-    })
-    transition.ready.then(() => {
-        //使用 animate 动画函数执行过渡动画
-        document.documentElement.animate(
-            {
-                clipPath: reverse ? path.reverse() : path,
-            },
-            {
-                duration: 300,
-                easing: 'ease-in',
-                pseudoElement: reverse ? '::view-transition-old(root)' : '::view-transition-new(root)',
-            }
-        )
-    })
-}
 async function getImage(name) {
     const image = await import(`@/assets/images/${name}`)
     return image.default
@@ -302,6 +267,5 @@ export {
     getElementSize,
     getRandom,
     getRandomColor,
-    viewTransition,
     getImage
 }
