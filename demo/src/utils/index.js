@@ -109,8 +109,7 @@ function isMobile() {
     return ('ontouchstart' in document.documentElement)
 }
 
-const cache = new WeakMap()
-function deepClone(target) {
+function deepClone(target, cache = new WeakMap()) {
     if (target == null || typeof target !== 'object') {
         return target
     }
@@ -124,7 +123,7 @@ function deepClone(target) {
     // 递归复制属性
     for (let key in target) {
         if (target.hasOwnProperty(key)) {
-            clone[key] = deepClone(target[key])
+            clone[key] = deepClone(target[key], cache)
         }
     }
 
