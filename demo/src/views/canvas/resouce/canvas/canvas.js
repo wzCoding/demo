@@ -1,4 +1,4 @@
-import { debounce, isObject } from '@/utils/index'
+import { debounce } from '@/utils/index'
 
 let container = null;
 /**
@@ -28,7 +28,7 @@ class myCanvas {
         container = options.parent;
         container.style.overflowX = "hidden";
 
-        this.id = options.id;
+        this.id = options.id || Symbol('canvas');
         this.width = options.width;
         this.height = options.height;
         this.canvas = document.getElementById(options.id);

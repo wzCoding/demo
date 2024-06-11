@@ -34,16 +34,27 @@ import { ElButton, ElTable, ElTableColumn, ElPagination, ElMessage, ElConfigProv
 import { getData } from '@/utils/service'
 import { debounce, getRandom } from '@/utils/index'
 import { getEchartOption } from './tools'
-import { ref, reactive, computed, onUnmounted } from 'vue'
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useThemeStore } from '@/store/useThemeStore'
 import { ElMapExportTable } from 'table-excel'
 import * as echarts from 'echarts'
+
+onMounted(() => {
+    window.addEventListener('resize', resizeCharts)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', resizeCharts)
+})
+
 ElMessage({
     message: '本页面所有数据均为随机虚构，如有雷同，纯属巧合！',
     type: 'info',
     showClose: true,
     duration: 3000,
 })
+
+
 const locale = {
     name: 'zh-cn',
     el: {
@@ -169,6 +180,7 @@ const resizeCharts = debounce(() => {
     const instance = echarts.getInstanceByDom(chartDom)
     instance && instance.resize()
 }, 100)
+
 const setColor = () => {
     const color = themeStore.theme === 'dark' ? '#adbac7' : '#333'
     chartOptions.yAxis[0].axisLabel.color = color
@@ -247,7 +259,7 @@ getData(mapId.value, dataType).then(res => {
     tableData.value = handleTableData(res)
     loading.value = false
 })
-window.addEventListener('resize', resizeCharts)
+
 
 </script>
 <style lang="scss" scoped>
