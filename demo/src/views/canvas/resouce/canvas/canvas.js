@@ -47,13 +47,15 @@ class myCanvas {
         this.resetSize();
         this.resize();
     }
-    resetSize() {
+    resetSize(width, height) {
         // 根据设备像素比重新调整canvas宽高以使图像清晰
         const ratio = window.devicePixelRatio || 1;
-        this.canvas.width = this.width * ratio;
-        this.canvas.height = this.height * ratio;
-        this.canvas.style.width = `${this.width}px`;
-        this.canvas.style.height = `${this.height}px`;
+        const resetWidth = width || this.width
+        const resetHeight = height || this.height
+        this.canvas.width = resetWidth * ratio;
+        this.canvas.height = resetHeight * ratio;
+        this.canvas.style.width = `${resetWidth}px`;
+        this.canvas.style.height = `${resetHeight}px`;
         this.context.scale(ratio, ratio);
     }
     resolve(params) {
@@ -63,7 +65,7 @@ class myCanvas {
             parent: document.body,
             width: params.width ? params.width : document.documentElement.clientWidth,
             height: params.height ? params.height : document.documentElement.clientHeight,
-            styles: params.styles ? Object.assign(params.styles, defaultStyle) : defaultStyle,
+            styles: params.styles ? Object.assign(defaultStyle, params.styles) : defaultStyle,
         }
         if (params.parent) {
             options.parent = typeof params.parent == 'object' ? params.parent : (document.getElementById(params.parent) || document.getElementsByClassName(params.parent))
