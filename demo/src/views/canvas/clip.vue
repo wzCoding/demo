@@ -5,13 +5,14 @@
             <input type="file" accept="image/*" class="file-input" ref="fileInput" @change="fileChange">
         </div>
         <transition name="fade-in">
-            <div class="image-edit" ref="previewBox" v-show="clipReady">
+            <div class="image-edit" v-show="clipReady">
                 <canvas id="preview-img" ref="previewImg"></canvas>
                 <div class="preview-tools">
                     <e-svg v-for="tool in editTools" :key="tool" :name="tool" size="24"
                         @click="handleToolClick(tool)"></e-svg>
                 </div>
-                <div class="preview-clip" @mousedown="handleMouseDown" :style="clipRectStyle">
+                <div class="preview-clip" ref="previewClip" @mousedown="handleMouseDown" @mouseup="handleMouseUp"
+                    :style="clipRectStyle">
                     <div v-for="point in clipPoints" :key="point" :class="point" class="clip-area">
                         <span class="clip-point" :data-point="point"></span>
                     </div>
@@ -24,12 +25,13 @@
 import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
 import { myCanvas } from './resouce/canvas/canvas'
 import { Message } from '@/components/Message'
+import { rafThrottle, deepClone } from '@/utils/index'
 import ESvg from '@/components/Svg'
 
 //dom元素
 const fileInput = ref(null)
-const previewBox = ref(null)
 const previewImg = ref(null)
+const previewClip = ref(null)
 
 //canvas图片相关
 const canvas = ref(null)
@@ -41,13 +43,15 @@ const context = computed(() => {
 //clip剪裁相关
 const clipReady = ref(false)
 const clipStart = ref(false)
+
+let initRect = null
+const initPoint = reactive({ x: 0, y: 0, point: '' })
 const clipRect = reactive({ x: 0, y: 0, width: 0, height: 0 })
 const clipRectStyle = computed(() => {
     return {
-        left: `${clipRect.x}px`,
-        top: `${clipRect.y}px`,
         width: `${clipRect.width}px`,
-        height: `${clipRect.height}px`
+        height: `${clipRect.height}px`,
+        transform: `translate(${clipRect.x}px,${clipRect.y}px)`
     }
 })
 
@@ -76,6 +80,7 @@ const fileChange = (e) => {
         Message.error({ text: "图片加载出错!", showClose: true })
     }
 }
+
 const handleToolClick = (tool) => {
     console.log(tool)
     if (tool === 'cancel') {
@@ -88,8 +93,8 @@ const drawImage = (base64) => {
     const img = new Image()
     img.onload = () => {
         const { width, height } = canvas.value
-        const resetWidth = img.width > Number(width) ? width : img.width
-        const resetHeight = img.height > Number(height) ? height : img.height
+        const resetWidth = img.width > width ? width : img.width
+        const resetHeight = img.height > height ? height : img.height
         canvas.value.resetSize(resetWidth, resetHeight)
         context.value.drawImage(img, 0, 0, resetWidth, resetHeight)
 
@@ -114,25 +119,46 @@ const drawClip = (width, height) => {
 
 }
 
-const handleMouseMove = (e) => {
-    if (!clipStart.value) return
-}
+const handleMouseMove = rafThrottle((e) => {
+    console.log(e)
+    let diffx = 0
+    let diffy = 0
+    let diffw = 0
+    let diffh = 0
+    if (clipStart.value) {
+        console.log(clipStart.value)
+        if (initPoint.point.includes('top')) {
+            diffy = e.y - initPoint.y
+            diffh = -diffy
+        }
+
+    }
+    diffy = Math.min(initRect.height, Math.max(0, diffy))
+    diffh = Math.min(0, Math.max(-initRect.height, diffh))
+    clipRect.y = initRect.y + diffy
+    clipRect.height = initRect.height + diffh
+})
 
 const handleMouseDown = (e) => {
     const point = e.target.dataset.point
-    if (!point || !clipPoints.includes(point)) {
-        clipStart.value = false
-        return
+    if (point && clipPoints.includes(point)) {
+        clipStart.value = true
+        initPoint.point = point
+        initPoint.x = e.x
+        initPoint.y = e.y
+        initRect = deepClone(clipRect)
+        console.log(clipRect)
+        console.log(initPoint)
     }
-    clipStart.value = true
-    clipRect.x = e.x
-    clipRect.y = e.y
-    console.log(clipRect)
+
+    previewClip.value.addEventListener('mousemove', handleMouseMove)
 }
+
 const handleMouseUp = (e) => {
-    clipRect.x = e.x
-    clipRect.y = e.y
+    console.log('mouse up')
+    console.log(e)
     clipStart.value = false
+    previewClip.value.removeEventListener('mousemove', handleMouseMove)
 }
 
 onMounted(() => {
@@ -140,8 +166,8 @@ onMounted(() => {
     canvas.value = new myCanvas({
         id: previewImg.value.id,
         parent: previewImg.value.parentNode,
-        width: width.replace('px', ''),
-        height: height.replace('px', ''),
+        width: +width.replace('px', ''),
+        height: +height.replace('px', ''),
         styles: {
             position: 'relative'
         }
@@ -212,6 +238,8 @@ onMounted(() => {
 
         .preview-clip {
             position: absolute;
+            left: var(--gap);
+            top: var(--gap);
             border: 1px solid var(--theme-gradient-color-2);
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -220,6 +248,7 @@ onMounted(() => {
                 "top-left top top-right"
                 "left center right"
                 "bottom-left bottom bottom-right";
+            transition: all var(--transition-time);
         }
 
         .clip-area {
