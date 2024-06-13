@@ -41,12 +41,20 @@ const context = computed(() => {
 
 //clip剪裁相关
 const clipReady = ref(false)
-const clipStart = ref(false)
+const pointClip = ref(false)
 
+//初始剪裁的矩形的数据（即图片原本矩形的大小）
 let initRect = null
-let startRect = null
+
+//上一次剪裁的矩形的数据
+let prevRect = null
+
+//剪裁开始的点的数据
 let startPoint = { x: 0, y: 0, point: '' }
+
+//剪裁完成的矩形的数据
 const clipRect = reactive({ x: 0, y: 0, width: 0, height: 0 })
+//剪裁完成的矩形的样式
 const clipRectStyle = computed(() => {
     return {
         width: `${clipRect.width}px`,
@@ -54,6 +62,9 @@ const clipRectStyle = computed(() => {
         transform: `translate(${clipRect.x}px,${clipRect.y}px)`
     }
 })
+
+//最小剪裁矩形的比例
+const minClipRatio = 0.25
 
 //clip剪裁工具相关
 const editTools = ['recover', 'done', 'cancel']
@@ -81,15 +92,6 @@ const fileChange = (e) => {
     }
 }
 
-const handleToolClick = (tool) => {
-    console.log(tool)
-    if (tool === 'cancel') {
-        clipReady.value = false
-        fileInput.value.value = ''
-        clearRect()
-    }
-}
-
 const drawImage = (base64) => {
     const img = new Image()
     img.onload = () => {
@@ -99,7 +101,7 @@ const drawImage = (base64) => {
         canvas.value.resetSize(maxWidth, maxHeight)
         context.value.drawImage(img, 0, 0, maxWidth, maxHeight)
 
-        initRect = previewImg.value.getBoundingClientRect()
+        initRect = getInitRect(previewImg.value)
         drawMask(maxWidth, maxHeight)
         drawClip(maxWidth, maxHeight)
     }
@@ -121,72 +123,100 @@ const drawClip = (width, height) => {
 
 }
 
+const getInitRect = (el) => {
+    const rect = el.getBoundingClientRect()
+    return {
+        width: Math.floor(rect.width),
+        height: Math.floor(rect.height),
+        top: Math.floor(rect.top),
+        left: Math.floor(rect.left),
+        right: Math.floor(rect.right),
+        bottom: Math.floor(rect.bottom),
+        minWidth: Math.floor(rect.width * minClipRatio),
+        minHeight: Math.floor(rect.height * minClipRatio)
+    }
+}
+
+const handleToolClick = (tool) => {
+    console.log(tool)
+    if (tool === 'cancel') {
+        clipReady.value = false
+        fileInput.value.value = ''
+        clearRect()
+    }
+}
+
 const handleMouseMove = rafThrottle((e) => {
 
     //表示坐标点在 x 轴移动的变化量
-    let diffx = 0
+    let diffX = 0
 
     //表示坐标点在 y 轴移动的变化量
-    let diffy = 0
+    let diffY = 0
 
     //表示矩形宽度的变化量
-    let diffw = 0
+    let diffW = 0
 
     //表示矩形高度的变化量
-    let diffh = 0
+    let diffH = 0
 
-    if (clipStart.value) {
-        const { x, y, point } = startPoint
+    //表示剪裁的点移动的安全坐标
+    let safeX, safeY
+
+    const { pageX, pageY } = e
+    const { top, bottom, left, right, width, height, minWidth, minHeight } = initRect
+    const { x: pointX, y: pointY, point } = startPoint
+    const { x: prevX, y: prevY, width: prevW, height: prevH } = prevRect
+
+    if (pointClip.value) {
         if (point.includes('top')) {
-            let safey = e.y < initRect.top ? initRect.top : (e.y + initRect.height / 4 >= initRect.bottom ? initRect.bottom - initRect.height / 4 : e.y)
-            diffy = safey - y
-            diffh = -diffy
+            safeY = pageY < top ? top : (pageY + minHeight >= bottom ? bottom - minHeight : pageY)
+            diffY = clipRect.height <= minHeight ? 0 : safeY - pointY
+            diffH = -diffY
         }
         if (point.includes('bottom')) {
-            let safey = e.y > initRect.bottom ? initRect.bottom : (e.y - initRect.height / 4 < initRect.top ? initRect.top - initRect.height / 4 : e.y)
-            diffh = safey - y
+            safeY = pageY > bottom ? bottom : (pageY - minHeight < top ? top - minHeight : pageY)
+            diffH = safeY - pointY
 
         }
         if (point.includes('left')) {
-            let safex = e.x < initRect.left ? initRect.left : (e.x + initRect.width / 4 >= initRect.right ? initRect.right - initRect.width / 4 : e.x)
-            diffx = safex - x
-            diffw = -diffx
+            safeX = pageX < left ? left : (pageX + minWidth >= right ? right - minWidth : pageX)
+            diffX = clipRect.width <= minWidth ? 0 : safeX - pointX
+            diffW = -diffX
         }
 
         if (point.includes('right')) {
-            let safex = e.x > initRect.right ? initRect.right : (e.x - initRect.width / 4 < initRect.left ? initRect.left - initRect.width / 4 : e.x)
-            diffw = safex - x
+            safeX = pageX > right ? right : (pageX - minWidth < left ? left - minWidth : pageX)
+            diffW = safeX - pointX
         }
     }
 
-    clipRect.y = startRect.y + diffy < 0 ? 0 : startRect.y + diffy
-    clipRect.height = startRect.height + diffh > initRect.height ? initRect.height : startRect.height + diffh
+    clipRect.y = prevY + diffY < 0 ? 0 : prevY + diffY
+    clipRect.height = prevH + diffH > height ? height : prevH + diffH
 
-    clipRect.x = startRect.x + diffx < 0 ? 0 : startRect.x + diffx
-    clipRect.width = startRect.width + diffw > initRect.width ? initRect.width : startRect.width + diffw
+    clipRect.x = prevX + diffX < 0 ? 0 : prevX + diffX
+    clipRect.width = prevW + diffW > width ? width : prevW + diffW
 
-    if (clipRect.width < initRect.width / 4) {
-        clipRect.width = initRect.width / 4
+    if (clipRect.width < minWidth) {
+        clipRect.width = minWidth
     }
-    if (clipRect.height < initRect.height / 4) {
-        clipRect.height = initRect.height / 4
+    if (clipRect.height < minHeight) {
+        clipRect.height = minHeight
     }
 })
-const getX = (x) => {
 
-}
+
 const handleMouseDown = (e) => {
     const point = e.target.dataset.point
     if (point && clipPoints.includes(point)) {
-        clipStart.value = true
+        pointClip.value = true
         startPoint.point = point
         startPoint.x = e.x
         startPoint.y = e.y
-        startRect = deepClone(clipRect)
+        prevRect = deepClone(clipRect)
 
         console.log('mouse down')
-        console.log(startRect)
-        console.log(startPoint)
+
     }
 
     document.addEventListener('mousemove', handleMouseMove)
@@ -195,20 +225,12 @@ const handleMouseDown = (e) => {
 
 const handleMouseUp = (e) => {
     console.log('mouse up')
-    clipStart.value = false
+    pointClip.value = false
 
-    console.log(startRect)
-    console.log(startPoint)
-    //clearStart()
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
 }
-const clearStart = () => {
-    startRect = null
-    startPoint.x = 0
-    startPoint.y = 0
-    startPoint.point = ''
-}
+
 const clearRect = () => {
     clipRect.x = 0
     clipRect.y = 0
