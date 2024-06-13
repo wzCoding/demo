@@ -11,8 +11,7 @@
                     <e-svg v-for="tool in editTools" :key="tool" :name="tool" size="24"
                         @click="handleToolClick(tool)"></e-svg>
                 </div>
-                <div class="preview-clip" ref="previewClip" @mousedown="handleMouseDown" @mouseup="handleMouseUp"
-                    :style="clipRectStyle">
+                <div class="preview-clip" @mousedown="handleMouseDown" :style="clipRectStyle">
                     <div v-for="point in clipPoints" :key="point" :class="point" class="clip-area">
                         <span class="clip-point" :data-point="point"></span>
                     </div>
@@ -45,7 +44,8 @@ const clipReady = ref(false)
 const clipStart = ref(false)
 
 let initRect = null
-const initPoint = reactive({ x: 0, y: 0, point: '' })
+let startRect = null
+let startPoint = { x: 0, y: 0, point: '' }
 const clipRect = reactive({ x: 0, y: 0, width: 0, height: 0 })
 const clipRectStyle = computed(() => {
     return {
@@ -86,6 +86,7 @@ const handleToolClick = (tool) => {
     if (tool === 'cancel') {
         clipReady.value = false
         fileInput.value.value = ''
+        clearRect()
     }
 }
 
@@ -93,13 +94,14 @@ const drawImage = (base64) => {
     const img = new Image()
     img.onload = () => {
         const { width, height } = canvas.value
-        const resetWidth = img.width > width ? width : img.width
-        const resetHeight = img.height > height ? height : img.height
-        canvas.value.resetSize(resetWidth, resetHeight)
-        context.value.drawImage(img, 0, 0, resetWidth, resetHeight)
+        const maxWidth = img.width > width ? width : img.width
+        const maxHeight = img.height > height ? height : img.height
+        canvas.value.resetSize(maxWidth, maxHeight)
+        context.value.drawImage(img, 0, 0, maxWidth, maxHeight)
 
-        drawMask(resetWidth, resetHeight)
-        drawClip(resetWidth, resetHeight)
+        initRect = previewImg.value.getBoundingClientRect()
+        drawMask(maxWidth, maxHeight)
+        drawClip(maxWidth, maxHeight)
     }
     img.src = base64
     image.value = img
@@ -120,47 +122,99 @@ const drawClip = (width, height) => {
 }
 
 const handleMouseMove = rafThrottle((e) => {
-    console.log(e)
+
+    //表示坐标点在 x 轴移动的变化量
     let diffx = 0
+
+    //表示坐标点在 y 轴移动的变化量
     let diffy = 0
+
+    //表示矩形宽度的变化量
     let diffw = 0
+
+    //表示矩形高度的变化量
     let diffh = 0
+
     if (clipStart.value) {
-        console.log(clipStart.value)
-        if (initPoint.point.includes('top')) {
-            diffy = e.y - initPoint.y
+        const { x, y, point } = startPoint
+        if (point.includes('top')) {
+            let safey = e.y < initRect.top ? initRect.top : (e.y + initRect.height / 4 >= initRect.bottom ? initRect.bottom - initRect.height / 4 : e.y)
+            diffy = safey - y
             diffh = -diffy
         }
+        if (point.includes('bottom')) {
+            let safey = e.y > initRect.bottom ? initRect.bottom : (e.y - initRect.height / 4 < initRect.top ? initRect.top - initRect.height / 4 : e.y)
+            diffh = safey - y
 
+        }
+        if (point.includes('left')) {
+            let safex = e.x < initRect.left ? initRect.left : (e.x + initRect.width / 4 >= initRect.right ? initRect.right - initRect.width / 4 : e.x)
+            diffx = safex - x
+            diffw = -diffx
+        }
+
+        if (point.includes('right')) {
+            let safex = e.x > initRect.right ? initRect.right : (e.x - initRect.width / 4 < initRect.left ? initRect.left - initRect.width / 4 : e.x)
+            diffw = safex - x
+        }
     }
-    diffy = Math.min(initRect.height, Math.max(0, diffy))
-    diffh = Math.min(0, Math.max(-initRect.height, diffh))
-    clipRect.y = initRect.y + diffy
-    clipRect.height = initRect.height + diffh
-})
 
+    clipRect.y = startRect.y + diffy < 0 ? 0 : startRect.y + diffy
+    clipRect.height = startRect.height + diffh > initRect.height ? initRect.height : startRect.height + diffh
+
+    clipRect.x = startRect.x + diffx < 0 ? 0 : startRect.x + diffx
+    clipRect.width = startRect.width + diffw > initRect.width ? initRect.width : startRect.width + diffw
+
+    if (clipRect.width < initRect.width / 4) {
+        clipRect.width = initRect.width / 4
+    }
+    if (clipRect.height < initRect.height / 4) {
+        clipRect.height = initRect.height / 4
+    }
+})
+const getX = (x) => {
+
+}
 const handleMouseDown = (e) => {
     const point = e.target.dataset.point
     if (point && clipPoints.includes(point)) {
         clipStart.value = true
-        initPoint.point = point
-        initPoint.x = e.x
-        initPoint.y = e.y
-        initRect = deepClone(clipRect)
-        console.log(clipRect)
-        console.log(initPoint)
+        startPoint.point = point
+        startPoint.x = e.x
+        startPoint.y = e.y
+        startRect = deepClone(clipRect)
+
+        console.log('mouse down')
+        console.log(startRect)
+        console.log(startPoint)
     }
 
-    previewClip.value.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
 }
 
 const handleMouseUp = (e) => {
     console.log('mouse up')
-    console.log(e)
     clipStart.value = false
-    previewClip.value.removeEventListener('mousemove', handleMouseMove)
-}
 
+    console.log(startRect)
+    console.log(startPoint)
+    //clearStart()
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
+}
+const clearStart = () => {
+    startRect = null
+    startPoint.x = 0
+    startPoint.y = 0
+    startPoint.point = ''
+}
+const clearRect = () => {
+    clipRect.x = 0
+    clipRect.y = 0
+    clipRect.width = 0
+    clipRect.height = 0
+}
 onMounted(() => {
     const { width, height } = getComputedStyle(previewImg.value)
     canvas.value = new myCanvas({
@@ -248,7 +302,7 @@ onMounted(() => {
                 "top-left top top-right"
                 "left center right"
                 "bottom-left bottom bottom-right";
-            transition: all var(--transition-time);
+            //transition: all var(--transition-time);
         }
 
         .clip-area {
