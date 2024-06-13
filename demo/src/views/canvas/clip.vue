@@ -171,7 +171,7 @@ const handleMouseMove = rafThrottle((e) => {
     if (pointClip.value) {
         if (point.includes('top')) {
             safeY = pageY < top ? top : (pageY + minHeight >= bottom ? bottom - minHeight : pageY)
-            diffY = clipRect.height <= minHeight ? 0 : safeY - pointY
+            diffY = safeY - pointY
             diffH = -diffY
         }
         if (point.includes('bottom')) {
@@ -181,7 +181,7 @@ const handleMouseMove = rafThrottle((e) => {
         }
         if (point.includes('left')) {
             safeX = pageX < left ? left : (pageX + minWidth >= right ? right - minWidth : pageX)
-            diffX = clipRect.width <= minWidth ? 0 : safeX - pointX
+            diffX = safeX - pointX
             diffW = -diffX
         }
 
@@ -198,9 +198,11 @@ const handleMouseMove = rafThrottle((e) => {
     clipRect.width = prevW + diffW > width ? width : prevW + diffW
 
     if (clipRect.width < minWidth) {
+        clipRect.x = prevX
         clipRect.width = minWidth
     }
     if (clipRect.height < minHeight) {
+        clipRect.y = prevY
         clipRect.height = minHeight
     }
 })
@@ -324,7 +326,6 @@ onMounted(() => {
                 "top-left top top-right"
                 "left center right"
                 "bottom-left bottom bottom-right";
-            //transition: all var(--transition-time);
         }
 
         .clip-area {
