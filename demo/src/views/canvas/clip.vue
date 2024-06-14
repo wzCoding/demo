@@ -85,42 +85,11 @@ const fileChange = (e) => {
     reader.onload = (e) => {
         console.log('reader load')
         clipReady.value = true
-        drawImage(e.target.result)
+        loadImage(e.target.result)
     }
     reader.onerror = () => {
         Message.error({ text: "图片加载出错!", showClose: true })
     }
-}
-
-const drawImage = (base64) => {
-    const img = new Image()
-    img.onload = () => {
-        const { width, height } = canvas.value
-        const maxWidth = img.width > width ? width : img.width
-        const maxHeight = img.height > height ? height : img.height
-        canvas.value.resetSize(maxWidth, maxHeight)
-        context.value.drawImage(img, 0, 0, maxWidth, maxHeight)
-
-        initRect = getInitRect(previewImg.value)
-        drawMask(maxWidth, maxHeight)
-        drawClip(maxWidth, maxHeight)
-    }
-    img.src = base64
-    image.value = img
-}
-
-const drawMask = (width, height) => {
-    console.log('draw mask')
-    context.value.fillStyle = 'rgba(0,0,0,0.5)'
-    context.value.fillRect(0, 0, width, height)
-}
-
-const drawClip = (width, height) => {
-    // context.value.clearRect(0, 0, width, height)
-    // context.value.drawImage(image.value, 0, 0, width, height)
-    clipRect.width = +width
-    clipRect.height = +height
-
 }
 
 const getInitRect = (el) => {
@@ -135,6 +104,51 @@ const getInitRect = (el) => {
         minWidth: Math.floor(rect.width * minClipRatio),
         minHeight: Math.floor(rect.height * minClipRatio)
     }
+}
+
+const loadImage = (base64) => {
+    const img = new Image()
+    img.onload = () => {
+        //在这里初始化 canvas 相关设置
+        const { width, height } = canvas.value
+        const maxWidth = img.width > width ? width : img.width
+        const maxHeight = img.height > height ? height : img.height
+        canvas.value.resetSize(maxWidth, maxHeight)
+
+        //获取原始矩形数据（即原始图片尺寸数据）
+        initRect = getInitRect(previewImg.value)
+
+        //设置初始剪裁框尺寸
+        clipRect.width = maxWidth
+        clipRect.height = maxHeight
+
+        drawImage()
+        drawClip()
+    }
+    
+    img.src = base64
+    image.value = img
+}
+
+const drawImage = () => {
+    console.log('draw image')
+    //绘制图片
+    context.value.drawImage(image.value, 0, 0, initRect.width, initRect.height)
+
+    //绘制遮罩层
+    context.value.fillStyle = 'rgba(0,0,0,0.3)'
+    context.value.fillRect(0, 0, initRect.width, initRect.height)
+}
+
+const drawClip = () => {
+    //重新绘制图片与遮罩层大小
+    drawImage()
+    //更新剪裁区域
+    let { x, y, width, height } = clipRect
+    context.value.clearRect(x, y, width, height)
+    context.value.drawImage(image.value, x, y, width, height, x, y, width, height)
+    console.log(image.value.width,image.value.height)
+    console.log(initRect)
 }
 
 const handleToolClick = (tool) => {
@@ -160,9 +174,6 @@ const handleMouseMove = rafThrottle((e) => {
     //表示矩形高度的变化量
     let diffH = 0
 
-    //表示剪裁的点移动的安全坐标
-    let safeX, safeY
-
     const { pageX, pageY } = e
     const { top, bottom, left, right, width, height, minWidth, minHeight } = initRect
     const { x: pointX, y: pointY, point } = startPoint
@@ -170,6 +181,8 @@ const handleMouseMove = rafThrottle((e) => {
 
     //计算上下左右所有剪裁点的移动变化量，以左上边界的点为起点 (0, 0) 计算
     if (pointMove.value) {
+        //表示剪裁的点移动的安全坐标
+        let safeX, safeY
 
         //上边界剪裁点移动变化量与高度变化量计算
         if (point.includes('top')) {
@@ -182,7 +195,6 @@ const handleMouseMove = rafThrottle((e) => {
         if (point.includes('bottom')) {
             safeY = pageY > bottom ? bottom : (pageY - minHeight < top ? top - minHeight : pageY)
             diffH = safeY - pointY
-
         }
 
         //左边界剪裁点移动变化量与高度变化量计算
@@ -228,6 +240,9 @@ const handleMouseMove = rafThrottle((e) => {
         clipRect.x = diffX < 0 ? 0 : (diffX >= maxDiffX ? maxDiffX : diffX)
         clipRect.y = diffY < 0 ? 0 : (diffY >= maxDiffY ? maxDiffY : diffY)
     }
+
+    //画出 clip 区域图像
+    drawClip()
 })
 
 
