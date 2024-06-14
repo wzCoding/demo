@@ -3,15 +3,22 @@
         <div class="upload-box" @click="selectFile">
             <e-svg name="add" color="--theme-gradient-color-2"></e-svg>
             <input type="file" accept="image/*" class="file-input" ref="fileInput" @change="fileChange">
+            <transition name="fade-in">
+                <canvas id="preview-img" ref="previewImg" v-show="clipDone"></canvas>
+            </transition>
+            <!-- <div class="preview-tools">
+                <e-svg v-for="tool in previewTools" :key="tool.name" :name="tool.name" size="24"
+                    @click="tool.event"></e-svg>
+            </div> -->
         </div>
         <transition name="fade-in">
-            <div class="image-edit" v-show="clipReady">
-                <canvas id="preview-img" ref="previewImg"></canvas>
-                <div class="preview-tools">
-                    <e-svg v-for="tool in editTools" :key="tool.name" :name="tool.name" size="24"
+            <div class="image-clip" v-show="clipReady">
+                <canvas id="clip-img" ref="clipImg"></canvas>
+                <div class="clip-tools">
+                    <e-svg v-for="tool in clipTools" :key="tool.name" :name="tool.name" size="24"
                         @click="tool.event"></e-svg>
                 </div>
-                <div class="preview-clip" ref="previewClip" @mousedown="handleMouseDown" :style="clipRectStyle">
+                <div class="clip-rect" @mousedown="handleMouseDown" :style="clipRectStyle">
                     <div v-for="point in clipPoints" :key="point" :data-area="point" class="clip-area">
                         <span :data-point="point" class="clip-point"></span>
                     </div>
@@ -32,28 +39,34 @@ const clipPoints = ['top-left', 'top', 'top-right', 'left', 'center', 'right', '
 
 //dom元素
 const fileInput = ref(null)
+const clipImg = ref(null)
 const previewImg = ref(null)
-const previewClip = ref(null)
 
 //canvas图片相关
-const canvas = ref(null)
 const image = ref(null)
-const context = computed(() => {
-    return canvas.value.context
-})
+const clipCvs = ref(null)
+const clipCtx = computed(() => clipCvs.value.context)
+const previewCvs = ref(null)
+const previewCtx = computed(() => previewCvs.value.context)
 
 //clip剪裁相关
 const clipReady = ref(false)
+const clipDone = ref(false)
 const pointMove = ref(false)
 const areaMove = ref(false)
+
+//最小剪裁矩形的比例
+const minClipRatio = 0.25
 
 //剪裁开始的点的数据
 let startPoint = { x: 0, y: 0, point: '' }
 
 //初始剪裁的矩形的数据（即图片原本矩形的大小）
 let initRect = { x: 0, y: 0, width: 0, height: 0 }
+
 //上一次剪裁的矩形的数据
 let prevRect = initRect
+
 //剪裁完成的矩形的数据
 const clipRect = reactive(initRect)
 
@@ -66,16 +79,20 @@ const clipRectStyle = computed(() => {
     }
 })
 
-//最小剪裁矩形的比例
-const minClipRatio = 0.25
-
 const handleCancel = (e) => {
     clipReady.value = false
     fileInput.value.value = ''
     clearRect()
 }
-const handleClip = (e) => {
+const handleClipDone = (e) => {
 
+    console.log('clip done')
+    const { scaleX, scaleY } = initRect
+    const { x, y, width, height } = clipRect
+    const { width: pw, height: ph } = previewCvs.value
+
+    previewCtx.value.clearRect(0, 0, pw, ph)
+    previewCtx.value.drawImage(image.value, x * scaleX, y * scaleY, width * scaleX, height * scaleY, 0, 0, pw, ph)
 }
 
 const handleRecover = (e) => {
@@ -90,9 +107,9 @@ const handleDelete = (e) => {
 }
 
 //clip剪裁工具相关
-const editTools = [
+const clipTools = [
     { name: 'recover', event: handleRecover },
-    { name: 'done', event: handleClip },
+    { name: 'done', event: handleClipDone },
     { name: 'cancel', event: handleCancel },
 ]
 const previewTools = [
@@ -113,11 +130,11 @@ const fileChange = (e) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onload = (e) => {
-        console.log('reader load')
         clipReady.value = true
         loadImage(e.target.result)
     }
     reader.onerror = () => {
+        clipReady.value = false
         Message.error({ text: "图片加载出错!", showClose: true })
     }
 }
@@ -139,15 +156,15 @@ const getInitRect = (el) => {
 const loadImage = (dataUrl) => {
     const img = new Image()
     img.onload = () => {
-        //在这里初始化 canvas 相关设置
-        const { width, height } = canvas.value
+        //在这里初始化 clipCvs 相关设置
+        const { width, height } = clipCvs.value
         const maxWidth = img.width > width ? width : img.width
         const maxHeight = img.height > height ? height : img.height
-        canvas.value.resetSize(maxWidth, maxHeight)
+        clipCvs.value.resetSize(maxWidth, maxHeight)
 
         //获取并设置原始矩形数据（即原始图片尺寸数据）
-        initRect = getInitRect(previewImg.value)
-        //获取图片在 canvas 的宽高下的缩放比例
+        initRect = getInitRect(clipImg.value)
+        //获取图片在 clipCvs 的宽高下的缩放比例
         initRect.scaleX = img.width / maxWidth
         initRect.scaleY = img.height / maxHeight
 
@@ -164,13 +181,12 @@ const loadImage = (dataUrl) => {
 }
 
 const drawImage = () => {
-    console.log('draw image')
     //绘制图片
-    context.value.drawImage(image.value, 0, 0, initRect.width, initRect.height)
+    clipCtx.value.drawImage(image.value, 0, 0, initRect.width, initRect.height)
 
     //绘制遮罩层
-    context.value.fillStyle = 'rgba(0,0,0,0.5)'
-    context.value.fillRect(0, 0, initRect.width, initRect.height)
+    clipCtx.value.fillStyle = 'rgba(0,0,0,0.5)'
+    clipCtx.value.fillRect(0, 0, initRect.width, initRect.height)
 }
 
 const drawClip = () => {
@@ -181,8 +197,8 @@ const drawClip = () => {
     const { scaleX, scaleY } = initRect
     const { x, y, width, height } = clipRect
 
-    context.value.clearRect(x, y, width, height)
-    context.value.drawImage(image.value, x * scaleX, y * scaleY, width * scaleX, height * scaleY, x, y, width, height)
+    clipCtx.value.clearRect(x, y, width, height)
+    clipCtx.value.drawImage(image.value, x * scaleX, y * scaleY, width * scaleX, height * scaleY, x, y, width, height)
 }
 
 const handleMouseMove = rafThrottle((e) => {
@@ -287,16 +303,14 @@ const handleMouseDown = (e) => {
     startPoint.y = e.pageY
     prevRect = deepClone(clipRect)
 
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
+    toggleMouseEvent('add')
 }
 
 const handleMouseUp = (e) => {
-    console.log('mouse up')
     pointMove.value = false
     areaMove.value = false
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
+    console.log(clipRect)
+    toggleMouseEvent('remove')
 }
 
 const clearRect = () => {
@@ -304,23 +318,40 @@ const clearRect = () => {
     clipRect.y = 0
     clipRect.width = 0
     clipRect.height = 0
+
+    pointMove.value = false
+    areaMove.value = false
+
+    toggleMouseEvent('remove')
+}
+
+//鼠标事件的绑定与移除切换
+const toggleMouseEvent = (toggle = 'add') => {
+    document[`${toggle}EventListener`]('mousemove', handleMouseMove)
+    document[`${toggle}EventListener`]('mouseup', handleMouseUp)
 }
 
 onMounted(() => {
-    const { width, height } = getComputedStyle(previewImg.value)
-    canvas.value = new myCanvas({
-        id: previewImg.value.id,
-        parent: previewImg.value.parentNode,
-        width: +width.replace('px', ''),
-        height: +height.replace('px', ''),
+    const { width: cw, height: ch } = getComputedStyle(clipImg.value)
+    const { width: pw, height: ph } = getComputedStyle(previewImg.value)
+    clipCvs.value = new myCanvas({
+        id: clipImg.value.id,
+        parent: clipImg.value.parentNode,
+        width: +cw.replace('px', ''),
+        height: +ch.replace('px', ''),
         styles: {
             position: 'relative'
         }
     })
+    previewCvs.value = new myCanvas({
+        id: previewImg.value.id,
+        parent: previewImg.value.parentNode,
+        width: +pw.replace('px', ''),
+        height: +ph.replace('px', ''),
+    })
 })
 onUnmounted(() => {
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
+    toggleMouseEvent('remove')
 })
 
 </script>
@@ -338,6 +369,7 @@ onUnmounted(() => {
         align-items: center;
         cursor: pointer;
         transition: all var(--transition-time);
+        position: relative;
 
         &:hover {
             border-color: var(--theme-gradient-color-2);
@@ -346,9 +378,15 @@ onUnmounted(() => {
         .file-input {
             display: none;
         }
+
+        canvas#preview-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
     }
 
-    .image-edit {
+    .image-clip {
         --gap: 10px;
         background-color: #f5f5f5;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
@@ -362,13 +400,13 @@ onUnmounted(() => {
         padding: var(--gap);
         gap: var(--gap);
 
-        canvas#preview-img {
+        canvas#clip-img {
             width: 800px;
             height: 500px;
             background-color: #ddd;
         }
 
-        .preview-tools {
+        .clip-tools {
             width: 100%;
             display: flex;
             gap: var(--gap);
@@ -386,7 +424,7 @@ onUnmounted(() => {
             }
         }
 
-        .preview-clip {
+        .clip-rect {
             position: absolute;
             left: var(--gap);
             top: var(--gap);
