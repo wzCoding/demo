@@ -8,8 +8,8 @@
             <div class="image-edit" v-show="clipReady">
                 <canvas id="preview-img" ref="previewImg"></canvas>
                 <div class="preview-tools">
-                    <e-svg v-for="tool in editTools" :key="tool" :name="tool" size="24"
-                        @click="handleToolClick(tool)"></e-svg>
+                    <e-svg v-for="tool in editTools" :key="tool.name" :name="tool.name" size="24"
+                        @click="tool.event"></e-svg>
                 </div>
                 <div class="preview-clip" ref="previewClip" @mousedown="handleMouseDown" :style="clipRectStyle">
                     <div v-for="point in clipPoints" :key="point" :data-area="point" class="clip-area">
@@ -26,6 +26,9 @@ import { myCanvas } from './resouce/canvas/canvas'
 import { Message } from '@/components/Message'
 import { rafThrottle, deepClone } from '@/utils/index'
 import ESvg from '@/components/Svg'
+
+//剪裁框上可拖动的点的位置
+const clipPoints = ['top-left', 'top', 'top-right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right']
 
 //dom元素
 const fileInput = ref(null)
@@ -66,10 +69,37 @@ const clipRectStyle = computed(() => {
 //最小剪裁矩形的比例
 const minClipRatio = 0.25
 
+const handleCancel = (e) => {
+    clipReady.value = false
+    fileInput.value.value = ''
+    clearRect()
+}
+const handleClip = (e) => {
+
+}
+
+const handleRecover = (e) => {
+
+}
+
+const handledownLoad = (e) => {
+
+}
+const handleDelete = (e) => {
+
+}
+
 //clip剪裁工具相关
-const editTools = ['recover', 'done', 'cancel']
-const previewTools = ['download', 'delete']
-const clipPoints = ['top-left', 'top', 'top-right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right']
+const editTools = [
+    { name: 'recover', event: handleRecover },
+    { name: 'done', event: handleClip },
+    { name: 'cancel', event: handleCancel },
+]
+const previewTools = [
+    { name: 'download', event: handledownLoad },
+    { name: 'delete', event: handleDelete },
+]
+
 
 //事件处理
 const selectFile = () => fileInput.value.click()
@@ -106,7 +136,7 @@ const getInitRect = (el) => {
     }
 }
 
-const loadImage = (base64) => {
+const loadImage = (dataUrl) => {
     const img = new Image()
     img.onload = () => {
         //在这里初始化 canvas 相关设置
@@ -115,8 +145,11 @@ const loadImage = (base64) => {
         const maxHeight = img.height > height ? height : img.height
         canvas.value.resetSize(maxWidth, maxHeight)
 
-        //获取原始矩形数据（即原始图片尺寸数据）
+        //获取并设置原始矩形数据（即原始图片尺寸数据）
         initRect = getInitRect(previewImg.value)
+        //获取图片在 canvas 的宽高下的缩放比例
+        initRect.scaleX = img.width / maxWidth
+        initRect.scaleY = img.height / maxHeight
 
         //设置初始剪裁框尺寸
         clipRect.width = maxWidth
@@ -125,8 +158,8 @@ const loadImage = (base64) => {
         drawImage()
         drawClip()
     }
-    
-    img.src = base64
+
+    img.src = dataUrl
     image.value = img
 }
 
@@ -136,28 +169,20 @@ const drawImage = () => {
     context.value.drawImage(image.value, 0, 0, initRect.width, initRect.height)
 
     //绘制遮罩层
-    context.value.fillStyle = 'rgba(0,0,0,0.3)'
+    context.value.fillStyle = 'rgba(0,0,0,0.5)'
     context.value.fillRect(0, 0, initRect.width, initRect.height)
 }
 
 const drawClip = () => {
     //重新绘制图片与遮罩层大小
     drawImage()
-    //更新剪裁区域
-    let { x, y, width, height } = clipRect
-    context.value.clearRect(x, y, width, height)
-    context.value.drawImage(image.value, x, y, width, height, x, y, width, height)
-    console.log(image.value.width,image.value.height)
-    console.log(initRect)
-}
 
-const handleToolClick = (tool) => {
-    console.log(tool)
-    if (tool === 'cancel') {
-        clipReady.value = false
-        fileInput.value.value = ''
-        clearRect()
-    }
+    //更新剪裁区域
+    const { scaleX, scaleY } = initRect
+    const { x, y, width, height } = clipRect
+
+    context.value.clearRect(x, y, width, height)
+    context.value.drawImage(image.value, x * scaleX, y * scaleY, width * scaleX, height * scaleY, x, y, width, height)
 }
 
 const handleMouseMove = rafThrottle((e) => {
