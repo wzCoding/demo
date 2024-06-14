@@ -1,18 +1,18 @@
 <template>
     <div class="canvas-box">
-        <div class="upload-box" @click="selectFile">
+        <div class="upload-box" :class="{ active: selectActive }" ref="uploadBox" @[fileEvent]="selectFile">
             <e-svg name="add" color="--theme-gradient-color-2"></e-svg>
             <input type="file" accept="image/*" class="file-input" ref="fileInput" @change="fileChange">
             <transition name="fade-in">
-                <canvas id="preview-img" ref="previewImg" v-show="clipDone"></canvas>
+                <canvas id="preview-img" ref="previewImg"></canvas>
             </transition>
-            <!-- <div class="preview-tools">
+            <div class="preview-tools" :class="{ active: showPreviewTools }" v-show="showPreviewTools">
                 <e-svg v-for="tool in previewTools" :key="tool.name" :name="tool.name" size="24"
                     @click="tool.event"></e-svg>
-            </div> -->
+            </div>
         </div>
         <transition name="fade-in">
-            <div class="image-clip" v-show="clipReady">
+            <div class="image-clip" ref="imageBox" v-show="clipReady">
                 <canvas id="clip-img" ref="clipImg"></canvas>
                 <div class="clip-tools">
                     <e-svg v-for="tool in clipTools" :key="tool.name" :name="tool.name" size="24"
@@ -32,15 +32,27 @@ import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
 import { myCanvas } from './resouce/canvas/canvas'
 import { Message } from '@/components/Message'
 import { rafThrottle, deepClone } from '@/utils/index'
+import ClickOutside from '@/utils/clickOutSide'
 import ESvg from '@/components/Svg'
+import clickOutSide from '@/utils/clickOutSide'
 
 //剪裁框上可拖动的点的位置
 const clipPoints = ['top-left', 'top', 'top-right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right']
 
 //dom元素
 const fileInput = ref(null)
+const uploadBox = ref(null)
+const imageBox = ref(null)
 const clipImg = ref(null)
 const previewImg = ref(null)
+
+//给文件选择框添加 active 样式
+let cleanSelectActive
+const selectActive = ref(false)
+
+const fileEvent = computed(() => {
+    return showPreviewTools.value ? '' : 'click'
+})
 
 //canvas图片相关
 const image = ref(null)
@@ -51,7 +63,7 @@ const previewCtx = computed(() => previewCvs.value.context)
 
 //clip剪裁相关
 const clipReady = ref(false)
-const clipDone = ref(false)
+const showPreviewTools = ref(false)
 const pointMove = ref(false)
 const areaMove = ref(false)
 
@@ -79,31 +91,64 @@ const clipRectStyle = computed(() => {
     }
 })
 
-const handleCancel = (e) => {
+//剪裁工具剪裁取消事件处理
+const handleCancel = () => {
     clipReady.value = false
-    fileInput.value.value = ''
-    clearRect()
+    clearClip()
 }
-const handleClipDone = (e) => {
 
-    console.log('clip done')
+//剪裁工具剪裁完成事件处理
+const handleClipDone = () => {
+
+    clipReady.value = false
+    showPreviewTools.value = true
+
     const { scaleX, scaleY } = initRect
     const { x, y, width, height } = clipRect
     const { width: pw, height: ph } = previewCvs.value
 
     previewCtx.value.clearRect(0, 0, pw, ph)
     previewCtx.value.drawImage(image.value, x * scaleX, y * scaleY, width * scaleX, height * scaleY, 0, 0, pw, ph)
+
+    clearClip()
 }
 
-const handleRecover = (e) => {
+//预览工具撤销事件处理
+const handleRecover = () => {
 
+    clipRect.x = prevRect.x
+    clipRect.y = prevRect.y
+    clipRect.width = prevRect.width
+    clipRect.height = prevRect.height
+
+    drawClip()
 }
 
-const handledownLoad = (e) => {
+//预览工具下载事件处理
+const handledownLoad = () => {
+    previewCvs.value.canvas.toBlob((blob) => {
+        //将预览canvas上绘制的图像转化为dataUrl
+        const dataUrl = URL.createObjectURL(blob)
+        //设置a标签并使用dataUrl下载图像
+        const downloadEl = document.createElement('a')
 
+        downloadEl.href = dataUrl
+        downloadEl.download = `${Date.now()}.png`
+
+        document.body.appendChild(downloadEl)
+        downloadEl.click()
+        URL.revokeObjectURL(dataUrl)
+        document.body.removeChild(downloadEl)
+
+    }, 'image/png')
 }
-const handleDelete = (e) => {
 
+//预览工具删除事件处理
+const handleDelete = () => {
+    const { width, height } = previewCvs.value
+    previewCtx.value.clearRect(0, 0, width, height)
+
+    showPreviewTools.value = false
 }
 
 //clip剪裁工具相关
@@ -119,7 +164,11 @@ const previewTools = [
 
 
 //事件处理
-const selectFile = () => fileInput.value.click()
+const selectFile = () => {
+    selectActive.value = true
+    fileInput.value.click()
+}
+
 const fileChange = (e) => {
     console.log('file change')
     const file = e.target.files[0]
@@ -306,14 +355,14 @@ const handleMouseDown = (e) => {
     toggleMouseEvent('add')
 }
 
-const handleMouseUp = (e) => {
+const handleMouseUp = () => {
     pointMove.value = false
     areaMove.value = false
-    console.log(clipRect)
+
     toggleMouseEvent('remove')
 }
 
-const clearRect = () => {
+const clearClip = () => {
     clipRect.x = 0
     clipRect.y = 0
     clipRect.width = 0
@@ -322,7 +371,14 @@ const clearRect = () => {
     pointMove.value = false
     areaMove.value = false
 
+    fileInput.value.value = ''
+
     toggleMouseEvent('remove')
+
+    cleanSelectActive = clickOutSide(uploadBox.value, () => {
+        !clipReady.value && (selectActive.value = false)
+        cleanSelectActive && cleanSelectActive()
+    }, imageBox.value)
 }
 
 //鼠标事件的绑定与移除切换
@@ -351,13 +407,25 @@ onMounted(() => {
     })
 })
 onUnmounted(() => {
+
     toggleMouseEvent('remove')
+    cleanSelectActive && cleanSelectActive()
 })
 
 </script>
 <style lang="scss" scoped>
 .canvas-box {
+    --gap: 10px;
     padding: 20px;
+
+    svg {
+        fill: var(--theme-gradient-color-2);
+        transition: all var(--transition-time);
+
+        &:hover {
+            fill: var(--theme-gradient-color-1);
+        }
+    }
 
     .upload-box {
         width: 160px;
@@ -371,8 +439,16 @@ onUnmounted(() => {
         transition: all var(--transition-time);
         position: relative;
 
-        &:hover {
+        &.active {
             border-color: var(--theme-gradient-color-2);
+        }
+
+        &:hover {
+            @extend .active;
+
+            .preview-tools.active {
+                transform: translate(0, 0);
+            }
         }
 
         .file-input {
@@ -384,10 +460,23 @@ onUnmounted(() => {
             width: 100%;
             height: 100%;
         }
+
+        .preview-tools {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--gap);
+            background-color: rgba(0, 0, 0, 0.7);
+            transform: translate(0, -100%);
+            transition: transform var(--transition-time);
+        }
     }
 
     .image-clip {
-        --gap: 10px;
+
         background-color: #f5f5f5;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
         position: fixed;
@@ -413,15 +502,6 @@ onUnmounted(() => {
             justify-content: center;
             align-items: center;
             cursor: pointer;
-
-            svg {
-                fill: var(--theme-gradient-color-2);
-                transition: all var(--transition-time);
-
-                &:hover {
-                    fill: var(--theme-gradient-color-1);
-                }
-            }
         }
 
         .clip-rect {

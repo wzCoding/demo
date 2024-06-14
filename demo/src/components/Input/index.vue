@@ -125,11 +125,10 @@ export default {
         let cleanClickOutSide = null
         onMounted(() => {
             const focusElement = getElement(props.focusElement)
-            const elements = [inputContainer.value, focusElement]
-            cleanClickOutSide = clickOutSide(elements, () => {
+            cleanClickOutSide = clickOutSide(inputContainer.value, () => {
                 focus.value = false
                 emit('blur', input.value.value)
-            })
+            }, [focusElement])
         })
         onUnmounted(() => {
             cleanClickOutSide && cleanClickOutSide()
