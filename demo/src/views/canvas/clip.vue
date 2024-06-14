@@ -163,14 +163,14 @@ const previewTools = [
 ]
 
 
-//事件处理
+//文件选择事件处理
 const selectFile = () => {
     selectActive.value = true
     fileInput.value.click()
 }
 
+//图片文件改变事件处理
 const fileChange = (e) => {
-    console.log('file change')
     const file = e.target.files[0]
     if (!file.type.includes('image/')) {
         Message.warning({ text: "请选择图片类型的文件!", showClose: true })
@@ -188,6 +188,7 @@ const fileChange = (e) => {
     }
 }
 
+//获取原始图像矩形数据
 const getInitRect = (el) => {
     const rect = el.getBoundingClientRect()
     return {
@@ -202,6 +203,7 @@ const getInitRect = (el) => {
     }
 }
 
+//加载原始图像数据
 const loadImage = (dataUrl) => {
     const img = new Image()
     img.onload = () => {
@@ -229,6 +231,7 @@ const loadImage = (dataUrl) => {
     image.value = img
 }
 
+//绘制图像
 const drawImage = () => {
     //绘制图片
     clipCtx.value.drawImage(image.value, 0, 0, initRect.width, initRect.height)
@@ -238,6 +241,7 @@ const drawImage = () => {
     clipCtx.value.fillRect(0, 0, initRect.width, initRect.height)
 }
 
+//绘制剪裁框
 const drawClip = () => {
     //重新绘制图片与遮罩层大小
     drawImage()
@@ -250,6 +254,7 @@ const drawClip = () => {
     clipCtx.value.drawImage(image.value, x * scaleX, y * scaleY, width * scaleX, height * scaleY, x, y, width, height)
 }
 
+//处理鼠标移动事件
 const handleMouseMove = rafThrottle((e) => {
 
     //表示坐标点在 x 轴移动的变化量
@@ -335,7 +340,7 @@ const handleMouseMove = rafThrottle((e) => {
     drawClip()
 })
 
-
+//处理鼠标按下事件
 const handleMouseDown = (e) => {
     const { point, area } = e.target.dataset
     if (point && clipPoints.includes(point)) {
@@ -355,6 +360,7 @@ const handleMouseDown = (e) => {
     toggleMouseEvent('add')
 }
 
+//处理鼠标弹起事件
 const handleMouseUp = () => {
     pointMove.value = false
     areaMove.value = false
@@ -362,6 +368,7 @@ const handleMouseUp = () => {
     toggleMouseEvent('remove')
 }
 
+//清理剪裁框相关数据
 const clearClip = () => {
     clipRect.x = 0
     clipRect.y = 0
@@ -407,7 +414,6 @@ onMounted(() => {
     })
 })
 onUnmounted(() => {
-
     toggleMouseEvent('remove')
     cleanSelectActive && cleanSelectActive()
 })
