@@ -1,5 +1,4 @@
 import { debounce } from "@/utils/index"
-import { onMounted, onUnmounted } from "vue"
 async function getMapData(code) {
     if (!code) return
     const url = `https://geojson.cn/api/data/${code}.topo.json`

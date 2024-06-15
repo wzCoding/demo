@@ -113,9 +113,11 @@ const handleClipDone = () => {
     clearClip()
 }
 
+const recoverList = []
 //预览工具撤销事件处理
 const handleRecover = () => {
-
+    
+    const prevRect = recoverList.pop()
     clipRect.x = prevRect.x
     clipRect.y = prevRect.y
     clipRect.width = prevRect.width
@@ -172,6 +174,9 @@ const selectFile = () => {
 //图片文件改变事件处理
 const fileChange = (e) => {
     const file = e.target.files[0]
+    if (!file) {
+        return
+    }
     if (!file.type.includes('image/')) {
         Message.warning({ text: "请选择图片类型的文件!", showClose: true })
         return
@@ -365,6 +370,8 @@ const handleMouseUp = () => {
     pointMove.value = false
     areaMove.value = false
 
+    recoverList.push(prevRect)
+
     toggleMouseEvent('remove')
 }
 
@@ -374,6 +381,8 @@ const clearClip = () => {
     clipRect.y = 0
     clipRect.width = 0
     clipRect.height = 0
+
+    recoverList.length = 0
 
     pointMove.value = false
     areaMove.value = false

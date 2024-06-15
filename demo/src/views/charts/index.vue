@@ -37,7 +37,24 @@ import { getEchartOption } from './tools'
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useThemeStore } from '@/store/useThemeStore'
 import { ElMapExportTable } from 'table-excel'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts/core'
+import { BarChart, LineChart } from 'echarts/charts'
+import { LegendComponent, TooltipComponent, GridComponent, DataZoomComponent, TransformComponent } from 'echarts/components'
+import { LabelLayout, UniversalTransition } from 'echarts/features'
+import { CanvasRenderer } from 'echarts/renderers'
+
+echarts.use([
+  LegendComponent,
+  TooltipComponent,
+  GridComponent,
+  DataZoomComponent,
+  TransformComponent,
+  BarChart,
+  LineChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer
+])
 
 onMounted(() => {
     window.addEventListener('resize', resizeCharts)

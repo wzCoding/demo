@@ -1,4 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
+const unpluginElementPlus = require('unplugin-element-plus/webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = defineConfig({
   devServer: {
@@ -29,7 +31,10 @@ module.exports = defineConfig({
   },
   configureWebpack: {
     plugins: [
-      require('unplugin-element-plus/webpack')({
+      // new BundleAnalyzerPlugin({
+      //   analyzerPort: 8088
+      // }),
+      unpluginElementPlus({
         useSource: false,
       }),
     ],
