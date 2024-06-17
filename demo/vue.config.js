@@ -8,6 +8,7 @@ module.exports = defineConfig({
     open: true,
     client: {
       overlay: {
+        //运行时异常报错处理
         runtimeErrors: (error) => {
           if (error?.message === "ResizeObserver loop completed with undelivered notifications.") {
             return false
@@ -29,14 +30,20 @@ module.exports = defineConfig({
       }
     }
   },
+
+  //webpack 配置
   configureWebpack: {
     plugins: [
-      // new BundleAnalyzerPlugin({
-      //   analyzerPort: 8088
-      // }),
+      new BundleAnalyzerPlugin({
+        analyzerPort: 8088
+      }),
       unpluginElementPlus({
         useSource: false,
       }),
     ],
+    externals: {
+      echarts: 'echarts',
+      three: 'three'
+    }
   }
 })

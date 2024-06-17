@@ -14,20 +14,7 @@
 import { ref, computed } from 'vue'
 import { getData } from '@/utils/service'
 import EButton from '@/components/Button'
-import * as echarts from 'echarts/core'
-import { MapChart } from 'echarts/charts'
-import { DatasetComponent, GeoComponent } from 'echarts/components'
-import { LabelLayout, UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
-
-echarts.use([
-    MapChart,
-    DatasetComponent,
-    GeoComponent,
-    LabelLayout,
-    UniversalTransition,
-    CanvasRenderer
-])
+import * as echarts from 'echarts'
 
 const loading = ref(true)
 const dataType = 'map'

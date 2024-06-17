@@ -63,24 +63,7 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Timer } from '@/utils/timer'
 import { getEchartOption, pageScale } from './tools'
 import { getRandom } from '@/utils/index'
-import * as echarts from 'echarts/core'
-import { BarChart, LineChart, PieChart } from 'echarts/charts'
-import { LegendComponent, TooltipComponent, GridComponent, TransformComponent } from 'echarts/components'
-import { LabelLayout, UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
-
-echarts.use([
-    LegendComponent,
-    TooltipComponent,
-    GridComponent,
-    TransformComponent,
-    PieChart,
-    BarChart,
-    LineChart,
-    LabelLayout,
-    UniversalTransition,
-    CanvasRenderer
-])
+import * as echarts from 'echarts'
 
 const timer = new Timer()
 const year = new Date().getFullYear()
