@@ -1,8 +1,8 @@
 const { defineConfig } = require('@vue/cli-service')
-const unpluginElementPlus = require('unplugin-element-plus/webpack')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = defineConfig({
+
+  //开发服务器配置
   devServer: {
     port: 8081,
     open: true,
@@ -18,12 +18,16 @@ module.exports = defineConfig({
       },
     },
   },
+
+  //基本配置
   publicPath: "/demo/",
   transpileDependencies: true,
+  productionSourceMap: false,
 
-  //sass-loader 简单配置
+  //css 配置
   css: {
     loaderOptions: {
+      //sass-loader 简单配置
       sass: {
         // 全局引入样式
         additionalData: `@import "~@/assets/css/gradient.scss";`
@@ -31,19 +35,17 @@ module.exports = defineConfig({
     }
   },
 
-  //webpack 配置
+  //webpack 一般配置
   configureWebpack: {
-    plugins: [
-      new BundleAnalyzerPlugin({
-        analyzerPort: 8088
-      }),
-      unpluginElementPlus({
-        useSource: false,
-      }),
-    ],
     externals: {
-      echarts: 'echarts',
-      three: 'three'
+      "vue": "Vue",
+      "vue-router": "VueRouter",
+      "element-plus": "ElementPlus",
+      "echarts": "echarts",
+      "three": "Three",
+      "exceljs": "ExcelJS",
+      "mockjs": "Mock",
+      "highlight.js": "hljs"
     }
   }
 })
