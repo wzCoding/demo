@@ -42,7 +42,7 @@ module.exports = defineConfig({
       "vue-router": "VueRouter",
       "element-plus": "ElementPlus",
       "echarts": "echarts",
-      "three": "Three",
+      "three": "THREE",
       "exceljs": "ExcelJS",
       "mockjs": "Mock",
       "highlight.js": "hljs"
