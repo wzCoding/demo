@@ -7,8 +7,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.css">
+
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.css" as="style">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.min.css" as="style">
+
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
@@ -20,15 +22,22 @@
         Please enable it to continue.</strong>
   </noscript>
   <div id="app"></div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@3.4.29/dist/vue.global.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue-router@4.2.5/dist/vue-router.global.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.full.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.4.29/dist/vue.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-demi@0.14.8/lib/index.iife.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-router@4.2.5/dist/vue-router.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pinia@2.1.6/dist/pinia.iife.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mockjs@1.1.0/dist/mock.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/element-plus@2.6.3/dist/index.full.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
   <!-- built files will be auto injected -->
 </body>
 

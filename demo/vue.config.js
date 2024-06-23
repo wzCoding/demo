@@ -63,6 +63,7 @@ module.exports = defineConfig({
     externals: {
       "vue": "Vue",
       "vue-router": "VueRouter",
+      "pinia":"Pinia",
       "element-plus": "ElementPlus",
       "echarts": "echarts",
       "three": "THREE",
@@ -71,7 +72,7 @@ module.exports = defineConfig({
       "highlight.js": "hljs"
     }
   },
-  
+
   //webpack 详细配置
   chainWebpack: (config) => {
     //设置 resolve.extensions 配置
