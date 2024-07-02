@@ -1,0 +1,64 @@
+{
+    "menu": [
+        {
+            "index": "1",
+            "title": "2d waves",
+            "titleCN": "波浪",
+            "path": "/canvas/index"
+        },
+        {
+            "index": "2",
+            "title": "code rain",
+            "titleCN": "代码雨",
+            "path": "/canvas/rain"
+        },
+        {
+            "index": "3",
+            "title": "clip picture",
+            "titleCN": "剪裁图片",
+            "path": "/canvas/clip"
+        },
+        {
+            "index": "4",
+            "title": "birds",
+            "titleCN": "飞鸟",
+            "path": "/canvas/birds"
+        },
+        {
+            "index": "5",
+            "title": "3d sea",
+            "titleCN": "海面",
+            "path": "/canvas/sea"
+        },
+        {
+            "index": "6",
+            "title": "ferrari",
+            "titleCN": "法拉利",
+            "path": "/canvas/ferrari"
+        },
+        {
+            "index": "7",
+            "title": "suv",
+            "titleCN": "越野车",
+            "path": "/canvas/suv"
+        },
+        {
+            "index": "8",
+            "title": "tank",
+            "titleCN": "坦克",
+            "path": "/canvas/tank"
+        },
+        {
+            "index": "9",
+            "title": "fighter",
+            "titleCN": "战斗机",
+            "path": "/canvas/fighter"
+        },
+        {
+            "index": "10",
+            "title": "robot",
+            "titleCN": "机器人",
+            "path": "/canvas/robot"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "menu": [
+        {
+            "index": "0",
+            "title": "chart and table",
+            "titleCN": "简单图表",
+            "path": "/charts/index"
+        },
+        {
+            "index": "1",
+            "title": "big screen table",
+            "titleCN": "大屏数据",
+            "path": "/charts/screen"
+        },
+        {
+            "index": "2",
+            "title": "chart map",
+            "titleCN": "地图数据",
+            "path": "/charts/map"
+        }
+    ]
+}
