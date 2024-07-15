@@ -57,13 +57,13 @@ module.exports = defineConfig({
     //插件配置
     plugins: [
       //css 压缩
-      new CssMinimizerPlugin()
+      new CssMinimizerPlugin(),
     ],
     //外部依赖设置
     externals: {
       "vue": "Vue",
       "vue-router": "VueRouter",
-      "pinia":"Pinia",
+      "pinia": "Pinia",
       "element-plus": "ElementPlus",
       "echarts": "echarts",
       "three": "THREE",
