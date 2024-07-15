@@ -1,0 +1,16 @@
+{
+    "data":[
+        { 
+            "name": "Parrot", 
+            "position": [10, -10, 0.25] 
+        },
+        { 
+            "name": "Flamingo", 
+            "position": [30, -5, -10] 
+        },
+        { 
+            "name": "Stork", 
+            "position": [-15, -6, -10] 
+        }
+    ]
+}

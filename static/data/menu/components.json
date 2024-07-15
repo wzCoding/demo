@@ -1,0 +1,46 @@
+{
+    "menu": [
+        {
+            "index": "1",
+            "title": "Button",
+            "titleCN": "Button 按钮",
+            "path": "/components/index"
+        },
+        {
+            "index": "1",
+            "title": "Svg",
+            "titleCN": "Svg 容器",
+            "path": "/components/svg"
+        },
+        {
+            "index": "2",
+            "title": "Loading",
+            "titleCN": "Loading 等待",
+            "path": "/components/loading"
+        },
+        {
+            "index": "3",
+            "title": "Message",
+            "titleCN": "Message 消息",
+            "path": "/components/message"
+        },
+        {
+            "index": "4",
+            "title": "Popup",
+            "titleCN": "Popup 弹出框",
+            "path": "/components/popup"
+        },
+        {
+            "index": "5",
+            "title": "Input",
+            "titleCN": "Input 输入框",
+            "path": "/components/input"
+        },
+        {
+            "index": "6",
+            "title": "Select",
+            "titleCN": "Select 下拉框",
+            "path": "/components/select"
+        }
+    ]
+}
