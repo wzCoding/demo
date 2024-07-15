@@ -13,6 +13,7 @@ import { getRandom } from '@/utils/index'
 import { Message } from '@/components/Message/index'
 import { Mask } from '@/components/Mask/index'
 const cubeSize = 36
+const dangers = 3
 const cubes = ref(null)
 const cubesBox = ref(null)
 const x = ref(0)
@@ -33,7 +34,7 @@ const resetCubes = () => {
         cube.classList.remove(...resetClasses)
         cube.addEventListener('mouseenter', handleMouseEnter, { once: true })
     }
-    dangerNum.value = getRandom(1, sums.value)
+    dangerNum.value = getRandom(dangers, sums.value)
 }
 const handleMouseEnter = (e) => {
     if (!e.target.className.includes('cube-item')) return
@@ -70,7 +71,7 @@ onMounted(async () => {
     x.value = Math.floor(clientWidth / cubeSize)
     y.value = Math.floor(clientHeight / cubeSize)
     sums.value = x.value * y.value
-    dangerNum.value = getRandom(1, sums.value)
+    dangerNum.value = getRandom(dangers, sums.value)
 
     await nextTick()
 
