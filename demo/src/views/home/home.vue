@@ -57,10 +57,10 @@ const startBtn = { name: "开始浏览", icon: "arrow" }
 const notAllowed = ['about']
 const router = useRouter()
 const toPage = (menu) => {
-    if(notAllowed.includes(menu.title)){
-        Message.info('敬请期待')
-        return
-    }
+    // if(notAllowed.includes(menu.title)){
+    //     Message.info('敬请期待')
+    //     return
+    // }
     if (menu.path) {
         const params = { path: menu.path, icon: menu.icon }
         router.push(params)

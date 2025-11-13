@@ -54,7 +54,7 @@ function createCard(total) {
     // 创建完成总数减一
     total--
     if (total > 0) {
-        createCard(total)
+        createCard(total--)
     }
 }
 
